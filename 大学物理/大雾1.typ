@@ -1,3 +1,4 @@
+#import "../module/myutils.typ":*
 #set page(margin: 1cm) // 这一行必
 
 = 〇 机械运动

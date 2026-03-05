@@ -1,3 +1,91 @@
+#import "@preview/simple-plot:0.3.0": plot
+// 专门把 figure 的标题改为黑体
+#set text(
+  font: ("Times New Roman", "SimSun"), // 英文用 Times，中文自动回退到宋体
+  size: 10.5pt,                       // 五号字
+  lang: "zh"                          // 配合之前说的，确保图表显示为“图”
+)
+
+#let fgraph(
+  funcs, 
+  names: (), 
+  domain: (-5, 5, -2, 2), 
+  step: (1, 0.5), 
+  labels: ($x$, $y$), 
+  colors: (blue, red, green, orange, purple),
+  legend_pos: "bottom",
+  grid_type: "both",
+  density: 5          
+) = {
+  let ms = (
+    sin: calc.sin, cos: calc.sin, tan: calc.tan,
+    log: calc.log, ln: calc.ln, sqrt: calc.sqrt,
+    abs: calc.abs, pi: calc.pi, pow: calc.pow, exp: calc.exp
+  )
+
+  let func_list = if type(funcs) == str { (funcs,) } else { funcs }
+  
+  // 1. 提取自变量名和纯文本名
+  let var_label = labels.at(0)
+  // 获取纯字符用于计算环境映射
+  let var_str = repr(var_label).replace("$", "").trim()
+  
+  // 2. 构造图例项
+  let items = func_list.enumerate().map(((i, f_str)) => {
+    let c = colors.at(calc.rem(i, colors.len()))
+    let f_name = if names.len() > i { eval("$" + names.at(i) + "$") } else { $ f_#(i+1) $ }
+    
+    grid(
+      columns: (auto, auto),
+      column-gutter: 6pt,
+      align: horizon,
+      box(fill: c, width: 1.2em, height: 0.3em, radius: 0.1em),
+      // --- 关键修正：不再手动拼接 eval 字符串 ---
+      // 先用标准的 x 渲染公式，然后利用 show 规则把公式里的 x 替换为 var_label
+      {
+        show "x": var_label
+        $ #f_name (#var_label) = #eval("$" + f_str + "$") $
+      }
+    )
+  })
+
+  // 3. 绘图核心
+  let plot_obj = plot(
+    xmin: domain.at(0), xmax: domain.at(1),
+    ymin: domain.at(2), ymax: domain.at(3),
+    xlabel: labels.at(0), ylabel: labels.at(1),
+    x-tick-step: step.at(0), y-tick-step: step.at(1),
+    show-grid: grid_type,
+    minor-grid-step: density,
+    ..func_list.enumerate().map(((i, f_str)) => (
+      fn: x_val => {
+        // 计算时：同时支持 x 和用户自定义的变量名
+        let safe_expr = f_str.replace(regex("x\^2"), "(x * x)").replace(regex("x\^3"), "(x * x * x)")
+        let final_expr = safe_expr.replace(regex(var_str + "\^2"), "(" + var_str + " * " + var_str + ")")
+        
+        let scope = ms + (x: x_val) + ((var_str): x_val)
+        float(eval(final_expr, scope: scope, mode: "code"))
+      },
+      stroke: colors.at(calc.rem(i, colors.len()))
+    ))
+  )
+
+  // 4. 最终布局 (保持居中)
+  let legend_content = if legend_pos == "bottom" {
+    align(center, stack(dir: ltr, spacing: 20pt, ..items))
+  } else {
+    align(left + horizon, stack(dir: ttb, spacing: 12pt, ..items))
+  }
+
+  align(center, {
+    if legend_pos == "bottom" {
+      stack(spacing: 15pt, plot_obj, legend_content)
+    } else {
+      grid(columns: (auto, auto), column-gutter: 20pt, align: horizon, plot_obj, legend_content)
+    }
+  })
+}
+
 #let dfrac(x, y) = $ (dif #x) / (dif #y) $
 #let vct(x) = $arrow(#x)$
 #let uv(x,y) = $vct(#x _#y)$ 
@@ -62,17 +150,131 @@
   }
 }
 
-#let aseq(end, begin: 0, d: 1) = {
-  // 定义通项公式：a_n = a_1 + (n-1)d。这里假设首项 a_1 = 1
-  let get_val(n) = 1 + (n - 1) * d
-  
-  if begin == 0 {
-    return $#get_val(end)$
-  } else {
-    return range(begin, end + 1).map(i => $#get_val(i)$).join(", ")
-  }
+// 辅助函数：强制转整数，防止报错
+#let _to_int(val) = {
+  if type(val) == int { val }
+  else if type(val) == content and val.has("text") { int(val.text) }
+  else { 0 }
 }
 
+// 1. 等差数列
+#let aseq(end, begin: 0, hi: 1, tol: 1) = {
+  let (e, b) = (_to_int(end), _to_int(begin))
+  let get_val(n) = hi + (n - 1) * tol
+  if b == 0 { $#get_val(e)$ } else { range(b, e + 1).map(i => $#get_val(i)$).join($,$) }
+}
+
+// 2. 等比数列
+#let gseq(end, begin: 0, hi: 1, crt: 2) = {
+  let (e, b) = (_to_int(end), _to_int(begin))
+  let get_val(n) = hi * calc.pow(crt, n - 1)
+  if b == 0 { $#get_val(e)$ } else { range(b, e + 1).map(i => $#get_val(i)$).join($,$) }
+}
+
+// 3. 斐波那契数列
+#let fseq(end, begin: 0) = {
+  let (e, b) = (_to_int(end), _to_int(begin))
+  let fib(n) = {
+    if n <= 0 { return 0 }
+    if n <= 2 { return 1 }
+    let (v1, v2) = (1, 1)
+    for _ in range(n - 2) {
+      let temp = v1 + v2
+      v1 = v2
+      v2 = temp
+    }
+    return v2
+  }
+  if b == 0 { $#fib(e)$ } else { range(b, e + 1).map(i => $#fib(i)$).join($,$) }
+}
+
+// 将名字改为 cal，避开系统内置的 calc 模块冲突
+#let cal(expr, mode: 0, digits: none) = {
+  let m = int(mode)
+  let d = if digits == none { if m == 0 { 0 } else { 3 } } else { int(digits) }
+  
+  let mathScope = (
+    sin: calc.sin, cos: calc.cos, tan: calc.tan,
+    log: calc.log, ln: calc.ln, sqrt: calc.sqrt,
+    abs: calc.abs, round: calc.round, pi: calc.pi,
+    exp: calc.exp, pow: calc.pow
+  )
+
+  let cleanExpr = expr.replace("×", "*").replace("÷", "/")
+  let rawResult = eval(cleanExpr, scope: mathScope)
+  
+  let isCleanInt(v) = { calc.abs(v - calc.round(v)) < 1e-10 }
+
+  let formatStr(val, precision) = {
+    let rounded = calc.round(val, digits: precision)
+    if precision <= 0 { return str(int(rounded)) }
+    let s = str(rounded)
+    if not s.contains(".") { s += "." }
+    let parts = s.split(".")
+    let decimalPart = parts.at(1)
+    while decimalPart.len() < precision { decimalPart += "0" }
+    return parts.at(0) + "." + decimalPart
+  }
+
+  let processedResult = if m == 0 {
+    if isCleanInt(rawResult) and d == 0 { str(int(rawResult)) } else { formatStr(rawResult, d) }
+  } else {
+    if rawResult == 0 { "0" } else {
+      let magnitude = int(calc.floor(calc.log(calc.abs(rawResult))))
+      let precision = d - 1 - magnitude
+      if isCleanInt(rawResult) and precision <= 0 {
+        str(int(calc.round(rawResult, digits: precision)))
+      } else {
+        formatStr(rawResult, calc.max(0, precision))
+      }
+    }
+  }
+
+  // --- 重点修复：美化排版逻辑 ---
+  let displayExpr = expr.replace(" ", "")
+  
+  // 使用一种更安全的方式：直接利用 Typst 的数学公式解析
+  // 我们不再手动构建 frac(...)，因为那太难处理优先级了。
+  // 我们直接把字符串里的 * 换成 times，/ 换成斜杠（或者让用户自己写想要的格式）
+  // 如果你非常想要自动变分式，最好的办法是手动在 expr 里写好括号，例如 "(1+2)/3"
+  
+  let finalMathStr = displayExpr
+    .replace("*", " times ")
+    .replace("sqrt", " sqrt ")
+  
+  // 这里的 trick：如果用户输入里包含 /，我们把它转换成内联分式形式
+  // 为了绝对准确，我们直接交给数学模式处理，不强行加 frac
+  let mathContent = eval(finalMathStr, mode: "math")
+
+  $ #mathContent = #processedResult $
+}
+
+
+// --- 调用示例 ---
+#cal("15 * 3 / 5")     // 自动生成：15 × 3 / 5 (带分式) = 9
+#cal("4-(1/200-cos(2))",mode:1,digits:5)  // 自动生成分式 = 10
+
+// 画一个抛物线，x范围 -3 到 3，y范围 -9 到 9
+#fgraph(
+  labels:($a$,$b$),
+  // var:"t",
+  ("x", "x - 1", "sin(x)","-x^3"), 
+  domain: (-3, 3, -2, 4),
+  step: (1, 1),
+  names: ("f", "g", "h", "k"),
+  legend_pos: "right"
+)
+
+#figure(
+  fgraph(("x^2", "sin(x)")),
+  caption: [这是我的函数图像], // 自动生成“图 1：这是我的函数图像”
+) <my-plot>
+
+$fseq(6,begin:1)$
+
+$gseq(begin:1,6)$
+
+$aseq(6,begin:1)$
 
 // --- 调用示例 ---
 $ lst(a,hl:4,tl:3,num:m,pun:+,upn:-) $    // 结果：a_1, a_2, a_3, a_4, a_5 (完美解决！)
@@ -80,4 +282,4 @@ $ lst(a,hl:4,tl:3,num:m,pun:+,upn:-) $    // 结果：a_1, a_2, a_3, a_4, a_5 (�
 
 
 // 这样即便传入复杂内容也能正确处理
-$ dfrac(x^2, t),vct(1),uv(e,omega),bsum(3,2),ulim()$ 
+$ dfrac(x^2, t),vct(1),uv(e,omega),bsum(3,2),ulim(ul:1,ur:2)$ 
