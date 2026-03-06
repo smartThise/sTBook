@@ -1,10 +1,19 @@
 #import "@preview/simple-plot:0.3.0": plot
 // 专门把 figure 的标题改为黑体
-#set text(
-  font: ("Times New Roman", "SimSun"), // 英文用 Times，中文自动回退到宋体
-  size: 10.5pt,                       // 五号字
-  lang: "zh"                          // 配合之前说的，确保图表显示为“图”
-)
+#let conf(body) = {
+  set text(
+    font: ("Times New Roman", "SimSun"),
+    size: 10.5pt,
+    lang: "zh"
+  )
+  
+  // 在这里可以放置其他通用的 set/show 规则
+  
+  body
+  show heading: it =>  strong(it)
+}
+
+#show:conf
 
 #let fgraph(
   funcs, 
@@ -283,3 +292,29 @@ $ lst(a,hl:4,tl:3,num:m,pun:+,upn:-) $    // 结果：a_1, a_2, a_3, a_4, a_5 (�
 
 // 这样即便传入复杂内容也能正确处理
 $ dfrac(x^2, t),vct(1),uv(e,omega),bsum(3,2),ulim(ul:1,ur:2)$ 
+
+#let t-node(body) = {
+  rect(inset: 8pt, radius: 4pt, stroke: 0.6pt + black, fill: white)[#body]
+}
+
+#let simple-tree(root, children) = {
+  align(center, stack(spacing: 12pt,
+    t-node(root),
+    if children.len() > 0 {
+      grid(
+        columns: children.len(),
+        column-gutter: 20pt,
+        ..children.map(child => {
+          if type(child) == array {
+            // 递归处理子树
+            simple-tree(child.at(0), child.slice(1))
+          } else {
+            t-node(child)
+          }
+        })
+      )
+    }
+  ))
+}
+
+1111
