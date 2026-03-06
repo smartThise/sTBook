@@ -12,7 +12,6 @@
   body
   show heading: it =>  strong(it)
 }
-
 #show:conf
 
 #let fgraph(
