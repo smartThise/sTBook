@@ -88,3 +88,283 @@ $m = n \( n - 1 \) \, Delta^(+) = delta^(+) = delta^(-) = Delta^(-) = n - 1 \, D
 ==== Ramsey 问题简单记一下
 <ramsey-问题简单记一下>
 本质解决方法就是画出来图，然后分析实线/虚线多边形的存在可能性。
+
+=== （5）子图
+1. 定义：$V^' subset.eq V,E^' subset.eq E$，此时 $G^' subset.eq G$
+
+2. 真子图：$V^' subset V,E^' subset. E$
+
+3. *支撑 / 生成子图*：在定义基础上，$V^' = V$
+
+4. *导出子图*：包含某个点集内部所有*相连的边集* / 某个边集关联的*所有顶点集*。记作 $G[V^'],G[E^']$。
+
+=== （6） 同构
+存在双射函数，将节点重新编号，一一对应。 $G_1 tilde.equiv G_2 $
+
+判断同构的一些必要条件：
+- 扭曲变形后和原图一致
+- 顶点数、边数相同
+- 度数列无序相同
+- 对应顶点关联集和邻域相同
+- 存在同构的导出子图
+- *内部存在一样的封闭图形*
+
+$e g.$ 4 阶 3 边无向简单图。
+
+*根据握手定理*，总度数为 6，故最大顶点度数为 3，奇度点偶数个。现在我们列出来度数列就行了，然后大概枚举一下。
+
+$e g. K_4$ 的生成子图按照边数划分，有 1 1 2 3 2 1 1。这对称是因为——补图同构！
+
+==== 同构的判断充要条件
+- 对于简单图，当且仅当补图同构
+- 当且仅当邻接矩阵可以通过交换行列得到
+- 所有子图都*同构*
+
+=== （7） 图的运算
+1. 交：$G_1 inter G_2 = \( V_1 inter V_2, E_1 inter E_2 \)$
+2. 并：$G_1 union G_2 = \( V_1 union V_2, E_1 union E_2 \)$
+3. 差：$G_1 - G_2 = \( V_1, E_1 - E_2 \)$
+4. 补：$overline(G) = \( V, E(K_n) - E \)$
+5. 笛卡尔积：$G_1 times G_2 = \( V_1 times V_2, E \)$，其中 $E$ 中的边满足：$(u_1, v_1),(u_2, v_2) in E$ 当且仅当 $u_1 = u_2$ 且 $(v_1,v_2) in E_2$ 或者 $v_1 = v_2$ 且 $(u_1,u_2) in E_1$。
+6. 自补图：$G$ 与 $overline(G)$ 同构
+7. 对称差：$G_1 plus.o G_2 = \( V_1 union V_2, E_1 plus.o E_2 \)$
+8. $G - v$：删除顶点 $v$ 和与之关联的边
+9. $G - e$：删除边 $e$
+10. $G + e$：添加边 $e$，如果 $e$ 已经存在则不变
+11. $G + v$：添加顶点 $v$，如果 $v$ 已经存在则不变
+
+== 二、图的代数结构 2026.3.6
+=== （1）邻接矩阵
+对于有向图，每行表示一个顶点的出边，每列表示一个顶点的入边。对于无向图，邻接矩阵是对称的。
+
+对于简单图，邻接矩阵中的元素是 0 或 1，表示是否存在边。对于多重图，元素可以是非负整数，表示边的数量。
+
+对于赋权图，元素可以是边权。此时称为权矩阵，为 0 时不连通。
+
+==== 转置
+对于有向图，邻接矩阵的转置对应于将图中的所有边的方向反转。
+
+$G^'=(V,E^'),E^'={(v,w)|(w,v) in E}$
+==== 乘积
+邻接矩阵的乘积可以用来计算路径数量。例如，$A^k$ 的元素 $a_(i j)$ 表示从顶点 $i$ 到顶点 $j$ 的长度为 $k$ 的路径数量。
+
+=== （2） 关联矩阵
+关联矩阵 $M$ 是一个 $n$ 行 $m$ 列的矩阵，其中 $n$ 是顶点数，$m$ 是边数。
+==== 对于无向图，
+如果边 $e_j$ 连接顶点 $v_i$，则 $M_(i j) = 1$；否则为 0。2 表示自环。
+
+性质：
+1. 从列来看，$sum_(i=1)^n b_(i j) = 2$，$j=1,2,...,m$
+2. 从行来看，$sum_(j=1)^m b_(i j) = d(v_i)$，$i=1,2,...,n$
+3. 握手定理：$sum_(i,j)b_(i j)=2m$
+4. 某列某元素为 2：$e_j$ 是自环。
+5. 相同的两列：$e_j$ 和 $e_k$ 是重边。
+6. 某行全 0：$v_i$ 是孤立点。
+
+==== 对于有向图，
+如果边 $e_j$ 从顶点 $v_i$ 出发，则 $M_(i j) = 1$；如果边 $e_j$ 到达顶点 $v_i$，则 $M_(i j) = -1$；否则为 0。
+
+设无环有向图 $D=<V, E>$，令 $B(D)=(b_(i j))_(n times m)$，满足
+$ b_(i j) = cases(
+  1 "," & v_i "是边" e_j "的起点",
+  0  "," & v_i "与边" e_j "无关",
+  -1  "," & v_i "是边" e_j "的终点"
+) $
+*矩阵的问题：效率极低，无法利用稀疏矩阵的性质，无法直接反映图的结构特征。*
+
+怎么优化？
+
+=== （3） 边列表
+边列表有 2 个 $m$ 维向量 $A,B$ 组成，若 $e_k=(v_i,v_j)$，则 $A(k)=i,B(k)=j$。
+
+举例：对于图 $G=(V,E)$，其中 $V=\{v_1,v_2,v_3\}$，$E=\{(v_1,v_2),(v_2,v_3)\}$，则边列表为 $A=[1,2]$，$B=[2,3]$。
+
+特点：
+- 适合存储稀疏图，节省空间。$OO(n m)=>OO(m)$
+- 不适合存储密集图，查询效率低。枚举前驱后继效率低。
+
+=== （4） 正向表
+将节点从 0 到 $n-1$ 编号，将边列表按照起始节点排序，*每一个节点的直接后继对应* $B$ *中连续的一段下标区间。*$A$ 的第 $n+1$ 项存储为 $m$，表示边的总数。
+
+#align(center)[
+  #strong([正向表 (Forward Star) 结构图解])
+]
+
+#grid(
+  columns: (1fr, 1.2fr),
+  column-gutter: 15pt,
+  
+  // 左侧：head 数组
+  table(
+    columns: (1fr, 1fr),
+    fill: (x, y) => if y == 0 { gray.lighten(60%) },
+    [*顶点 $v$*], [*head[v]*],
+    [1], [1],
+    [2], [3],
+    [3], [4],
+    [4], [6],
+    [5], [7 (哨兵)],
+  ),
+
+  // 右侧：edges 数组
+  table(
+    columns: (0.8fr, 1fr, 1fr),
+    fill: (x, y) => if y == 0 { gray.lighten(60%) } 
+                    else if y <= 2 { blue.lighten(90%) }
+                    else if y == 3 { orange.lighten(90%) }
+                    else { green.lighten(90%) },
+    [*下标 $i$*], [*终点 $w$*], [*权重*],
+    [1], [$v_2$], [5],
+    [2], [$v_3$], [2],
+    [3], [$v_4$], [8],
+    [4], [$v_1$], [1],
+    [5], [$v_5$], [3],
+    [6], [---], [---],
+  )
+)
+
+#block(inset: 8pt, stroke: 0.5pt + gray, radius: 3pt)[
+  #strong([区间对应（指针指向）：]) \
+  - #text(blue)[顶点 1] 的边区间：`edges[1]` 到 `edges[3-1]` \
+  - #text(orange)[顶点 2] 的边区间：`edges[3]` 到 `edges[4-1]` \
+  - #text(green)[顶点 3] 的边区间：`edges[4]` 到 `edges[6-1]`
+]
+
+特点：
+1. $d^+(v_i)=A(i+1)-A(i)$
+2. $A(i)=sum_(j=0)^(i-1) d^+(v_j)$
+3. 占用空间变成了 $OO(n+m)$，适合存储稀疏图。
+4. 查询效率高，枚举直接后继效率高。
+5. 前驱查询效率低。
+
+=== （5） 逆向表
+与正向表类似，但按照边的终点排序，每一个节点的直接前驱对应 $B$ 中连续的一段下标区间。
+
+*无向图的逆向表和正向表是相同的。*原因：无向图中边没有方向，正向表和逆向表的定义相同。
+
+=== （6）邻接表
+*每个节点维护一个链表，链表中存储与该节点相邻的边的信息（如终点和权重）。*对于无向图，每条边会在两个节点的链表中出现；对于有向图，每条边只会在起点的链表中出现。起始节点只存储起始顶点。
+
+- dst：邻接点域
+- w：数据域
+- link：链域
+
+// --- 1. 基础组件定义 ---
+
+// 统一的单元格块
+#let cell(body, fill_clr, width: 32pt) = rect(
+  inset: 0pt, 
+  width: width, 
+  height: 22pt, 
+  fill: fill_clr, 
+  stroke: 0.5pt
+)[#align(center+horizon, body)]
+
+// 边节点：包含 [dst | w | link] 三个域
+#let edge_node(dst, w, is_last: false) = {
+  // 在数学模式中用引号包裹斜杠以避免解析错误
+  let link_content = if is_last { $"/"$ } else { $bullet$ }
+  
+  stack(dir: ltr,
+    cell(dst, rgb("#e3f2fd")), // dst 域 (邻接点下标)
+    cell(w, rgb("#fffde7")),   // w 域 (数据/权重)
+    cell(link_content, rgb("#f1f8e9")), // link 域 (指针)
+    if not is_last {
+      // 链表内部的水平指针
+      pad(x: 2pt, align(horizon, $arrow.r$))
+    }
+  )
+}
+
+// 表头节点：包含 [data | firstedge]
+#let head_node(idx, data) = {
+  stack(dir: ltr,
+    // 数组下标标识
+    cell(idx, gray.lighten(60%), width: 20pt),
+    // 顶点数据域
+    cell(data, white, width: 35pt),
+    // 指向第一条边的指针域
+    cell($bullet$, white, width: 30pt),
+    // 指向链表的起始箭头
+    pad(x: 2pt, align(horizon, $arrow.r$))
+  )
+}
+
+// --- 2. 整体布局渲染 ---
+
+#box(stroke: 0.5pt + gray, inset: 15pt, radius: 4pt)[
+  #align(center)[
+    #strong(text(size: 1.2em)[邻接表 (Adjacency List) 存储结构]) \
+    #v(5pt)
+    #text(size: 0.8em, fill: gray)[注：dst-邻接点域 | w-数据域 | link-链域]
+  ]
+  
+  #v(15pt)
+
+  // 使用 stack 纵向堆叠每一行
+  #stack(dir: ttb, spacing: 12pt,
+    
+    // V0 的链表：v0 -> v1(w:5) -> v2(w:2) -> NULL
+    stack(dir: ltr, spacing: 0pt,
+      head_node($0$, $v_1$),
+      edge_node($1$, $5$),
+      edge_node($2$, $2$, is_last: true)
+    ),
+    
+    // V1 的链表：v1 -> v3(w:8) -> NULL
+    stack(dir: ltr, spacing: 0pt,
+      head_node($1$, $v_2$),
+      edge_node($3$, $8$, is_last: true)
+    ),
+    
+    // V2 的链表：v2 -> v0(w:1) -> v4(w:3) -> NULL
+    stack(dir: ltr, spacing: 0pt,
+      head_node($2$, $v_3$),
+      edge_node($0$, $1$),
+      edge_node($4$, $3$, is_last: true)
+    ),
+    
+    // V3 的链表：空链表
+    stack(dir: ltr, spacing: 0pt,
+      head_node($3$, $v_4$),
+      cell($\/$, white, width: 30pt) // 直接指向空
+    )
+  )
+]
+
+// --- 3. 结构字段图例说明 ---
+
+#v(20pt)
+#grid(
+  columns: (1fr, 1fr),
+  gutter: 10pt,
+  [
+    #set align(center)
+    *表头节点结构* \
+    #stack(dir: ltr, 
+      cell([data], white), cell([firstedge], white)
+    )
+  ],
+  [
+    #set align(center)
+    *边节点结构* \
+    #stack(dir: ltr,
+      cell([dst], rgb("#e3f2fd")), 
+      cell([w], rgb("#fffde7")), 
+      cell([link], rgb("#f1f8e9"))
+    )
+  ]
+)
+
+典型用途：查询某个节点的直接后继或前驱。复杂度为 $O(d^+(v))$ 或 $O(d^-(v))$。
+
+=== （7）有向图的十字链表
+节点结构如下：
+- src：边的起点
+- dst：边的终点
+- weight：边权
+- d_link：指向同一起点的下一条边
+- s_link：指向同一终点的下一条边
+
+指针非常复杂。
+

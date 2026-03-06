@@ -1,5 +1,8 @@
 #import "@preview/simple-plot:0.3.0": plot
 // 专门把 figure 的标题改为黑体
+
+#import "@preview/cuti:0.2.1": show-cn-fakebold
+
 #let conf(body) = {
   set text(
     font: ("Times New Roman", "SimSun"),
@@ -8,11 +11,21 @@
   )
   
   // 在这里可以放置其他通用的 set/show 规则
+  // 2. 强制数学模式下的中文 fallback
+  // Typst 默认数学字体不包含中文，这里通过 show 规则强制数学里的文字使用正文字体
+  show math.text: set text(font: ("Times New Roman", "SimSun"))
   
+  // 3. 定义一个方便在公式里写中文的函数（可选，但非常实用）
+  // 这样你在公式里写 #z[文字] 就不需要再手动调字体了
+  let z(it) = text(font: "SimSun", style: "normal", it)
+  show:show-cn-fakebold
   body
-  show heading: it =>  strong(it)
+  // show heading: it =>  strong(it)
+  
 }
 #show:conf
+
+*123哇哇哇*哇哇哇哇哇哇搜索
 
 #let fgraph(
   funcs, 
