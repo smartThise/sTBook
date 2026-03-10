@@ -4,21 +4,49 @@
 #import "@preview/cuti:0.2.1": show-cn-fakebold
 
 #let conf(body) = {
+  show math.equation: set text(font: ("Times New Roman", "SimSun"))
   set text(
     font: ("Times New Roman", "SimSun"),
     size: 10.5pt,
     lang: "zh"
   )
-  
+  show:show-cn-fakebold
+  show raw.where(block: true): it => block(
+  fill: luma(240),
+  inset: 8pt,
+  radius: 4pt,
+  width: 100%,
+  stroke: luma(200),
+  text(font: ("DejaVu Sans Mono", "SimHei"), size: 9pt, it)
+)
+  set page(
+    paper: "a4",
+    // 方式 A：统一设置（四周都是 2.5cm）
+    // margin: 2.5cm, 
+    
+    // 方式 B：分别设置（符合离散数学笔记长文档的排版）
+    margin: (
+      top: 1.5cm,
+      bottom: 1.5cm,
+      left: 1.5cm,   // 左侧稍微宽一点，方便以后打印装订
+      right: 1.5cm,
+    ),
+    
+    // 修复你之前的报错：页码必须放在 context 里
+    footer: context {
+      let page_num = counter(page).display()
+      align(center, text(size: 10pt, page_num))
+    }
+  )
   // 在这里可以放置其他通用的 set/show 规则
   // 2. 强制数学模式下的中文 fallback
   // Typst 默认数学字体不包含中文，这里通过 show 规则强制数学里的文字使用正文字体
-  show math.text: set text(font: ("Times New Roman", "SimSun"))
+  
   
   // 3. 定义一个方便在公式里写中文的函数（可选，但非常实用）
   // 这样你在公式里写 #z[文字] 就不需要再手动调字体了
   let z(it) = text(font: "SimSun", style: "normal", it)
-  show:show-cn-fakebold
+  
   body
   // show heading: it =>  strong(it)
   
