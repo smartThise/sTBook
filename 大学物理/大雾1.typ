@@ -71,9 +71,49 @@ $vct(r_(P O))=vct(r_(P O^'))+vct(r_(O O^'))$，求导后 $dfrac(vct(r_(P O)),t)=
 当最底部的点与地面接触时，$- omega R + v_0 = v_P= 0$，所以 $v_0 = omega R$。在并非顶点的时候，则是分量运算，比如说把最低点半径、当前位置半径的夹角叫做 $theta$，则 $v_P = 2 v_0 sin (theta/2)$。\*需要补图片。
 
 === (2) Newton's Laws
-==== 1. Newton's First Law
+==== 1. Newton's First Law & Second Law
 $vct(F)=0 => vct(v)="const" or vct(v)=0$
 
 *Only useful in inertial (reference) frames 惯性参考系*
 
 那么 non-inertial frame 怎么办？
+
+举例：线性阻力的下落过程。对于一个物体自由落体，一个物体向上抛出，分别如下：
+
+- for free fall:
+
+$m g- alpha m v_1=m dfrac(v_1,t)$
+
+Then $integral_0^t dif t= integral_0^(v_1) frac(dif v_1,g - alpha v_1)$, and $- alpha t= ln(g - alpha v_1) - ln(g) => v_1(t)=g/ alpha (1- e^(- alpha t))$,我的天哪神秘的积分！
+
+- for throwing:
+
+$m g - alpha m v_2 = m dfrac( v_2,  t) \ => integral_0^t dif t=integral_(-v_0)^(v_2) frac(dif v_2,g - alpha v_2) \ => 
+v_2(t)=g / alpha - (g / alpha + v_0) e^(- alpha t)
+$
+
+把这两个再混合到一起：
+$integral_0^(t_0) v_1(t) dif t=h+ integral_0^t v_2(t_0) dif t \
+ => integral_0^(t_0) (v_1(t)-v_2(t)) dif t=h \
+ => integral_0^(t_0) (g/alpha (1-e^(-alpha t))- (g/alpha - (g/alpha + v_0) e^(-alpha t))) dif t=h \
+ => integral_0^(t_0) v_0 e^(-alpha t) dif t=h$
+
+ ==== 2. Non-inertial frame
+$vct(a_(O^'))+vct(a^')=vct(a)$
+
+So $vct(a^')=vct(a)-vct(a_(O^'))$，其中 $vct(a_(O^'))$ 是非惯性参考系的加速度。同理，$vct(F)-m vct(a_(O^'))=m vct(a^')$
+
+本质是为了减小运算难度。
+
+比如在上面的例子，加入惯性力竖直向上的 $m g$， 则 $m g + alpha m vct(v_2^') #text(fill:blue,$- m g$) = m dfrac(v_2^', t) \
+=> v_2^'=-v_0 e^(-alpha t) \
+=> h = integral_0^(t_0) v_0 e^(-alpha t) dif t$
+
+答案居然一样！因为我们在非惯性参考系中引入了一个等效的力来抵消非惯性参考系的加速度，所以最终的结果与在惯性参考系中计算得到的结果是相同的。这提醒我们，在非惯性参考系中引入惯性力是为了简化计算，但最终的物理结果应该与在惯性参考系中得到的结果一致。
+
+举例：潮汐力
+
+- 近日侧：$F_A=(G M_s m)/(R - r)^2-(G M_s m)/R^2 approx 2(G M_s m)/(R^3) r$，方向朝向太阳，向外拉伸。
+- 远日侧：$F_B=(G M_s m)/(R + r)^2-(G M_s m)/R^2 approx - 2(G M_s m)/(R^3) r$，方向背向太阳，同样向外拉伸。
+- 侧面，距离太太阳 $sqrt(R^2+r^2)$：引力在 x 方向分量和惯性力在 x 方向分量几乎相等，所以没有拉伸。在 y 方向上，$F_(-y)=-(G M_s m)/R^3 r$，向内压缩，系数恰好是近日远日点的一半。
+

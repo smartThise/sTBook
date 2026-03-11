@@ -49,7 +49,7 @@ graph G {
 ```)
 
 #let conf(body) = {
-  show math.equation: set text(font: ("Times New Roman", "SimSun"))
+  show math.equation: set text(font: ("New Computer Modern Math", "SimSun"))
   set text(
     font: ("Times New Roman", "SimSun"),
     size: 10.5pt,

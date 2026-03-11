@@ -10,7 +10,7 @@
 
 === P14.14
 
-#mgraph(captions:([],[],[]),```
+#mgraph(captions:([1],[2],[3]),```
 graph G {
   0 -- 1;
   0 -- 3;
