@@ -2,6 +2,51 @@
 // 专门把 figure 的标题改为黑体
 
 #import "@preview/cuti:0.2.1": show-cn-fakebold
+#import "@preview/diagraph:0.3.6":*
+
+#let mgraph(num: 1, gap: 20pt, captions: (), prefix: "图", ..graphs) = {
+  let inject-defaults(src) = {
+    src.replace(
+      "{",
+      "{\nnode [shape=circle]\nedge [color=black]\n",
+      count: 1
+    )
+  }
+
+  let gs = graphs.pos()
+
+  // 维护一个全局计数器，每次调用 mgraph 时从当前值开始累加
+  let fig-counter = counter("mgraph-fig")
+
+  let cols = gs.enumerate().map(((i, g)) => {
+    let r = render(inject-defaults(g.text), engine: "neato")
+    let cap = if i < captions.len() { captions.at(i) } else { none }
+    if cap != none {
+      let labeled = context {
+        let n = fig-counter.get().at(0) + i + 1
+        align(center, [#prefix#n #cap])
+      }
+      stack(dir: ttb, spacing: 4pt,
+        align(center, r),
+        labeled,
+      )
+    } else {
+      align(center, r)
+    }
+  })
+
+  // 调用结束后把计数器推进
+  [#align(center, stack(dir: ltr, spacing: gap, ..cols))
+   #fig-counter.update(n => n + gs.filter(i => true).len())]
+}
+#mgraph(```
+graph G {
+    A -- 1
+    A -- C
+    B -- C
+    B -- D
+}
+```)
 
 #let conf(body) = {
   show math.equation: set text(font: ("Times New Roman", "SimSun"))
