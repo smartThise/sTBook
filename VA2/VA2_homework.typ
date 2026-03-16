@@ -44,11 +44,43 @@
 4. The density is between the 3. and 5.
 5. The density is the larger the 4. and the "original" figure is mostly like a square.
 
-=== Problem 2.4 \*
+=== Problem 2.4 \*\*\*\*
+
+1. figure 4.see 2.
+2. figure 5. for obviously the concave-convex is sharper then 1. as they all have 3 "saddles" and tops.
+3. 3. for the last problem we found.
+4. figure 2. see in 5.
+5. figure 1. for obviously the concave-convex is sharper then 4. as they all have 5 "saddles" and tops.
 
 === Problem 2.5
 
+// 常见二次曲面类型 (Common Quadric Surfaces):
+// 1. 椭球面 (Ellipsoid)
+// 2. 单叶双曲面 (Hyperboloid of one sheet)
+// 3. 双叶双曲面 (Hyperboloid of two sheets)
+// 4. 椭圆抛物面 (Elliptic paraboloid)
+// 5. 双曲抛物面 (Hyperbolic paraboloid)
+// 6. 椭圆锥面 (Elliptic cone)
+// 7. 椭圆柱面 (Elliptic cylinder)
+// 8. 双曲柱面 (Hyperbolic cylinder)
+// 9. 抛物柱面 (Parabolic cylinder)
+
+1. We fix $z$, and get like $y=x^2-4z_0-2$, it is a parabola. So it is a parabolic cylinder.
+
+2. We get $x^2/1+y^2/1+z^2/4=1/4$. Obviously it is a ellipsoid.
+3.\* We fix $z$, then $x^2+y^2=(1-z_0)/4$. It's obviously what we taught: paraboloid.
+
+// 注意第一次分析错了！！！
+  
+1. We fix $z$, then $x^2-y^2=(z_0-1)/4$. From slices to the whole, we find it a hyperbolic paraboloid.
+
 === Problem 2.6
+
+1. matches figure 4., $f(r, theta) = r^3 cos(3 theta)$, makes the figure smooth and 3 tops and bottoms.
+2. matches figure 2., for (let $z=f(x,y)$) $x^2+y^2=ln (1/z)$, which compares to 4. the radius of each slice decreases faster as $z$ increases. And they all make bumps. So it is sharper.
+3. matches figure 3. for it has $cos,sin$ to make the figure have many tops and bottoms by period.
+4. matches figure 1., for (let $z=f(x,y)$) $x^2+y^2=1/z -1$. As we say in 2., it is not the shaper one but a bump.
+
 
 === Problem 2.7 \*
 1. $(x-1)^2+(y-1)^2+(z-1)^2=4$
