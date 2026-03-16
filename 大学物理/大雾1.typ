@@ -117,3 +117,57 @@ So $vct(a^')=vct(a)-vct(a_(O^'))$，其中 $vct(a_(O^'))$ 是非惯性参考系�
 - 远日侧：$F_B=(G M_s m)/(R + r)^2-(G M_s m)/R^2 approx - 2(G M_s m)/(R^3) r$，方向背向太阳，同样向外拉伸。
 - 侧面，距离太太阳 $sqrt(R^2+r^2)$：引力在 x 方向分量和惯性力在 x 方向分量几乎相等，所以没有拉伸。在 y 方向上，$F_(-y)=-(G M_s m)/R^3 r$，向内压缩，系数恰好是近日远日点的一半。
 
+我们又来讨论 Rotation 了。Rotation 也有“非惯性系”。考虑一个盘子，有固有角速度 $omega$，圆心处有一个物体径向射出，速度为 $v_0$。
+
+我们先假设一个物体在最简单的情况：只是站在圆盘上，以 $v$ 的速度往前走
+
+则 $T=m v^2/r = m (v^'+omega r)^2 /r = m v^'^2 / r +2m v ^' omega + m omega^2 r$，这些东西分别叫做：非惯性系内向心力、科里奥利力、离心力。
+
+科里奥利力是一个用来解释为什么你在参考系里像“后偏/前压”的力。当你从中心向边缘走的时候，你感受到的力是向后的，当你从边缘向中心走的时候，你感受到的力是向前的。这个力的大小取决于你的速度、角速度和距离。*方向始终由* $omega  times v$ *决定！*
+
+一个典型的运用：傅科摆。
+
+=== (3) Momentum
+==== 1. Center of Mass
+$vct(r_c)=(sum_i m_i vct(r_i)) / (sum _i m_i)$ or for uniform: $vct(r_c)=(integral rho vct(r) dif V) / (integral rho dif V)$
+
+For each particle, 
+$ m_i vct(a)_i = vct(F)_i + sum_(j != i) vct(f)_(i j) $
+
+$ sum_i m_i vct(a)_i = sum_i vct(F)_i + sum_i sum_(j != i) vct(f)_(i j) $
+
+*内力抵消！！！*
+
+$ sum_i m_i vct(a)_i = sum_i vct(F)_i $
+
+$ M vct(a)_C = sum_i vct(F)_i $
+
+*(Euler's 1st Law)*
+
+==== 2. Momentum
+$vct(p)=m vct(v)$
+
+$vct(F)=m dfrac(vct(v),t)=dfrac(m vct(v),t)=dfrac(vct(p),t) \
+=> vct(F) dif t= dif vct(p),Delta vct(p)=integral vct(F) dif t,(sum vct(F_i))dif t= dif vct(p)$
+
+$vct(P)=sum_i vct(p)_i = sum_i m_i vct(v)_i = (sum_i m_i) dfrac(vct(r_c),t)=M vct(v_c)$
+
+推导出来：动量守恒定律！
+
+$sum_i vct(F)_i = 0 => sum_i vct(p)_i = "const" $
+
+朝花夕拾：火箭起飞问题
+
+原始的完整式子：$M v=(M-dif m)(v + dif v) + dif m(-u+v)$，其中 $dif m$ 是火箭发射出去的燃料质量，$u$ 是燃料的喷射速度，$v$ 是火箭的速度，$M$ 是火箭的总质量。为什么两个都有 $ dif v$ 呢？这是因为火箭发射燃料时，燃料和火箭一起运动，所以火箭的速度和燃料的速度是相同的。
+
+$M dif v=-u dif M$
+
+$integral_0^v dif v = -u integral_(M_0)^(M_f) (dif M) / M \
+=> v = -u ln(M_f/M_0)=u ln (M_0/M_f) \
+$
+
+==== 3. Angular Momentum
+
+旋转不满足交换律。*角速度可以被定义为向量，方向沿轴（右手定则）*。
+
+$vct(omega)=dfrac(theta,t)vct(e)$
