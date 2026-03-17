@@ -411,3 +411,176 @@ int main(){return 0;}
 - 在 `main()` 执行完 `return` 语句后析构
 
 *尽量少用全局对象！*全局对象之间最好不要有依赖关系，否则析构顺序会出问题。
+
+=== 五、引用
+
+引用是对象的别名，可以理解为指针常量。引用必须在声明时初始化，并且一旦初始化就不能改变。
+
+举例：
+```cpp
+int a = 5;
+int& ref = a; // ref 是 a 的引用
+ref = 10; // 修改 ref 也会修改 a
+cout << a << endl; // 输出 10
+```
+
+二者绑定，改了一个另一个也会变。而且不能解绑。
+
+有些时候和指针很像。
+
+举例：交换两个变量的值
+```cpp
+void swap(int& a, int& b) {
+    int temp = a;
+    a = b;
+    b = temp;
+}
+```
+
+*看一个做错的题：*
+
+```cpp
+class Int {
+public:
+    int data;
+    Int() { data = 1; }
+    Int(int i): data(i) {}
+};
+
+void func1(Int& a, Int b) {
+    a.data += b.data;
+}
+
+Int& func2(Int& a, Int b) {
+    func1(a, b);
+    Int tmp(a.data + b.data);
+    return tmp;
+}
+
+int main() {
+    Int a, b(3);
+    Int& f = func2(a, b);
+    cout << a.data << "_";
+    cout << f.data << endl;
+    return 0;
+}
+```
+
+初始状态：`a.data = 1`（默认构造），`b.data = 3`（值构造）。
+
+调用 `func2(a, b)` 时，`Int& a` 是 main 中 a 的引用，`Int b` 是值拷贝。
+
++ `func1(a, b)` 执行 `a.data += b.data`，即 $1 + 3 = 4$，main 中的 `a.data` 变为 4。
++ `Int tmp(a.data + b.data)` 在栈上构造局部变量，`tmp.data` $= 4 + 3 = 7$。
++ `return tmp` 返回 `tmp` 的引用。
+
+`func2` 返回类型为 `Int&`，而 `tmp` 是栈帧上的局部变量。函数返回后栈帧销毁，`tmp` 随之消亡，main 中的 `f` 成为悬空引用（dangling reference），指向已释放的内存。
+
+注意：`tmp` 并非"返回前被销毁"，而是函数返回后随栈帧一起消亡。引用被传递出去了，但其所指向的对象已不复存在，后续访问是未定义行为。
+
+引用的用途：
+- 作为函数参数，可以避免复制对象，提高效率。
+- 作为函数返回值，可以返回引用，而不是复制对象。
+- 作为类的成员变量，可以简化代码，提高可读性。
+- 相对指针，引用更安全，不会出现空指针的情况。
+
+=== 六、运算符重载
+
+举例：
+```cpp
+A& operator+=(A& a){
+    data+=a.data;
+    return *this;
+}
+```
+可以重载的运算符：
+- 算术运算符：+、-、\*、/、%
+- 关系运算符：==、!=、<、>、<=、>=
+- 逻辑运算符：&&、||、!
+- 位运算符：&、|、^、~、<<、>>
+-  单目运算符：+、-、\*、&、!
+-  自增自减运算符：++、--
+-  赋值运算符：=、+=、-=、\*=、/=、%=、&=、|=、^=、<<=、>>=
+-  空间运算符：new、delete、new[]、delete[]
+-  其他运算符：()、[]、->、,、->\*
+
+==== 前缀后缀重载区分
+
+后缀关键是引入了哑元，哑元可以没有名，所以可能实际不会被调用。
+
+```cpp
+A operator++(int){
+    A temp(data);
+    ++data;
+    return temp;
+}
+```
+
+==== () 重载
+
+```cpp
+int operator()(int a, int b){
+    return a+b;
+}
+```
+
+==== [] 重载
+
+```cpp
+int& operator[](int i){
+    return data[i];
+}
+```
+
+如果是引用，则可以修改原对象。否则只能读取。
+
+注意：=，[]，()，-> 这几个运算符只能重载为成员函数。否则可能会对是否自动合成重载符产生影响。
+
+==== 流运算符重载
+
+```cpp
+ostream& operator<<(ostream& os, const A& a){
+    os<<a.data;
+    return os;
+}
+
+istream& operator>>(istream& is, A& a){
+    is>>a.data;
+    return is;
+}
+
+```
+
+此时我们不得不谈到：友元。
+
+```cpp
+#include <iostream>
+using namespace std;
+
+class Test {
+    int id;
+public:
+    Test(int i) : id(i) { cout << "obj_" << id << " created\n"; }
+
+    friend istream& operator>> (istream& in, Test& dst);
+    friend ostream& operator<< (ostream& out, const Test& src);
+};
+
+istream& operator>> (istream& in, Test& dst) {
+        in >> dst.id;
+        return in;
+}
+
+ostream& operator<< (ostream& out, const Test& src) {
+    out << src.id << endl;
+    return out;
+}
+
+int main() {
+    Test obj(1);
+    cout << obj;  // operator<<(cout,obj)
+    cin >> obj;   // operator>>(cin,obj)
+    cout << obj;
+    return 0;
+}
+```
