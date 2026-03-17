@@ -269,3 +269,145 @@ public:
 
 `inline` *永远只是建议修饰，不是命令。*编译器有权拒绝不合理的内联请求。
 
+== 叁 构造函数和析构函数 #datetime(day:17,month:3,year:2026).display()
+
+回顾：要对用户定义类型进行严格检查；要隐藏属性；要自动化对象的初始化和清除，做好对象内存分配等等。
+
+=== 一、构造函数：诞生
+
+- 构造函数没有返回值
+- 构造函数名与类名相同
+- 构造函数可以重载
+
+举例：
+```cpp
+class Student {
+    int ID;
+    public:
+        Student(int id) : ID(id) {}
+        Student(int year,int order){
+            ID = year * 10000 + order;
+        }
+};
+```
+
+*注意！按照声明顺序而不是初始化顺序排列成员！*如下面 `ID1` 不可预测。
+
+```cpp
+class Student {
+    int ID1;
+    int ID2;
+    public:
+        Student(int id) : ID2(id), ID1(ID2) {}
+};
+```
+==== 委派构造函数：调用其他构造函数。
+
+```cpp
+class Info{
+    public:
+        Info(int a):a(a){}
+        Info(int a,int b):Info(a){b=b;}
+        Info(int a,int b,int c):Info(a,b){c=c;}
+};
+```
+
+==== 就地初始化：
+```cpp
+class A{
+    private:
+        int a{0};
+        double b=2.0;
+    public:
+            A(){}
+};
+```
+
+==== 默认/缺省构造函数：
+```cpp
+class A{
+    public:
+        A(){};
+};
+
+A a;
+A b=A();
+A c();
+// 这个时候 c 是一个函数声明，而不是一个对象声明。它可以生成一个对象。
+
+//显式默认构造函数
+class A{
+    public:
+        A()=default;
+};
+
+//显式删除默认构造函数
+class A{
+    public:
+        A()=default;
+        A(int i){}
+        A(char cls)=delete;
+
+};
+A a('c');
+```
+
+*一个实例生成的时候，会先调用成员的构造函数（如果成员没有就默认构造），再构造自己的。*
+
+*如果你已经定义了构造函数，编译器不会帮你默认构造了！！！*
+
+==== 对象数组的初始化：
+```cpp
+A a[50];
+// 只有一个参数
+A a[3]={1,2,3};
+//多个参数
+A a[3]={A(1,2),A(3,4),A(5,6)};
+```
+
+=== 二、析构函数：死亡
+- 没有参数
+- 唯一
+- 没有返回值
+
+举例：
+```cpp
+class MyClass {
+    int num;
+    int* ID_list;
+public:
+    MyClass() { // 构造函数
+        // 构造函数体
+    }
+    ~MyClass() { // 析构函数
+        // 析构函数体
+        if(ID_list) delete[] ID_list; // 释放内存
+    }
+};
+```
+
+*析构函数会在对象生命周期结束时自动调用。*比如说程序结束的时候：
+```cpp
+//我们此前 Test 里面创建了一个 Member m
+
+Test t;
+int main(){return 0;}
+// 输出： ~Test() ~Member()
+```
+
+*晚构造，先析构！！！*
+
+析构函数也会自动隐式定义。*但是不会删除指针成员，因此可能导致内存泄漏。*
+
+=== 三、局部对象的构造和析构
+
+其实没啥好说的，就是看括号里面的东西。
+
+=== 四、全局对象的构造和析构
+
+- 在 `main()` 之前构造
+- 在同一编译单元中，按照定义顺序构造
+- 在不同编译单元中顺序不确定
+- 在 `main()` 执行完 `return` 语句后析构
+
+*尽量少用全局对象！*全局对象之间最好不要有依赖关系，否则析构顺序会出问题。
