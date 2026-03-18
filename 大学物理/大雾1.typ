@@ -171,3 +171,87 @@ $
 旋转不满足交换律。*角速度可以被定义为向量，方向沿轴（右手定则）*。
 
 $vct(omega)=dfrac(theta,t)vct(e)$
+
+举例：开普勒第二定律，即面积定律。面积定律指出，行星绕太阳运动的轨道面积与时间成正比。这可以通过角动量守恒定律来解释。
+
+$
+S= ((vct(r) times vct(v)) Delta t) / 2 = L/(2m) Delta t ;vct(L)=vct(r) times m vct(v)=vct(r) times vct(p) \
+=> |vct(L)|=r m omega r=m omega r^2 "(only in circular motion)" \
+$
+
+另一个例子：圆锥摆
+
+$
+|vct(v)|= omega l sin theta \
+|vct(L_O)|= l sin theta m omega l sin theta = m omega l^2 sin^2 theta "以底盘原点为中，此时角动量唯一且始终竖直向上，守恒"\
+
+|vct(L_(O^'))|= l m omega l sin theta = m omega l^2 sin theta \ "以悬挂点为中心，角动量垂直于线，分解后竖直分量守恒，水平分量大小不变、方向始终背离圆心"\
+
+"因此我们可以讨论（微元法/神秘分析）：" (|Delta vct(L_(O^'))|) /( Delta t ) = |Delta vct(L_(O^'))| cos theta omega = |vct(togrog)| = l m g sin theta = ... "反正最后发现本质相等"  \
+
+"至于是怎么发现的：有一个很神秘的点请你注意到，那就是他妈的力矩的计算式子，叉乘的魅力这一块"\
+
+dfrac(vct(L),t) = dfrac((vct(r) times vct(p)),t)= vct(r) times dfrac(vct(p),t)+vct(p) times dfrac(vct(r),t) = vct(r) times vct(F)  = vct(togrog) "力矩"
+\
+
+$
+
+这个时候对于这个神秘的圆锥摆，我们很容易发现：（受力分析得到两力关系什么的）
+
+$
+cos theta = g/(omega^2 l) => theta = arccos(g/(omega^2 l)) \
+$
+
+*现在告诉你什么是角动量守恒：合力矩为零，角动量守恒。*
+
+==== 4. System of Particles
+
+有一堆神秘且漫长的消除、计算等等等等各种神秘的过程，最后得到一个结论：*内力矩相互抵消，只看外力矩。*
+
+即：$sum_i vct(r_i) times vct(F_i) = dfrac((sum_i vct(L_i)),t)$
+
+另一个例子：一个小球在正中间撞上了一根轻杆。
+
+===== 定轴转动碰撞实验：角动量守恒与线动量丢失
+
+在有固定转轴 $O$ 的系统中，当质量为 $m_2$ 的质点以 $v_0$ 撞击质量为 $m_1$ 的单摆中点时：
+
+*角动量守恒 (Conservation of Angular Momentum)*
+
+由于支点 $O$ 的瞬时冲力通过轴心，对 $O$ 点的力矩 $tau_O = 0$，故系统角动量守恒。
+设碰撞后系统的共同角速度为 $omega$，则有：
+$ m_2 v_0 l/2 = (m_2 (l/2)^2 + m_1 l^2) omega $
+
+解得碰撞后的角速度：
+$ omega = (2 m_2 v_0) / ((m_2 + 4 m_1) l) $
+
+*线动量分析 (Linear Momentum Analysis)*
+
+我们对比碰撞前后的系统总线动量 $P$：
+- *碰撞前*：$P_"before" = m_2 v_0$
+- *碰撞后*：
+$ P_"after" &= m_2 v_(m_2) + m_1 v_(m_1) \
+            &= m_2 (omega l/2) + m_1 (omega l) \
+            &= (m_2/2 + m_1) l omega $
+
+将 $omega$ 的表达式代入上式：
+$ P_"after" &= (m_2/2 + m_1) l dot (2 m_2 v_0) / ((m_2 + 4 m_1) l) \
+            &= (m_2 + 2 m_1) / (m_2 + 4 m_1) m_2 v_0 $
+
+*结论*：
+
+由于系数满足：
+$ (m_2 + 2 m_1) / (m_2 + 4 m_1) < 1 $
+
+故得出结论：
+$ P_"after" < P_"before" $
+
+*结论分析*：虽然系统的合外力矩为零导致角动量守恒，但由于支点 $O$ 在碰撞瞬间产生了向后的瞬时冲量 $vct(I)_O$，该外力导致了系统线动量的丢失。
+
+===== 另一个例子：太典，跷跷板
+
+$togrog=m_1 g l cos theta - m_2 g l cos theta = dif / (dif t) (-m_1 omega l^2-m_2 omega l^2) \
+=> -(m_1+m_2) omega l^2 dfrac(omega,t) dif theta= (m_1-m_2) g l cos theta dif theta \
+=> integral_(omega_0)^0 (m_1+m_2) l^2 omega dif omega = integral_(theta_0)^(- theta_0) (m_1-m_2) g l dif (sin theta)  \
+=> omega_0 = 2/l sqrt(((m_1-m_2)g h) / (m_1+m_2))
+$
