@@ -269,7 +269,7 @@ graph G {
 }
 
 // 将名字改为 cal，避开系统内置的 calc 模块冲突
-#let cal(expr, mode: 0, digits: none) = {
+#let cal(expr, mode: 0, digits: 3) = {
   let m = int(mode)
   let d = if digits == none { if m == 0 { 0 } else { 3 } } else { int(digits) }
   
