@@ -44,9 +44,9 @@ graph G {
 
 #let conf(body) = {
   // 字体 fallback 链：找不到前面的自动用后面的
-  let serif-fonts = ("Times New Roman", "SimSun", "Linux Libertine", "Georgia", "serif")
-  let cjk-fonts   = ("SimSun", "WenQuanYi Zen Hei", "Noto Serif CJK SC", "serif")
-  let math-fonts  = ("New Computer Modern Math", "SimSun", "Latin Modern Math")
+  let serif-fonts = ("Times New Roman", "SimSun", "Songti SC","Linux Libertine", "Georgia", "serif")
+  let cjk-fonts   = ("SimSun", "WenQuanYi Zen Hei", "Songti SC","Noto Serif CJK SC", "serif")
+  let math-fonts  = ("New Computer Modern Math", "Songti SC","SimSun", "Latin Modern Math")
   let mono-fonts  = ("DejaVu Sans Mono", "SimHei", "Noto Sans Mono", "monospace")
 
   show math.equation: set text(font: math-fonts)
