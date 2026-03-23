@@ -255,3 +255,76 @@ $togrog=m_1 g l cos theta - m_2 g l cos theta = dif / (dif t) (-m_1 omega l^2-m_
 => integral_(omega_0)^0 (m_1+m_2) l^2 omega dif omega = integral_(theta_0)^(- theta_0) (m_1-m_2) g l dif (sin theta)  \
 => omega_0 = 2/l sqrt(((m_1-m_2)g h) / (m_1+m_2))
 $
+
+哥们，神了。在质心系里面有奇妙的现象：
+
+$
+vct(r_c)=(sum_i m_i vct(r_i)) / (sum _i m_i) \ 
+=> vct(r_i^')=vct(r_i)-vct(r_c) \
+sum_i m_i vct(r_i^')=sum_i m_i vct(r_i) - sum_i m_i vct(r_c)  =0 \
+
+"导数也为" 0, "所以质心系里面动量守恒" \
+sum_i vct(F_i) =dfrac(vct(P_c),t)
+$
+
+以及神秘的质心系里的分配。假设两个质量快一上一下中间有根绳子。假设它们都向水平方向飞过去，那么获取质心：
+$
+v_c=(m_1 v_1+m_2 v_2) / (m_1+m_2) \
+l_1=(m_2 l_2) / (m_1+m_2) \
+l_2=(m_1 l_1) / (m_1+m_2) \
+$
+
+假设它们不同方向飞行：
+#let vct(x) = $bold(arrow(#x))$
+
+这部分内容推导了双质心系统在质心参考系（COM-frame）下的动力学描述及张力 $T$ 的求解。
+
+首先定义质心速度 $v_c$：
+$ v_c = (m_1 v_1 + m_2 v_2) / (m_1 + m_2) $
+
+在质心系中，各质点的相对速度 $v_i'$ 为：
+$ v_1' = v_1 - v_c = v_1 - (m_1 v_1 + m_2 v_2) / (m_1 + m_2) = - m_2 / (m_1 + m_2) (v_2 - v_1) $
+$ v_2' = v_2 - v_c = v_2 - (m_1 v_1 + m_2 v_2) / (m_1 + m_2) = m_1 / (m_1 + m_2) (v_2 - v_1) $
+
+由此可以定义系统的转动角速度 $omega$。由于 $m_1$ 和 $m_2$ 绕质心转动的半径分别为 $r_1 = m_2 / (m_1 + m_2) l$ 和 $r_2 = m_1 / (m_1 + m_2) l$，则有：
+$ omega = (|v_1'|) / r_1 = (|v_2'|) / r_2 = (v_2 - v_1) / l $
+
+最后，利用向心力公式求解绳子或杆的张力 $T$：
+$ T = m_1 omega^2 r_1 = m_1 omega^2 (m_2 / (m_1 + m_2) l) $
+$ T = m_2 omega^2 r_2 = m_2 omega^2 (m_1 / (m_1 + m_2) l) $
+
+整理可得：
+$ T = (m_1 m_2) / (m_1 + m_2) omega^2 l $
+
+其中 $(m_1 m_2) / (m_1 + m_2)$ 即为该系统的折合质量 (Reduced Mass)。
+
+不是哥们，真神了！为什么到底为什么这么强？！
+
+同样的道理，你再看看角动量呢？！
+
+$
+vct(L_i)=vct(r_i) times m_i vct(v_i) \
+sum_i vct(L_i) = vct(L_c) +sum_i vct(L_i^') "COM 的神秘力量！！！" \
+= vct(r_c) times sum_i m_i vct(v_i) + sum_i vct(r_i^') times m_i vct(v_i^') \
+"然后！！！"
+\
+
+vct(r_i)=vct(r_i^')+vct(r_c) \
+sum_i vct(L_i) = sum_i vct(r_i) times m_i dfrac(vct(r_i),t) \
+= sum_i (vct(r_c)+vct(r_i^')) times m_i (dfrac(vct(r_i^'),t)+dfrac(vct(r_c),t))  \
+
+=  "消元之后" vct(r_c) times sum_i m_i vct(v_c)+ sum_i vct(r_i^') times m_i dfrac(vct(r_i^'),t) \
+$
+
+还有一个神秘的式子，听见你说：
+$
+dfrac(sum_i vct(L_i),t)=sum_i vct(togrog_i) \
+dfrac(sum_i vct(L_i^'),t)=sum_i vct(r_i^') times vct(F_i) \
+= "消元消元大消元" sum_i (vct(r_i)-vct(r_c)) times vct(F_i) \
+$
+
+== 二、 Energy 
+
+回顾：质心说什么？！
+
+$$
