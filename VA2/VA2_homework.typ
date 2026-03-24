@@ -5,7 +5,7 @@
 
 #outline()
 
-== 2nd #(datetime(day: 15, month: 3, year: 2026)).display()
+== HW 2 #(datetime(day: 15, month: 3, year: 2026)).display()
 
 === Problem 2.1
 
@@ -154,3 +154,6 @@ $
 })
 
 No. It's not regular, for from the figure there're many "sudden direction changes", which means there the vector of velocity is 0, so it's not regular.
+
+== HW 3 #datetime(day:23,month:3,year:2026).display()
+

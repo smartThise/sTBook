@@ -57,8 +57,9 @@ int main(){
 }
 ```
 
-这时就炸了。重复定义。 #strong[定义=声明+内存分配] \#\#\# 二、extern
-关键字 有一点点烧脑。用于全局变量的共享。
+这时就炸了。重复定义。 #strong[定义=声明+内存分配] 
+=== 二、`extern` 关键字 
+有一点点烧脑。用于全局变量的共享。
 
 ```cpp
 //num.h
@@ -74,7 +75,8 @@ b=2;
 c=3;
 ```
 
-头文件中只声明，不定义，目的是防止重复定义。 \#\#\# 三、宏定义/常量
+头文件中只声明，不定义，目的是防止重复定义。 
+=== 三、宏定义/常量
 请使用`const`以保证类型的正确性！ 对于宏：
 
 ```cpp
@@ -106,7 +108,7 @@ debug();
 #endif
 ```
 
-=== 二、Make
+=== 四、Make
 <四make>
 `Makefile`编写规则：
 #strong[只编译并链接被修改的文件，其他不管。但是如果头文件被改变了，所有引用了这个头文件的都要重新编译。]
@@ -130,7 +132,7 @@ make clean
 
 Make 的更多用法还是自己去查吧。 氧气和臭氧优化后不能 gdb。
 
-=== 三、函数重载：一个函数名字，两个以上实现方法。
+=== 五、函数重载：一个函数名字，两个以上实现方法。
 *关键在于参数类型的不同。但是如果出现了参数的缺省，就会产生二义性。*
 
 举例：
@@ -147,7 +149,7 @@ int fun(float a);
 ```
 *就不会产生二义性。因为当调用`fun(1)`的时候，编译器会选择第一个函数，因为参数类型是`int`，而不是`float`。*
 
-=== 四、auto, decltype
+=== 六、auto, decltype
 `auto`和`decltype`都是C++11引入的类型推断机制，可以编译器根据上下文自动推断变量的类型。
 
 ==== `auto`
@@ -188,7 +190,7 @@ auto func(int x,int y) -> decltype(x+y) {
 }
 ```
 
-=== 五、内存申请和释放
+=== 七、内存申请和释放
 ```cpp
 int* p = new int(10); // 申请一个 int 类型的内存
 int *arr = new int[5]; // 申请一个 int 类型的数组
@@ -268,6 +270,16 @@ public:
 - *一般构造函数、析构函数*通常会被编译器自动内联。
 
 `inline` *永远只是建议修饰，不是命令。*编译器有权拒绝不合理的内联请求。
+
+=== 四、`new delete`
+
+`new` 生成一个类对象，并且返回它的指针。、
+
+```cpp
+A *pA = new A(1);
+```
+
+`delete` 释放一个类对象。
 
 == 叁 构造函数和析构函数 #datetime(day:17,month:3,year:2026).display()
 
@@ -553,6 +565,8 @@ istream& operator>>(istream& is, A& a){
 
 此时我们不得不谈到：友元。
 
+=== 七、友元 #datetime(day:24,month:3,year:2026).display()
+
 ```cpp
 #include <iostream>
 using namespace std;
@@ -584,3 +598,297 @@ int main() {
     return 0;
 }
 ```
+
+友元是这个对象的“朋友”，可以访问这个对象的私有成员 / 保护成员。
+
+举例：
+```cpp
+class A{
+    int data;
+    friend B b;
+    b.id=data;
+}
+```
+友元函数举例：
+
+```cpp
+class A{
+    int data;
+    friend void func(A a);
+    friend void X::foo(A);
+    friend X::X(Y),X::~X();
+};
+A a;
+func(a);
+```
+
+友元函数在类外定义，但是可以访问类的私有成员。且在 `private,public` 声明没有区别。
+
+更详细的例子：
+```cpp
+class Y; // 前向声明
+class X
+{
+    int data;
+    friend void func(X &x, Y &y);
+};
+class Y
+{
+    int data;
+    friend void func(X &x, Y &y);
+};
+void func(X &x, Y &y)
+{
+    cout << x.data << y.data << endl;
+}
+
+```
+友元类：
+```cpp
+class Y {};
+class A{
+    int data;
+    friend class Y;
+    friend X;
+}
+class X{};
+// X,Y 都可以访问 A 的私有成员
+```
+
+*注意：*
+- 友元关系是*非对称的*，即 A 是 B 的友元，B 不是 A 的友元。
+- 友元关系*不传递*，即 A 是 B 的友元，B 是 C 的友元，A 不一定是 C 的友元。
+- 友元关系*不具继承性*，即 A 是 B 的友元，C 继承自 B，A 不一定是 C 的友元。
+- 友元声明不能直接在里面定义了。
+
+== 肆 静态变量和静态函数 常量
+
+=== 一、静态变量，静态函数
+
+内部可链接，只能初始化一次，而且作用域仅限其声明的文件。*比如*在其他文件被 `extern` 声明后*不*可以在其他文件中使用。
+
+前缀是 `static`。
+
+==== 静态数据成员 / 类变量
+
+在整个类内所有对象共享，初始化时需要加 `static`。应该在 `.h` 文件中声明，在 `.cpp` 文件（实现文件）中定义，防止重复定义。
+
+在实例化所有对象之前就已经分配了静态数据成员的内存空间。
+
+举例：
+```cpp
+// Test.h
+class Test {
+public:
+    static int count;
+    Test();
+    ~Test();
+};
+
+// Test.cpp
+#include "Test.h"
+int Test::count = 0;
+Test::Test() { count++; }
+Test::~Test() { count--; }
+
+// main.cpp
+#include "Test.h"
+int main() {
+    Test a;
+    Test b;
+    cout << Test::count << endl; // 输出 2
+    cout << a.count << endl; // 输出 2
+    return 0;
+}
+```
+
+==== 静态成员函数
+
+只能访问静态成员变量，不能访问非静态成员变量。因为非静态成员变量是每个对象独有的，而静态成员函数是所有对象共享的。
+
+
+=== 二、常量
+
+- `const` 修饰的变量不能被修改。
+- 修饰引用/指针时，引用/指针不能被修改，指向的内容不能被修改。
+- 修饰函数返回值时，函数返回值不能被修改。
+
+==== 常量数据成员
+
+可以在构造函数初始化列表中初始化、就地初始化，但是不能在构造函数体通过赋值初始化。
+
+==== 常量成员函数
+
+不能修改非静态数据成员，即不能改变对象的状态。
+
+==== 常量对象
+
+只能调用常量成员函数，不能调用非常量成员函数。
+
+错误举例：
+```cpp
+class Student {
+    int ID;
+    public:
+        Student(int id) : ID(id) {}
+        int who() const { return ID; } // 常量成员函数
+        int Who() {return ID;} // 编译错误，常量函数不能调用非常量成员
+};
+```
+
+==== 常量静态变量
+
+需要在类外初始化。但是有两个例外：`int` 和 `enum` 可以就地初始化。
+
+*不存在*常量静态函数。静态函数是所有对象共享的，而常量函数只能在常量对象上调用。
+
+```cpp
+class Foo{
+    static const int a=1; // 可以就地初始化
+    static const int b; // 可以在类外初始化
+    static const char* cs; // 不可以就地初始化
+};
+```
+
+哦哦哦，给你看哥哥的大表格！
+
+#table(
+  columns: (auto, 1fr, 1fr, 1fr, 1fr),
+  align: center + horizon,
+  stroke: 0.5pt,
+
+  // 表头
+  [],
+  [静态数据成员],
+  [常量数据成员],
+  [常量静态数据成员\(除int enum 外)],
+  [常量静态数据成员\(int, enum)],
+
+  // 初始化
+  table.cell(colspan: 5)[*初始化*],
+  [就地初始化],       [],    [✓],  [],    [✓],
+  [初始化列表初始化], [],    [✓],  [],    [],
+  [构造函数体内初始化],[],   [],   [],    [],
+  [类外初始化],       [✓],   [],   [✓],   [✓],
+
+  // 访问
+  table.cell(colspan: 5)[*访问*],
+  [普通成员函数], [✓], [✓], [✓], [✓],
+  [静态成员函数], [✓], [],  [✓], [✓],
+  [常量成员函数], [✓], [✓], [✓], [✓],
+
+  // 修改
+  table.cell(colspan: 5)[*修改*],
+  [普通成员函数], [✓], [], [], [],
+  [静态成员函数], [✓], [], [], [],
+  [常量成员函数], [✓], [], [], [],
+)
+
+==== 再谈常量对象和静态对象：构造和析构
+
+- 常量对象的构造和析构时机和普通对象一样。
+    - 在 `main()` 函数开始执行前，全局对象被构造。
+    - 在 `main()` 函数执行结束后，全局对象被析构。
+    - 在执行到局部对象的代码前，局部对象被构造。    
+    - 在局部对象作用域执行结束后，局部对象被析构。
+- 静态全局对象的构造和析构时机和普通全局对象一样。
+- 函数中的静态对象在函数调用时构造，*离开作用域不析构*。第二次调用函数时，静态对象不会被重新构造，直接使用上一次构造的结果。在 `main()` 函数结束后，静态对象被析构。
+
+- 类静态对象：类 A 的 对象 a 作为类 B 的静态变量。
+    - 在 `main()` 函数开始执行前初始化。
+    - 在 `main()` 函数结束后析构。
+    - 和 B 的构造和析构时机无关。
+
+== 伍 参数对象的构造和析构
+
+如果传递的是形参
+
+```cpp
+class A{
+    public:
+        const char* s;
+        A(const char* str) : s(str) {
+            cout << s << "A constructing" << endl;
+        }
+        ~A() {
+            cout << s << "A destructing" << endl;
+        }
+};
+```
+
+如果传递的是引用
+
+```cpp
+class A{
+    public:
+        const char* s;
+        A(const char* &str) : s(str) {
+            cout << s << " A constructing" << endl;
+        }
+        ~A() {
+            cout << s << " A destructing" << endl;
+        }
+};
+void func(A a) {
+    cout << a.s << "func" << endl;
+}
+int main() {
+    A a("a");
+    func(a);
+    return 0;
+}
+```
+
+输出：(构造一次，析构两次？！)
+
+其实是 b 被拷贝构造函数进行了初始化。函数结束，b 被析构。
+
+```
+a A constructing
+...
+a A destructing
+a A destructing
+```
+
+如果传递传递指针，你很有可能对同一块空间进行了两次释放，从而报错！
+
+所以尽可能使用引用传递，避免拷贝构造函数和析构函数的调用，还可以节省时间开销。
+
+// 1. 构造函数调用次数分析
+#let count_table = table(
+  columns: (auto, 1fr, auto),
+  inset: 8pt,
+  align: (center, left, center),
+  stroke: 0.5pt + gray,
+  [*语句*], [*解析*], [*调用次数*],
+  [`A *p = new A;`], [堆上创建单个对象], [1],
+  [`A p2[10];`], [对象数组（10个元素）], [10],
+  [`A p3;`], [栈上普通对象], [1],
+  [`A *p4[10];`], [指针数组（不创建对象）], [0],
+  [*总计*], [], [*12*]
+)
+
+#count_table
+
+// 2. 类与成员特性要点
+- *类内初始化*：C++11 允许声明时直接赋值。
+- *静态成员函数*：没有 `this` 指针，不能访问非静态成员。
+- *静态数据成员*：必须类外定义，严禁在 `.h` 中直接定义（防重复定义）。
+- *常量静态整型*：`static const int` 允许类内初始化。
+
+// 3. 内存释放安全性
+#rect(
+  fill: rgb("#fff0f0"), 
+  stroke: red, 
+  inset: 10pt,
+  radius: 2pt,
+  width: 100%
+)[
+  *核心警告：* `new[]` 必须配对 `delete[]`。
+  
+  $ "Actual Start Address" = p A - 4 $
+  
+  若误用 `delete pA`：
+  1. 仅调用第一个元素的析构函数，导致内存泄漏。
+  2. 释放地址错误（应从 $p A - 4$ 处释放），直接导致程序崩溃。
+]
