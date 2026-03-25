@@ -325,6 +325,106 @@ $
 
 == 二、 Energy 
 
-回顾：质心说什么？！
+- $1/2 m v^2$ *Kenetic Energy*
+  - How to get it?
+  $m (dif^2 x)/(dif t^2)=F(x) 
+  \ m (dif^2 x)/(dif t^2) dif x = F(x) dif x \
+  \ m dfrac(v,t) dif x = F(x) dif x
+  \ => integral_0^t m v dif v = integral_0^t F(x) dif x \ 
+  => 1/2 m v^2 - 1/2 m v_0^2 = integral_(x_0)^(x_t) F(x) dif x \ $
+- $integral_(x_0)^(x_t) F(x) dif x= W_(x(t) x_0)=W_0^t$ *Work* on the object by the force
 
-$$
+同理，对弹簧进行积分，得到：$1/2 k x^2$ *Potential Energy*
+
+在*三维世界*里面，
+$
+  m dfrac(vct(v),t) = vct(F)(vct(r)) \ 
+  m dfrac(vct(v),t) dif vct(r) = vct(F)(vct(r)) dif vct(r) \
+  integral m vct(v) dif vct(v) = integral vct(F)(vct(r)) dif vct(r) \
+  = integral dif(1/2 m v^2) = integral vct(F)(vct(r)) dif vct(r) = 1/2 m v^2 - 1/2 m v_0^2 = Delta K
+$
+
+
+
+=== 1. 动能定理 (Work-Energy Theorem)
+合外力做的功等于物体动能的增量：
+$ W = integral vct(F) dot d vct(r) = Delta K = 1/2 m v^2 - 1/2 m v_0^2 $
+*物理意义 (Significance)*：建立了力场空间分布与物体运动状态的联系。
+
+=== 2. 基础保守力实例 (Basic Conservative Forces)
+
+- *重力 (Gravity)*：$F(y) = -m g$。
+  $ W_G = integral_(h_0)^h (-m g) thin dif y = -m g h + m g h_0 $
+- *弹性力 (Elastic Force)*：$F(x) = -k x$。
+  $ W_s = integral_(x_0)^x (-k x) thin dif x = -1/2 k x^2 + 1/2 k x_0^2 $
+
+=== 3. 有心力的路径无关性证明 (Central Force Path Independence)
+
+设*有心力* (Central Force) 为 $vct(F)(vct(r)) = f(r) vct(e)_r$。在极坐标中，元位移分解为径向和切向：
+$ dif vct(r) = (dif r) vct(e)_r + r d theta vct(e)_theta $
+
+
+计算元功 (Infinitesimal Work)：
+$ dif W = vct(F) dot dif vct(r) = f(r) dif r $
+*推论 (Conclusion)*：切向分量 $r d theta$ 对功无贡献，因此功的大小只取决于始末径向距离 $r$，即*有心力必为保守力*。
+
+=== 4. 引力势能模型 (Gravitational Potential Energy Model)
+
+针对*平方反比力*(Inverse-Square Force)，令 $f(r) = -A/r^2$（如引力，$A=G M m$）：
+$ W = integral_(r_0)^r (-A / r^2) d r = [A / r]_(r_0)^r = A / r - A / r_0 $
+
+==== 势能函数 (Potential Energy Function)
+物理学定义势能变化量为功的负值 $Delta U = -W$。若取无穷远处为零势能参考点 ($r_0 arrow.r oo$)：
+$ U(r) = - A / r $
+
+
+*图像特性 (Graph Characteristics)*：
+  1. *负值 (Negative Value)*：代表引力束缚态 (Bound State)。
+  2. *渐近线 (Asymptote)*：当 $r arrow.r 0$ 时，$U(r) arrow.r -oo$；当 $r arrow.r oo$ 时，$U(r) arrow.r 0$。
+  3. *斜率 (Slope)*：曲线的斜率 $d U / d r$ 即对应于力的大小（负梯度）。
+
+// 定义向量和梯度算符
+#let vct(x) = $arrow(bold(#x))$
+#let grad = $nabla$
+
+#text(fill: rgb("#1a4a7c"), weight: "bold")[核心概念：势能变化与梯度力场 (Potential Energy & Gradient Force Field)]
+
+---
+
+=== 1. 势能的基本定义 (Definition of Potential Energy)
+
+势能的变化量 $Delta U$ 定义为保守力做功的负值：
+$ Delta U = -W = - integral_(vct(r)_0)^(vct(r)) vct(F) dot dif vct(r) $
+
+- *重力情况*：$Delta U = m g h - m g h_0$
+- *弹力情况*：$Delta U = 1/2 k x^2 - 1/2 k x_0^2$
+
+=== 2. 力与势能的微分关系 (Differential Relationship)
+
+在微小位移 $Delta x$ 下，功可以近似为 $W approx F(x) Delta x$，因此：
+$ Delta U approx -F(x) Delta x $
+
+取极限 $Delta x arrow.r 0$，得到一维下的基本关系：
+$ (dif U) / (dif x) = -F(x) quad arrow.r.double quad F(x) = - (dif U) / (dif x) $
+*物理直观*：力总是指向势能降低最快的方向。
+
+=== 3. 梯度算符与高维推广 (The Gradient Operator $nabla$)
+
+在三维空间中，力是一个矢量，而势能是一个标量场。板书上的“倒三角”符号 $nabla$（读作 Nabla 或 Del）代表*梯度算符*：
+
+$ vct(F) = -nabla U $
+
+
+其展开形式为：
+$ vct(F) = -( (partial U) / (partial x) vct(i) + (partial U) / (partial y) vct(j) + (partial U) / (partial z) vct(k) ) $
+
+=== 4. 图像分析：等势面与力线 (Equipotential Lines & Force Lines)
+
+观察老师在黑板右下角画的示意图：
+- *曲线（等势线）*：代表势能相等的轨迹（类似地图上的等高线）。
+- *带箭头的直线（力线）*：代表力 $vct(F)$ 的方向。
+- *关键特性*：
+  1. *正交性*：力线（梯度方向）始终与等势面（$U$ 为常数的面）*垂直*。
+  2. *方向性*：由于公式中有负号，力的方向指向势能*减小*的方向（从高处指向低处）。
+
+---
