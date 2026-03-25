@@ -531,7 +531,7 @@ $ b_(i j) = cases(
     - 若只关心可达性，可用逻辑运算法，复杂度 $O(n^4)$。
 
 3.  *Warshall 算法*：
-    ```typ
+    ```cpp
     P = [a_(i j)]_(n times n)
     for k = 1 to n:
       for i = 1 to n:
@@ -985,7 +985,7 @@ $G text("有H回路") arrow.l.r G + e_1 text("有H回路") arrow.l.r dots arrow.
 <最短路径>
 
 *Dijkstra算法*（单源最短路径，非负权）：
-```typ
+```cpp
 Dijkstra(s):
   for each vertex v:
     dist[v] = infinity
@@ -1003,7 +1003,7 @@ Dijkstra(s):
 ```
 
 *Floyd-Warshall算法*（所有点对最短路径）：
-```typ
+```cpp
 for k = 1 to n:
   for i = 1 to n:
     for j = 1 to n:
