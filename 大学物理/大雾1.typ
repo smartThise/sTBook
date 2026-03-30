@@ -346,19 +346,19 @@ $
 
 
 
-=== 1. 动能定理 (Work-Energy Theorem)
+=== 动能定理 (Work-Energy Theorem)
 合外力做的功等于物体动能的增量：
 $ W = integral vct(F) dot d vct(r) = Delta K = 1/2 m v^2 - 1/2 m v_0^2 $
 *物理意义 (Significance)*：建立了力场空间分布与物体运动状态的联系。
 
-=== 2. 基础保守力实例 (Basic Conservative Forces)
+==== 1. 基础保守力实例 (Basic Conservative Forces)
 
 - *重力 (Gravity)*：$F(y) = -m g$。
   $ W_G = integral_(h_0)^h (-m g) thin dif y = -m g h + m g h_0 $
 - *弹性力 (Elastic Force)*：$F(x) = -k x$。
   $ W_s = integral_(x_0)^x (-k x) thin dif x = -1/2 k x^2 + 1/2 k x_0^2 $
 
-=== 3. 有心力的路径无关性证明 (Central Force Path Independence)
+==== 2. 有心力的路径无关性证明 (Central Force Path Independence)
 
 设*有心力* (Central Force) 为 $vct(F)(vct(r)) = f(r) vct(e)_r$。在极坐标中，元位移分解为径向和切向：
 $ dif vct(r) = (dif r) vct(e)_r + r d theta vct(e)_theta $
@@ -368,12 +368,12 @@ $ dif vct(r) = (dif r) vct(e)_r + r d theta vct(e)_theta $
 $ dif W = vct(F) dot dif vct(r) = f(r) dif r $
 *推论 (Conclusion)*：切向分量 $r d theta$ 对功无贡献，因此功的大小只取决于始末径向距离 $r$，即*有心力必为保守力*。
 
-=== 4. 引力势能模型 (Gravitational Potential Energy Model)
+==== 3. 引力势能模型 (Gravitational Potential Energy Model)
 
 针对*平方反比力*(Inverse-Square Force)，令 $f(r) = -A/r^2$（如引力，$A=G M m$）：
 $ W = integral_(r_0)^r (-A / r^2) d r = [A / r]_(r_0)^r = A / r - A / r_0 $
 
-==== 势能函数 (Potential Energy Function)
+=== 势能函数 (Potential Energy Function)
 物理学定义势能变化量为功的负值 $Delta U = -W$。若取无穷远处为零势能参考点 ($r_0 arrow.r oo$)：
 $ U(r) = - A / r $
 
@@ -391,7 +391,7 @@ $ U(r) = - A / r $
 
 ---
 
-=== 1. 势能的基本定义 (Definition of Potential Energy)
+==== 1. 势能的基本定义 (Definition of Potential Energy)
 
 势能的变化量 $Delta U$ 定义为保守力做功的负值：
 $ Delta U = -W = - integral_(vct(r)_0)^(vct(r)) vct(F) dot dif vct(r) $
@@ -399,7 +399,7 @@ $ Delta U = -W = - integral_(vct(r)_0)^(vct(r)) vct(F) dot dif vct(r) $
 - *重力情况*：$Delta U = m g h - m g h_0$
 - *弹力情况*：$Delta U = 1/2 k x^2 - 1/2 k x_0^2$
 
-=== 2. 力与势能的微分关系 (Differential Relationship)
+==== 2. 力与势能的微分关系 (Differential Relationship)
 
 在微小位移 $Delta x$ 下，功可以近似为 $W approx F(x) Delta x$，因此：
 $ Delta U approx -F(x) Delta x $
@@ -408,7 +408,7 @@ $ Delta U approx -F(x) Delta x $
 $ (dif U) / (dif x) = -F(x) quad arrow.r.double quad F(x) = - (dif U) / (dif x) $
 *物理直观*：力总是指向势能降低最快的方向。
 
-=== 3. 梯度算符与高维推广 (The Gradient Operator $nabla$)
+==== 3. 梯度算符与高维推广 (The Gradient Operator $nabla$)
 
 在三维空间中，力是一个矢量，而势能是一个标量场。板书上的“倒三角”符号 $nabla$（读作 Nabla 或 Del）代表*梯度算符*：
 
@@ -418,7 +418,7 @@ $ vct(F) = -nabla U $
 其展开形式为：
 $ vct(F) = -( (partial U) / (partial x) vct(i) + (partial U) / (partial y) vct(j) + (partial U) / (partial z) vct(k) ) $
 
-=== 4. 图像分析：等势面与力线 (Equipotential Lines & Force Lines)
+==== 4. 图像分析：等势面与力线 (Equipotential Lines & Force Lines)
 
 观察老师在黑板右下角画的示意图：
 - *曲线（等势线）*：代表势能相等的轨迹（类似地图上的等高线）。
@@ -432,8 +432,8 @@ $ vct(F) = -( (partial U) / (partial x) vct(i) + (partial U) / (partial y) vct(j
 #text(fill: rgb("#d32f2f"), weight: "bold")[物理专题：非保守力做功与广义能量守恒定律]
 
 ---
-
-=== 1. 非保守力：摩擦力的路径相关性 (Non-conservative Force)
+=== 机械能守恒与能量守恒
+==== 1. 非保守力：摩擦力的路径相关性 (Non-conservative Force)
 
 与重力或引力不同，*非保守力*（如摩擦力）做功的大小取决于物体运动的具体路径 (*path dependent*)。
 
@@ -446,7 +446,7 @@ $ vct(F) = -( (partial U) / (partial x) vct(i) + (partial U) / (partial y) vct(j
   由于 $s_2 > s_1$，故 $|W_(f 2)| > |W_(f 1)|$。这说明非保守力无法定义唯一的势能函数。
 
 
-=== 2. 机械能的损耗与转化 (Energy Dissipation)
+==== 2. 机械能的损耗与转化 (Energy Dissipation)
 
 当系统中存在非保守力时，机械能（动能 $K$ + 势能 $U$）不再守恒。非保守力所做的功 $W_(n c)$ 等于系统机械能的变化量：
 $ W_(n c) = Delta (K + U) $
@@ -454,7 +454,7 @@ $ W_(n c) = Delta (K + U) $
 *物理直观* (Intuition)：
   摩擦力通常做负功，导致系统的机械能“流失”。这种流失并不是能量消失了，而是转化为了微观层面的分子动能，即*热能* (Thermal Energy)。
 
-=== 3. 广义能量守恒定律 (Law of Energy Conservation)
+==== 3. 广义能量守恒定律 (Law of Energy Conservation)
 
 板书最后一节给出了能量守恒的终极形式。通过引入热能项 $E_(t h)$，我们可以描述一个封闭系统的总能量守恒：
 
@@ -471,14 +471,11 @@ $ K + U + E_(t h) = "const." $
 
 ---
 
-// 物理笔记：动力学中的守恒定律与碰撞模型
-#let vct(x) = $arrow(bold(#x))$
-
 #text(fill: rgb("#1a4a7c"), size: 1.2em, weight: "bold")[专题：典型动力学系统的能量与动量分析]
 
 ---
-
-=== 1. 变摆长单摆模型 (Variable Length Pendulum)
+=== 常见模型
+==== 1. 变摆长单摆模型 (Variable Length Pendulum)
 *场景*：摆球在运动过程中摆长由 $L$ 突变为 $l$（如线被钉子挡住）。
 
 * *核心特征*：在摆长缩短的瞬间，系统满足*角动量守恒*。
@@ -492,7 +489,7 @@ $ K + U + E_(t h) = "const." $
 
 
 
-=== 2. 滑块-滑梯碰撞爬升模型 (Block-Slide Interaction)
+==== 2. 滑块-滑梯碰撞爬升模型 (Block-Slide Interaction)
 *场景*：小物块 $m$ 以 $v_0$ 撞击并爬上水平面上静止的滑梯 $M$。
 
 * *水平动量守恒*：在最高点时，二者具有共同水平速度 $v_c$。
@@ -505,7 +502,7 @@ $ K + U + E_(t h) = "const." $
 
 
 
-=== 3. 最低点完全非弹性碰撞模型 (Inelastic Collision at Bottom)
+==== 3. 最低点完全非弹性碰撞模型 (Inelastic Collision at Bottom)
 *场景*：单摆 $m$ 在最低点与静止物块 $M$ 碰撞并*结合为整体*后继续摆动。
 
 * *动量守恒 (碰撞瞬间)*：
@@ -521,7 +518,7 @@ $ K + U + E_(t h) = "const." $
 
 ---
 
-=== 总结与对比分析 (Comparative Summary)
+==== 总结与对比分析 (Comparative Summary)
 
 #table(
   columns: (1fr, 1.2fr, 1.2fr, 1.6fr),
@@ -536,3 +533,226 @@ $ K + U + E_(t h) = "const." $
 *重点提醒*：
 1. 在“变摆长”中，速度增大是因为半径减小；在“碰撞结合”中，速度减小是因为总质量增大。
 2. 注意区分“内力做功”：滑块模型中 $m$ 与 $M$ 间的法向力对系统整体不做功，但完全非弹性碰撞中内部有能量耗散。
+
+==== 再看变摆长模型分析 #datetime(day:30,month:3,year:2026).display()
+
+===== 核心守恒量
+在忽略空气阻力且拉力过轴心的条件下，系统满足 *角动量守恒*：
+$ m v_2 l = m v_1 L $
+
+由于 $l < L$，推导出 $v_2 > v_1$。
+
+===== 动力学补充
+在该过程中，向心力（拉力）的径向分量对质点做功，满足动能定理：
+$ W = integral_(L)^(l) vct(F) dot d vct(r) = 1/2 m v_2^2 - 1/2 m v_1^2 $
+
+=== 中心力场动力学分析
+
+==== 1. 场与能量定义
+- 矢量力：$ vct(F)(vct(r)) = - (G m M) / r^2 vct(e)_r $
+- 势能：$ U(r) = - (G m M) / r $
+- 能量守恒：$ 1/2 m vct(v)^2 - (G m M) / r = E_0 $
+
+==== 2. 径向方程推导
+利用 $vct(L_0) = vct(r) times m vct(v)$，将速度分解为：
+$ vct(v) = (dif r) / (dif t) vct(e)_r + (L_0) / (m r) vct(e)_theta $
+
+代入能量方程，得到黄框标注的核心公式：
+$ E_0 = 1/2 m v_r^2 + [ L_0^2 / (m^2 r^2) - (G m M) / r ] $
+其中方括号内项标注为 *effective*（有效势能）。
+
+一部分叫做有效势能，一部分叫做有效机械能。
+
+==== 3. 有效势能曲线分析
+根据 $E(r)$ 图像：
+- $L_0^2 / (m^2 r^2)$ 项：随 $r$ 减小快速上升，起到排斥作用。
+- $- (G m M) / r$ 项：吸引作用。
+- 综合曲线（黄线）呈现势阱特征。
+
+
+
+#image("../Assets/img/202611323213.jpg", width: 350pt)
+
+#image("../Assets/img/2026222.jpeg")
+=== 轨道形状的几何判定
+
+==== 1. 能量与轨迹对应关系
+根据总能量 $E_0$ 的取值，系统的运动轨迹呈现不同的圆锥曲线特征：
+- $E_0 > 0$: *hyperbola* (双曲线)，表现为逃逸轨道。
+- $E_0 = 0$: *Parabola* (抛物线)，为临界逃逸轨道。
+- $E_0 < 0$: *Ellipse* (椭圆)，为束缚闭合轨道。
+
+==== 2. 图像解析
+在 $E(r)$ 图像中：
+- 当 $E_0 > 0$ 时（图中蓝色虚线以上），能量线与 $U_"eff"$ 曲线仅有一个交点，即质点只能到达 *最近距离*。
+- 当 $E_0 < 0$ 时（图中蓝色虚线以下），能量线与曲线有两个交点，对应椭圆轨道的近日点与远日点。
+- 当 $E_0$ 恰好处于势阱最低点时，轨道退化为 *Circle* (圆)。
+
+=== 轨道转折点的定量计算
+
+==== 1. 物理条件
+在轨道半径的极值处（近日点或远日点），径向速度满足：
+$ (dif r) / (dif t) = 0 $
+
+==== 2. 径向位置方程
+将条件代入有效势能公式，整理得到关于 $r$ 的一元二次方程：
+$ r^2 + (G m M) / E_0 r - L_0^2 / (2 m E_0) = 0 $
+
+==== 3. 半径解的表达式
+利用求根公式，得到转折点半径 $r_0$：
+$ r_0 = 1 / 2 [ - (G m M) / E_0 plus.minus sqrt( (G^2 m^2 M^2) / E_0^2 + (2 L_0^2) / (m E_0) ) ] $
+
+- 若 $E_0 < 0$，方程有两个正根，对应椭圆轨道的近日点与远日点。
+- 若 $E_0 >= 0$，仅有一个物理意义上的正根，对应抛物线或双曲线的最近点。
+
+=== 轨道转折点与圆轨道的定量计算
+
+==== 1. 长半轴与能量的关系
+在 $E_0 < 0$ 的椭圆轨道束缚态下，近日点 $r_"min"$ 与远日点 $r_"max"$ 之和（对应椭圆长轴 $2a$）代数整理结果为（标注 $r_0$）：
+$ 2a = r_"max" + r_"min" = - (G m M) / E_0 $
+这证实了开普勒第一定律的动力学根源，长半轴 $a$ 仅取决于总能量。
+
+==== 2. 圆轨道的最低能量
+在有效势阱的最低点处，系统只能以固定的半径 $r_c$ 做匀速圆周运动，其总能量满足板书原样公式：
+$ E_0 = - (G^2 m^3 M^2) / (2 L_0^2) $
+此即该角动量状态下的最低可能能量。
+
+==== 3. 物理术语补充
+对于非逃逸态轨道，最靠近中心天体的点称为：
+- *perigee*：近日点。
+- *peri-helion*：近日点（专门指绕太阳轨道）。
+
+=== 轨道方程的积分求解
+
+==== 1. 运动学分量解构
+由角动量与能量守恒导出：
+$ (dif theta) / (dif t) = L_0 / (m r^2) $
+$ (dif r) / (dif t) = sqrt( 2 / m (E_0 - L_0^2 / (2 m r^2) + (G m M) / r) ) $
+
+==== 2. 空间轨迹积分
+利用 $ (dif r) / (dif theta) = ((dif r) / (dif t)) / ((dif theta) / (dif t)) $ 消去时间变量，建立 $r$ 与 $theta$ 的积分关系：
+$ integral (g(r)) / (f(r)) dif r = integral dif theta $
+
+==== 3. 极坐标轨道解 (圆锥曲线)
+轨道方程最终表示为：
+$ r = p / (1 + epsilon cos theta) $
+
+其中关键几何参量为：
+- *半正焦弦* $p = L_0^2 / (G M m^2)$
+- *离心率 (eccentricity)* $epsilon = sqrt( 1 + (2 E_0 L_0^2) / (G^2 M^2 m^3) )$
+
+==== 4. 能量与轨道几何的统一
+通过 $epsilon$ 的表达式可知，总能量 $E_0$ 彻底决定了轨道的拓扑形状（椭圆、抛物线或双曲线）。
+
+=== 轨道积分详细步骤
+
+1. *链式法则消元*:
+$ (dif r) / (dif theta) = (dif r / dif t) / (dif theta / dif t) $
+
+2. *分离变量形式*:
+$ integral dif theta = integral (L_0 / (m r^2)) / (sqrt( 2/m (E_0 - U_"eff"(r)) )) dif r $
+
+3. *换元 $u = 1/r$*:
+$ theta = integral - (L_0 / m) / (sqrt( 2/m (E_0 - (L_0^2 u^2) / (2 m^2) + G m M u) )) dif u $
+
+=== 质点系动力学完整总结
+
+==== 1. 质心系基本属性
+- 质心运动定理：$ (dif vct(P)_c) / (dif t) = sum vct(F)_i $
+- 质心系动量特性：$ sum m_i vct(r)'_i = 0 arrow.r sum vct(p)'_i = 0 $
+
+==== 2. 动能分解 (Koenig 定理)
+系统的总动能 $K$ 可分解为质心动能与相对动能：
+$ sum K_i = 1/2 M v_c^2 + sum 1/2 m_i v_i prime^2 = K_c + sum K'_i $
+
+==== 3. 功能原理 (Work-Energy Theorem)
+系统总动能的增量等于外力功与内力功之和：
+$ integral dif (sum_i K_i) = underbrace(integral sum vct(F)_i dot dif vct(r)_i, W_E) + underbrace(integral sum vct(f)_(i j) dot dif vct(r)_i, W_I) $
+
+==== 4. 质心参考系下的功
+在 COM frame 中，动能增量同样满足分解关系：
+$ sum Delta K_i = sum Delta K'_i + Delta K_c $
+其中外力功对应的质心部分：
+$ W_E = integral (dif vct(P)_c) / (dif t) dot dif vct(r)_c $
+
+此时还有  $sum_i Delta K_i=sum_i K_i^' +K_c \ sum_i Delta K_i^' = W_E^' +W_I^'$
+
+=== 质点系角动量 (Angular Momentum)
+
+==== 1. 角动量分解公式
+系统的总角动量等于质心动量矩与相对质心动量矩之和：
+$ sum vct(L)_i = vct(L)_c + sum vct(L)'_i $
+其中：
+- 质心角动量：$ vct(L)_c = vct(r)_c times M vct(v)_c $
+- 相对角动量：$ sum vct(L)'_i = sum (vct(r)'_i times m_i vct(v)'_i) $
+
+==== 2. 质心系角动量定理
+相对于质心的总角动量变化率仅由外力矩决定：
+$ (dif) / (dif t) (sum vct(L)'_i) = sum vct(tau)'_i $
+该式说明，即使质心本身在加速（非惯性系），只要参考点选在质心上，角动量定理的形式依然保持简洁，不需要引入惯性力矩。
+
+=== 两体系统的动能分解 (Koenig 定理特例)
+
+==== 1. 动能构成
+两质点系统的总动能可表示为质心动能与相对动能之和：
+$ K = K_c + 1/2 mu v_r^2 $
+
+==== 2. 参数定义
+- *质心动能*: $K_c = 1/2 (m_1 + m_2) v_c^2$，其中 $v_c$ 为质心速度。
+- *折合质量 (Reduced Mass)*:
+  $ mu = (m_1 m_2) / (m_1 + m_2) $
+- *相对速度*: $vct(v)_r = vct(v)_1 - vct(v)_2$。
+
+==== 3. 物理意义
+这一推导允许我们将相互作用的两个天体（如地月系统）简化为一个质量为 $mu$ 的“单体”绕质心旋转的问题，这也是之后解轨道方程的前提。
+
+=== 实例：电荷散射最近距离求解 (修正版)
+
+==== 1. 初始状态设定
+- 电荷 1 ($m$): $v_1 = 2 v_0$
+- 电荷 2 ($m$): $v_2 = - v_0$
+- 相对速度: $v_"rel" = 3 v_0$
+
+==== 2. 相对动能计算
+利用折合质量 $mu = m / 2$，初始总相对动能为：
+$ sum K'_i = 1/2 mu v_"rel"^2 = 1/2 (m/2) (3 v_0)^2 = 9/4 m v_0^2 $
+
+==== 3. 功能定理求解 $r_"min"$
+内力（库仑力）做功的矢量微分形式：
+$ W'_I = integral [ (k e^2) / (vct(r_1) - vct(r_2))^2 dif vct(r_1) - (k e^2) / (vct(r_1) - vct(r_2))^2 dif vct(r_2) ] $
+积分结果对应电势能变化：
+$ W'_I = - (k e^2) / r_"min" $
+
+根据能量守恒：
+$ 0 - 9/4 m v_0^2 = - (k e^2) / r_"min" $
+
+最终得到：
+$ r_"min" = (4 k e^2) / (9 m v_0^2) $
+
+=== 引力助推 (Gravity Assist) 动力学分析
+
+==== 1. 物理背景
+- 探测器质量: $m_s$
+- 行星质量: $M_p$ (满足 $M_p >> m_s$)
+- 行星公转速度: $vct(v)_p$
+
+==== 2. 质心系下的简化
+由于 $M_p$ 巨大，系统的质心几乎与行星中心重合：
+$ vct(v)_c approx vct(v)_p $
+此时，折合质量 $mu$ 简化为探测器质量 $m_s$：
+$ mu = (m_s M_p) / (m_s + M_p) approx m_s $
+
+==== 3. 速度增益推导
+设探测器以相对速度 $vct(u)$ 进入行星引力范围，在行星参考系中：
+- 进入速度大小: $u + v$
+- 甩出速度大小: $u + v$ (动能守恒)
+
+回到太阳参考系（实验室系）：
+$ vct(v)_"final" = vct(v)_p + vct(v)_"relative" $
+对于 180 度调头的理想情况：
+$ v_"final" = v + (u + v) = u + 2v $
+
+==== 4. 能量损失 (Energy Transfer)
+探测器获得的动能 $Delta K$ 全部来自于行星动能的减小：
+$ Delta K_s = - Delta K_p $
+由于行星质量极大，其速度变化 $Delta v_p$ 极其微小，但在能量守恒上体现为行星 "Lose Energy"。
