@@ -1,7 +1,9 @@
 #import "../module/myutils.typ" : *
+#import "engine.typ":*
 
 #show : conf
 
+#let g = 9.80
 
 = 大学物理 英 1 作业 紫荆 53 郭嘉乐
 
@@ -111,3 +113,15 @@ $ omega(t) = omega_0 (r_0 / (r_0 - V t))^2 $
 ==== b
 拉力 $F$ 提供向心力：
 $ F = m omega(t)^2 r(t) = (m omega_0^2 r_0^4) / (r_0 - V t)^3 $
+
+== HW 3 #datetime(year:2026,month:3,day:31).display()
+
+=== 1. Bullet Fired into a Block
+#[
+
+助教你好，你接下来可能会看见一些奇怪的重复的物理量说明。但是这是我所使用的标记语言所必需的QAQ
+
+#cpt("h=1",unit:"m")
+#cpt("m=0.008",unit: "k g")
+首先计算物块下落到地面的时间 #cpt("t=sqrt((2*h)/g)",unit:"s")
+]

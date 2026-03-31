@@ -269,22 +269,33 @@ graph G {
 }
 
 // 将名字改为 cal，避开系统内置的 calc 模块冲突
-#let cal(expr, mode: 0, digits: 3) = {
+#let cal(expr, mode: 0, digits: 3, scope: (:), result: 0) = {
   let m = int(mode)
   let d = if digits == none { if m == 0 { 0 } else { 3 } } else { int(digits) }
   
+  // 1. 构建作用域
   let mathScope = (
     sin: calc.sin, cos: calc.cos, tan: calc.tan,
     log: calc.log, ln: calc.ln, sqrt: calc.sqrt,
     abs: calc.abs, round: calc.round, pi: calc.pi,
-    exp: calc.exp, pow: calc.pow
-  )
+    exp: calc.exp, pow: calc.pow, calc: calc
+  ) + scope
 
-  let cleanExpr = expr.replace("×", "*").replace("÷", "/")
-  let rawResult = eval(cleanExpr, scope: mathScope)
+  // 2. 幂运算逻辑预处理 (split 方案最稳)
+  let cleanExpr = expr.replace(" ", "").replace("×", "*").replace("÷", "/").replace("**", "^")
+  let finalExpr = cleanExpr
+  if cleanExpr.contains("^") {
+    let parts = cleanExpr.split("^")
+    if parts.len() == 2 {
+      finalExpr = "calc.pow(" + parts.at(0) + "," + parts.at(1) + ")"
+    }
+  }
+
+  // 3. 核心计算
+  let rawResult = eval(finalExpr, scope: mathScope)
   
+  // 4. 数字格式化逻辑
   let isCleanInt(v) = { calc.abs(v - calc.round(v)) < 1e-10 }
-
   let formatStr(val, precision) = {
     let rounded = calc.round(val, digits: precision)
     if precision <= 0 { return str(int(rounded)) }
@@ -302,34 +313,27 @@ graph G {
     if rawResult == 0 { "0" } else {
       let magnitude = int(calc.floor(calc.log(calc.abs(rawResult))))
       let precision = d - 1 - magnitude
-      if isCleanInt(rawResult) and precision <= 0 {
-        str(int(calc.round(rawResult, digits: precision)))
-      } else {
-        formatStr(rawResult, calc.max(0, precision))
-      }
+      formatStr(rawResult, calc.max(0, precision))
     }
   }
 
-  // --- 重点修复：美化排版逻辑 ---
-  let displayExpr = expr.replace(" ", "")
-  
-  // 使用一种更安全的方式：直接利用 Typst 的数学公式解析
-  // 我们不再手动构建 frac(...)，因为那太难处理优先级了。
-  // 我们直接把字符串里的 * 换成 times，/ 换成斜杠（或者让用户自己写想要的格式）
-  // 如果你非常想要自动变分式，最好的办法是手动在 expr 里写好括号，例如 "(1+2)/3"
-  
-  let finalMathStr = displayExpr
-    .replace("*", " times ")
-    .replace("sqrt", " sqrt ")
-  
-  // 这里的 trick：如果用户输入里包含 /，我们把它转换成内联分式形式
-  // 为了绝对准确，我们直接交给数学模式处理，不强行加 frac
-  let mathContent = eval(finalMathStr, mode: "math")
+  // 5. 渲染公式内容
+  let displayExpr = expr.replace(" ", "").replace("**", " ^ ").replace("*", " times ")
+  let mathContent = eval(displayExpr, mode: "math")
+  let formula = $ #mathContent = #processedResult $
 
-  $ #mathContent = #processedResult $
+  // 6. 根据开关返回不同类型
+  if result == 0 {
+    return formula
+  } else {
+    return (v: rawResult, g: formula)
+  }
 }
 
+// --- 终极建议 ---
+#cal("sin(pi/4)**2") 依然因为嵌套报错
 
+#cal("11")
 // --- 调用示例 ---
 #cal("15 * 3 / 5")     // 自动生成：15 × 3 / 5 (带分式) = 9
 #cal("4-(1/200-cos(2))",mode:1,digits:5)  // 自动生成分式 = 10
