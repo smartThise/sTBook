@@ -892,3 +892,977 @@ a A destructing
   1. 仅调用第一个元素的析构函数，导致内存泄漏。
   2. 释放地址错误（应从 $p A - 4$ 处释放），直接导致程序崩溃。
 ]
+
+=== 一、参数中的常量和常量引用
+
+*最小特权原则*：给足够完成任务的权限，但是不要多余修改、删除权限。
+
+这个时候终于出现了我们喜闻乐见众所周知的：*常量引用*！
+
+
+在这个例子里面，我们通过常量引用，将 `const` 修饰的变量传递给函数，这样函数内部就不能修改这个变量了。
+```cpp
+void add(const int& a,const int&b)
+```
+
+=== 二、拷贝构造函数
+
+拷贝构造函数是 C++ 的一种特殊的构造函数，它用于创建一个新对象，该对象是已有对象的副本。
+
+拷贝构造函数的格式如下：
+```cpp
+ClassName(const ClassName& obj){id=obj.id;...}
+```
+
+其中，`ClassName` 是类的名称，`obj` 是一个已有的对象，用于初始化新对象。*用参数对象初始化当前对象！*
+
+拷贝构造函数被调用的三种常见情况：
++ 用一个类对象定义另一个新的类对象 `Test a; Test b(a); Test c=a;`
++ 函数调用时以类的对象为形参 `Func(Test a)`
++ 函数返回类对象 `Test Func(void)`
+
+编译器会自动调用”拷贝构造函数”，在已有对象基础上生成新对象。
+
+#image("../Assets/img/20260331_134659.png",width:500pt)
+
+==== 拷贝构造函数：实例1
+
+```cpp
+#include <iostream>
+using namespace std;
+class Test {
+public:
+    Test() { //构造函数
+        cout << “Test()” << endl;
+    }
+    Test(const Test& src) { //拷贝构造
+        cout << “Test(const Test&)” << endl;
+    }
+    ~Test() { //析构函数
+        cout << “~Test()” << endl;
+    }
+};
+Test copyObj(Test obj) {
+    cout << “func()...” << endl;
+    return Test();
+}
+int main() {
+    cout << “main()...” << endl;
+    Test t;
+    t = copyObj(t);
+    return 0;
+}
+```
+
+输出：
+```text
+main()...
+Test() //main函数内初始化 Test
+Test(const Test&)//func参数 拷贝构造
+func()...
+Test()  //初始化 Test类的对象
+Test(const Test&) //返回时拷贝构造
+~Test()
+~Test()
+~Test()
+~Test()
+```
+
+*注意：*采用编译选项禁止编译器进行返回值优化：
+`g++ test.cpp --std=c++11 -fno-elide-constructors -o test`
+
+==== 拷贝构造函数：实例2
+
+```cpp
+#include <iostream>
+#include <cstring>
+using namespace std;
+class Pointer {
+    int *m_arr;
+    int m_size;
+public:
+    Pointer(int i):m_size(i) { //构造
+        m_arr = new int[m_size];
+        memset(m_arr, 0, m_size*sizeof(int));
+    }
+    ~Pointer(){delete []m_arr;} //析构
+    void set(int index, int value) {
+        m_arr[index] = value;
+    }
+    void print();
+};
+void Pointer::print() {
+    cout << “m_arr: “;
+    for (int i = 0; i < m_size; ++ i) {
+        cout << “ “ << m_arr[i];
+    }
+    cout << endl;
+}
+int main() {
+    Pointer a(5);
+    Pointer b = a; //调用默认的拷贝构造
+    a.print();
+    b.print();
+    b.set(2, 3);
+    b.print();
+    a.print();
+    return 0;
+}
+```
+
+输出：
+```text
+m_arr:  0, 0, 0, 0, 0  //a.print()
+m_arr:  0, 0, 0, 0, 0  //b.print()
+m_arr:  0, 0, 3, 0, 0  //b.print()
+m_arr:  0, 0, 3, 0, 0  //a.print()
+```
+
+#strong[问题分析：]位拷贝会使得对象 `a, b` 的指针成员 `m_arr` 指向同一个内存地址。当类内含指针类型的成员时，为避免指针被重复删除，不应使用隐式定义的拷贝构造函数。
+
+==== 问题？
+造成程序效率显著下降。
+
+尽可能避免使用拷贝构造函数，使用引用传递参数！！！
+
+解决方法：
+
+- （1）使用引用/常量引用传参数或返回对象；
+
+- （2）将拷贝构造函数声明为private；
+
+- （3）用delete关键字让编译器不生成拷贝构造函数的隐式定义版本。
+
+=== 三、内联函数、左值引用与右值引用
+
+==== 左值与右值
+
+首先区分什么是左值和右值：
+
+- *左值*：可以取地址、有名字的值。例如变量 `a`。
+- *右值*：不能取地址、没有名字的值。常见于常量、函数返回值、表达式结果。例如 `1`、`a+b`。
+
+```cpp
+int a = 1;
+int b = func();
+int c = a + b;
+// a, b, c 是左值
+// 1, func()返回值, a+b的结果 是右值
+```
+
+左值可以取地址，并且可以被 `&` 引用（左值引用）：
+```cpp
+int *d = &a;      // ✓ 左值可以取地址
+int &e = a;       // ✓ 左值引用绑定左值
+int *f = &(a+b);  // ✗ 右值不能取地址
+int &g = a + b;   // ✗ 普通左值引用不能绑定右值
+```
+
+==== 右值引用
+
+虽然右值无法取地址，但可以被 `&&` 引用（右值引用）：
+
+```cpp
+int &&e = a + b;  // ✓ 右值引用绑定右值
+int &&f = a;      // ✗ 右值引用不能绑定左值
+const int &g = 3; // ✓ 常量左值引用可以绑定右值
+```
+
+==== 引用绑定规则
+
+#table(
+  columns: (auto, 1fr, 1fr, 1fr),
+  align: center + horizon,
+  stroke: 0.5pt,
+  [], [非常量左值], [常量左值], [右值],
+  [非常量左值引用 &], [✓], [], [],
+  [常量左值引用 const &], [✓], [✓], [✓],
+  [右值引用 &&], [], [], [✓],
+)
+
+关键点：
++ 左值引用能绑定左值，右值引用能绑定右值
++ *例外*：常量左值引用也能绑定右值（为了兼容性设计）
++ 所有的引用（包括右值引用）本身都是左值
+
+==== 右值引用示例
+
+```cpp
+void ref(int &x) {
+    cout << "left " << x << endl;
+}
+void ref(int &&x) {
+    cout << "right " << x << endl;
+}
+int main() {
+    int a = 1;
+    ref(a);   // 输出: left 1（a是左值，调用左值引用版本）
+    ref(2);   // 输出: right 2（2是右值，调用右值引用版本）
+    return 0;
+}
+```
+
+一个有趣的例子：
+```cpp
+void ref(int &x) { cout << "left " << x << endl; }
+void ref(int &&x) {
+    cout << "right " << x << endl;
+    ref(x);   // 这里调用哪个？
+}
+int main() {
+    ref(1);   // 1是右值
+    return 0;
+}
+```
+
+输出：
+```text
+right 1
+left 1
+```
+
+因为*所有的引用本身都是左值*！`x` 虽然是右值引用参数，但它本身是个有名字的变量，所以是左值。
+
+==== 右值引用的意义
+
+右值引用的核心用途：*延续即将销毁变量的生命周期*。
+
+当函数返回一个临时对象时，这个对象马上就要被销毁。如果使用拷贝构造函数，需要重新开辟内存并复制数据，效率低下。使用右值引用配合移动构造函数，可以直接"偷走"临时对象的资源。
+
+#strong[简单理解：]
+- 左值 = 有名字、有地址的"常住居民"，可以长期使用
+- 右值 = 没名字、即将消亡的"临时工"，资源可以被"偷走"
+- 左值引用 `&` = 给"常住居民"起别名
+- 右值引用 `&&` = 在"临时工"消失前，把它的资源转移出来
+
+=== 四、移动构造函数
+
+==== 移动构造函数 vs 拷贝构造函数
+
+```cpp
+// 拷贝构造函数
+ClassName(const ClassName& VariableName);
+
+// 移动构造函数
+ClassName(ClassName&& VariableName);
+```
+
+核心区别：
+- *拷贝构造*：重新开辟内存，复制数据
+- *移动构造*：直接"偷走"临时对象的指针，不复制数据
+
+#table(
+  columns: (1fr, 1fr, 1fr),
+  align: center + horizon,
+  stroke: 0.5pt,
+  [], [拷贝构造函数], [移动构造函数],
+  [参数类型], [`const ClassName&`], [`ClassName&&`],
+  [内存操作], [重新开辟并拷贝], [直接复用指针],
+  [适用场景], [对象需要长期保留], [临时对象即将销毁],
+)
+
+==== 移动构造函数示例
+
+```cpp
+class Test {
+public:
+    int *buf;  // only for demo
+    Test() {
+        buf = new int[10];  // 申请一块内存
+        cout << "Test(): this->buf @ " << hex << buf << endl;
+    }
+    ~Test() {
+        cout << "~Test(): this->buf @ " << hex << buf << endl;
+        if (buf) delete[] buf;
+    }
+    // 拷贝构造函数
+    Test(const Test& t) : buf(new int[10]) {
+        for(int i=0; i<10; i++)
+            buf[i] = t.buf[i];  // 拷贝数据
+        cout << "Test(const Test&) called. this->buf @ "
+             << hex << buf << endl;
+    }
+    // 移动构造函数
+    Test(Test&& t) : buf(t.buf) {  // 直接复制地址，避免拷贝
+        cout << "Test(Test&&) called. this->buf @ "
+             << hex << buf << endl;
+        t.buf = nullptr;  // 将t.buf改为nullptr，使其不再指向原来内存区域
+    }
+};
+```
+
+==== 移动构造函数实例
+
+```cpp
+Test GetTemp() {
+    Test tmp;
+    cout << "GetTemp(): tmp.buf @ " << hex << tmp.buf << endl;
+    return tmp;
+}
+void fun(Test t) {
+    cout << "fun(Test t): t.buf @ " << hex << t.buf << endl;
+}
+int main() {
+    Test a = GetTemp();
+    cout << "main() : a.buf @ " << hex << a.buf << endl;
+    fun(a);
+    return 0;
+}
+```
+
+===== 情况一：开启返回值优化（默认）
+
+编译指令：`g++ test.cpp --std=c++11 -o test`
+
+```text
+Test(): this->buf @ 0x7fa908c04b90
+GetTemp(): tmp.buf @ 0x7fa908c04b90
+main() : a.buf @ 0x7fa908c04b90
+Test(const Test&) called. this->buf @ 0x7fa908c04ba0
+fun(Test t): t.buf @ 0x7fa908c04ba0
+~Test(): this->buf @ 0x7fa908c04ba0
+~Test(): this->buf @ 0x7fa908c04b90
+```
+
+注意：编译器进行了返回值优化（RVO），所以没有调用移动构造函数，也少调用了几次拷贝构造函数！
+
+===== 情况二：禁止返回值优化 + 有移动构造函数
+
+编译指令：`g++ test.cpp --std=c++11 -fno-elide-constructors -o test`
+
+```text
+Test(): this->buf @ 0x7f8951c04b90
+GetTemp(): tmp.buf @ 0x7f8951c04b90
+Test(Test&&) called. this->buf @ 0x7f8951c04b90
+~Test(): this->buf @ 0x0 (tmp被移动后)
+Test(Test&&) called. this->buf @ 0x7f8951c04b90  (a = GetTemp())
+~Test(): this->buf @ 0x0 (GetTemp返回的临时对象)
+main() : a.buf @ 0x7f8951c04b90
+Test(const Test&) called. this->buf @ 0x7f8951c04ba0
+fun(Test t): t.buf @ 0x7f8951c04ba0
+~Test(): this->buf @ 0x7f8951c04ba0
+~Test(): this->buf @ 0x7f8951c04b90
+```
+
+注意观察：
++ `Test a = GetTemp()` 调用了移动构造函数（因为 `GetTemp()` 返回的是右值）
++ `fun(a)` 调用了拷贝构造函数（因为 `a` 是左值）
++ 移动构造后，原对象的 `buf` 变成了 `nullptr`
+
+===== 情况三：禁止返回值优化 + 删除移动构造函数
+
+编译指令：`g++ test.cpp --std=c++11 -fno-elide-constructors -o test`
+
+```text
+Test(): this->buf @ 0x7fabf8c04b50
+GetTemp(): tmp.buf @ 0x7fabf8c04b50
+Test(const Test&) called. this->buf @ 0x7fabf8c04b60
+~Test(): this->buf @ 0x7fabf8c04b50
+Test(const Test&) called. this->buf @ 0x7fabf8c04b50
+~Test(): this->buf @ 0x7fabf8c04b60
+main() : a.buf @ 0x7fabf8c04b50
+Test(const Test&) called. this->buf @ 0x7fabf8c04b60
+fun(Test t): t.buf @ 0x7fabf8c04b60
+~Test(): this->buf @ 0x7fabf8c04b60
+~Test(): this->buf @ 0x7fabf8c04b50
+```
+
+没有移动构造函数时，全部使用拷贝构造函数。
+
+==== 什么时候调用移动构造函数？什么时候调用拷贝构造函数？
+
+#strong[判断依据：引用的绑定规则]
+
++ 拷贝构造函数的形参类型为 `const ClassName&`（常量左值引用），可以绑定：常量左值、左值、右值
++ 移动构造函数的形参类型为 `ClassName&&`（右值引用），可以绑定：右值
++ *优先级*：当传入右值时，优先匹配右值引用参数的函数
+
+===== 拷贝构造函数的调用时机
+
++ 用一个类对象/引用/常量引用初始化另一个新的类对象
+  - `Test b = a;`（a 是左值）
+  - `Test b = ref_a;`（ref_a 是引用）
++ 以类的对象为函数形参，传入实参为类的对象/引用/常量引用
+  - `func(a);`（a 是左值）
++ 函数返回类对象（类中未显式定义移动构造函数，不进行返回值优化）
+
+===== 移动构造函数的调用时机
+
++ 用一个类对象的右值初始化另一个新的类对象
+  - `Test b = func(a);`（func 返回临时对象，是右值）
+  - `Test b = std::move(a);`（std::move 把左值转成右值）
++ 以类的对象为函数形参，传入实参为类对象的右值
+  - `func(Test());`（临时对象是右值）
+  - `func(std::move(a));`（std::move 把 a 转成右值）
++ 函数返回类对象（类中显式定义移动构造函数，不进行返回值优化）
+  - `return Test();` 或 `return tmp;` 均调用移动构造
+
+==== 返回值优化（RVO）
+
+编译器默认会进行返回值优化，条件：
++ return 的值类型与函数签名的返回值类型相同
++ return 的是一个局部对象
+
+开启 RVO 时，编译器会直接在调用者的栈帧上构造返回值，完全省去拷贝/移动构造函数的调用。
+
+*注意*：如果你想观察移动构造函数的效果，需要用 `-fno-elide-constructors` 禁用 RVO。
+
+==== std::move 函数
+
+`std::move` 可以将左值转换为右值，从而触发移动构造函数：
+
+```cpp
+Test a;
+Test b = std::move(a);  // 调用移动构造函数
+```
+
+`std::move` 本身不做任何操作，只是类型转换。实际的"移动"操作在移动构造函数中实现。
+
+典型应用：高效 swap
+
+```cpp
+template <class T>
+void swap(T& a, T& b) {
+    T tmp(std::move(a));  // 移动构造
+    a = std::move(b);     // 移动赋值
+    b = std::move(tmp);   // 移动赋值
+}
+```
+
+避免了三次不必要的拷贝操作！
+
+==== 构造函数综合实例
+
+写出以下代码的运行结果：
+
+```cpp
+#include <iostream>
+class Test {
+public:
+    Test() {
+        printf("Test()\n");
+    } //默认构造函数
+    ~Test() {
+        printf("~Test()\n");
+    } //析构函数
+    Test(const Test &con) {
+        printf("Test(const Test &con)\n");
+    } //拷贝构造函数
+    Test(Test &&con) {
+        printf("Test(Test &&con)\n");
+    } //移动构造函数
+};
+Test func(Test a) {
+    return Test();
+}
+int main() {
+    Test a;
+    Test b = func(a);
+    return 0;
+}
+```
+
+编译指令：`g++ test.cpp --std=c++11 -fno-elide-constructors`
+
+#strong[答案分析：]用 (1+) 和 (1-) 这样的形式来对应类的构造和析构。
+
+```text
+Test()                  //(1+) 执行 Test a;
+Test(const Test &con)   //(2+) Test b = func(a);
+                        //     func(a)传参调用拷贝构造函数
+Test()                  //(3+) return Test();
+                        //     Test() 对应的构造函数
+Test(Test &&con)        //(4+) return Test();
+                        //     为了传值调用的移动构造函数
+~Test()                 //(3-) return Test();
+                        //     Test() 对应的析构函数
+Test(Test &&con)        //(5+) Test b = func(a);
+                        //     给 b 传值时调用的移动构造函数
+~Test()                 //(4-) Test b = func(a);
+                        //     完成赋值后 func(a) 返回值对应的析构函数
+~Test()                 //(2-) Test b = func(a);
+                        //     参数释放对应的析构函数
+~Test()                 //(5-) 析构 b
+~Test()                 //(1-) 析构 a
+```
+
+详细步骤解析：
+
+#table(
+  columns: (auto, 1fr, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [*步骤*], [*代码*], [*说明*],
+  [1], [`Test a;`], [构造 a，调用默认构造函数],
+  [2], [`func(a)` 传参], [拷贝构造函数，将 a 拷贝给参数对象],
+  [3], [`return Test();`], [构造临时对象，调用默认构造函数],
+  [4], [`return Test();`], [移动构造函数，将临时对象移动给返回值],
+  [5], [临时对象析构], [步骤3创建的临时对象析构],
+  [6], [`Test b = ...`], [移动构造函数，将返回值移动给 b],
+  [7], [返回值析构], [步骤4创建的返回值对象析构],
+  [8], [参数对象析构], [步骤2创建的参数对象析构],
+  [9], [`main` 结束], [析构 b，然后析构 a],
+)
+
+#strong[关键点：]
++ 函数参数按值传递时，会调用拷贝构造函数
++ 函数返回临时对象时，会调用移动构造函数（如果有定义）
++ 析构顺序与构造顺序相反（栈的 LIFO 特性）
+
+*多选题*
+
+`Test` 类中显式声明了三类构造函数：
+
+- *普通构造函数*：`Test(int val)`
+- *移动构造函数*：`Test(Test&& t)`
+- *拷贝构造函数*：`Test(const Test& t)`
+
+现给出一段测试代码，*下列描述错误的是*：
+```cpp
+Test F(Test&& a){
+    Test b = a;        // (2)
+    const Test& c = b; // (3)
+    return c;          // (4)
+}
+int main(){
+    Test A = F(1); // (1)
+    return 0;
+}
+```
+
+选项：
+
+- *A*：(1)处将 1 传入 F 时会调用普通构造函数 `Test(int val)` 以构建临时对象。
+- *B*：(2)处调用移动构造函数。
+- *C*：(3)处调用拷贝构造函数。
+- *D*：(4)处返回局部变量的引用，可能会为程序带来潜在的风险。
+
+*答案：BCD*
+
+*(1) `Test A = F(1);` — 选项 A（正确描述）*
+
+`F` 的参数类型为 `Test&&`，传入整数字面量 `1` 时，编译器需要先隐式构造一个 `Test` 类型的临时对象，因此会调用 `Test(int val)` 普通构造函数，再将该临时对象绑定到右值引用参数 `a`。
+
+#block(fill: luma(235), inset: 8pt, radius: 4pt)[
+  ✅ A 描述*正确*
+]
+
+*(2) `Test b = a;` — 选项 B（错误描述）*
+
+关键点：`a` 的类型虽然是 `Test&&`，但*具名的右值引用在函数体内是左值*（named rvalue reference is lvalue）。因此 `Test b = a` 匹配 `Test(const Test& t)`，调用的是*拷贝构造函数*，而非移动构造函数。若想触发移动构造，应写：
+```cpp
+Test b = std::move(a);
+```
+
+#block(fill: luma(235), inset: 8pt, radius: 4pt)[
+  ❌ B 描述*错误*：实际调用的是拷贝构造函数
+]
+
+*(3) `const Test& c = b;` — 选项 C（错误描述）*
+
+此处仅将 `c` 绑定为 `b` 的 `const` 引用，*不构造任何新对象*，不调用任何构造函数。
+
+#block(fill: luma(235), inset: 8pt, radius: 4pt)[
+  ❌ C 描述*错误*：没有调用任何构造函数
+]
+
+*(4) `return c;` — 选项 D（错误描述）*
+
+函数返回类型是 `Test`（按值返回），而非 `Test&`。`return c` 会以 `c` 为源*拷贝构造*一个新的返回值对象，返回的是值副本，不是对局部变量的引用，不存在悬空引用风险。
+
+#block(fill: luma(235), inset: 8pt, radius: 4pt)[
+  ❌ D 描述*错误*：返回的是值，不是引用，无悬空风险
+]
+
+=== 十、拷贝赋值运算符与移动赋值运算符
+
+==== 拷贝赋值运算符
+
+已定义的对象之间相互赋值，通过调用对象的"拷贝赋值运算符函数"来实现：
+
+```cpp
+ClassName& operator= (const ClassName& right) {
+    if (this != &right) {  // 避免自己赋值给自己
+        // 将right对象中的内容拷贝到当前对象中...
+    }
+    return *this;
+}
+```
+
+*注意区分下面两种代码：*
+```cpp
+ClassName a;
+ClassName b;
+a = b;       // 赋值运算符：a 和 b 都已存在
+ClassName a = b;  // 拷贝构造函数：a 还不存在
+```
+
+==== 拷贝赋值运算符实例
+
+```cpp
+class Test {
+public:
+    int *buf;
+    Test() : buf(new int[10]) {}
+    ~Test() { if (buf) delete[] buf; }
+
+    Test& operator= (const Test& right) {
+        if (this == &right)
+            cout << "same obj!\n";
+        else {
+            for(int i=0; i<10; i++)
+                buf[i] = right.buf[i];  // 拷贝数据
+            cout << "operator=(const Test&) called.\n";
+        }
+        return *this;
+    }
+};
+```
+
+#strong[重要规则：]赋值重载函数必须是类的*非静态成员函数*（non-static member function），不能是友元函数。
+
+==== 移动赋值运算符
+
+和移动构造函数原理类似，直接"偷走"资源的指针：
+
+```cpp
+Test& operator= (Test&& right) {
+    if (this == &right)
+        cout << "same obj!\n";
+    else {
+        this->buf = right.buf;  // 直接赋值地址
+        right.buf = nullptr;    // 置空，防止重复释放
+        cout << "operator=(Test&&) called.\n";
+    }
+    return *this;
+}
+```
+
+配合 `std::move` 实现高效 swap：
+
+```cpp
+template <class T>
+void swap(T& a, T& b) {
+    T tmp(std::move(a));  // 第一行调用移动构造函数
+    a = std::move(b);     // std::move 的结果为右值引用
+    b = std::move(tmp);   // 后两行均调用移动赋值运算符
+}
+```
+
+==== 拷贝/移动赋值运算符的调用时机
+
+#strong[判断依据：引用的绑定规则]
+
++ 拷贝赋值运算符的形参类型为 `const ClassName&`（常量左值引用），可以绑定：常量左值、左值、右值
++ 移动赋值运算符的形参类型为 `ClassName&&`（右值引用），可以绑定：右值
++ *优先级*：当赋值运算符右侧为右值时，优先匹配右值引用参数的函数
+
+#table(
+  columns: (1fr, 1fr, 1fr),
+  align: center + horizon,
+  stroke: 0.5pt,
+  [*场景*], [*调用的运算符*], [*原因*],
+  [`a = b`（b 是左值）], [拷贝赋值运算符], [左值绑定 `const &`],
+  [`a = std::move(b)`], [移动赋值运算符], [右值绑定 `&&`],
+  [`a = func()`（返回临时对象）], [移动赋值运算符], [右值绑定 `&&`],
+  [`a = Test()`], [移动赋值运算符], [临时对象是右值],
+)
+
+==== 编译器自动合成的函数/运算符
+
+类中特殊的成员函数/运算符，即使用户不显式定义，编译器也会根据需要自动合成：
+
+#table(
+  columns: (auto, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [*类型*], [*说明*],
+  [默认构造函数], [无参构造函数],
+  [拷贝构造函数], [const ClassName& 参数],
+  [移动构造函数], [ClassName&& 参数（C++11起）],
+  [拷贝赋值运算符], [operator=(const ClassName&)],
+  [移动赋值运算符], [operator=(ClassName&&)（C++11起）],
+  [析构函数], [`~ClassName()`],
+)
+
+#strong[注意：]如果你定义了任何构造函数，编译器就不会自动生成默认构造函数了！但拷贝/移动构造函数和赋值运算符仍会自动生成（除非显式删除）。
+
+=== 十一、类型转换
+
+==== 类型转换概述
+
+当编译器发现表达式和函数调用所需的数据类型和实际类型不同时，便会进行自动类型转换。
+
+```cpp
+void print(int d) { }
+int main() {
+    print(3.5);  // double -> int，自动类型转换
+    print('c');  // char -> int，自动类型转换
+    return 0;
+}
+```
+
+自动类型转换可通过两种方式实现：
++ 定义*类型转换运算符*（在源类中）
++ 定义*类型转换构造函数*（在目标类中）
+
+==== 方法一：类型转换运算符
+
+在*源类*中定义"目标类型转换运算符"：
+
+```cpp
+#include <iostream>
+using namespace std;
+class Dst {  // 目标类 Destination
+public:
+    Dst() { cout << "Dst::Dst()" << endl; }
+};
+class Src {  // 源类 Source
+public:
+    Src() { cout << "Src::Src()" << endl; }
+    operator Dst() const {
+        cout << "Src::operator Dst() called" << endl;
+        return Dst();
+    }
+};
+```
+
+#strong[语法说明：]
++ `operator 目标类型()` 是特殊的成员函数
++ *不需要指定返回类型*，因为 `operator Dst()` 已经指明了返回 `Dst`
++ 必须是成员函数，不能是友元
+
+==== 方法二：类型转换构造函数
+
+在*目标类*中定义"源类对象作参数的构造函数"：
+
+```cpp
+#include <iostream>
+using namespace std;
+class Src;  // 前置类型声明，因为在 Dst 中要用到 Src 类
+class Dst {
+public:
+    Dst() { cout << "Dst::Dst()" << endl; }
+    Dst(const Src& s) {  // 源类对象作参数的构造函数
+        cout << "Dst::Dst(const Src&)" << endl;
+    }
+};
+class Src {
+public:
+    Src() { cout << "Src::Src()" << endl; }
+};
+```
+
+==== 两种方法的使用
+
+两种方法任选一种即可：
+
+```cpp
+void Transform(Dst d) { }
+int main() {
+    Src s;
+    Dst d1(s);     // 显式初始化，两种方法都支持
+    Dst d2 = s;    // 隐式转换，两种方法都支持
+    Transform(s);  // 隐式转换，两种方法都支持
+    return 0;
+}
+```
+
+#rect(
+  fill: rgb("#fff0f0"),
+  stroke: red,
+  inset: 10pt,
+  radius: 4pt,
+  width: 100%
+)[
+  *警告：*两种自动类型转换的方法*不能同时使用*，否则会产生二义性，编译器不知道选择哪个。使用时任选其中一种！
+]
+
+==== 类型转换运算符：错误示例
+
+```cpp
+class SmallInt;
+operator int(SmallInt&);  // 错误：不是成员函数
+class SmallInt {
+public:
+    int operator int() const;    // 错误：不能指定返回类型
+    operator int(int = 0) const; // 错误：参数列表不为空
+    operator int*() const { return 42; } // 错误：42不是合法指针
+};
+```
+
+#strong[错误分析：]
++ 类型转换运算符必须是成员函数，不能是全局函数
++ 不能指定返回类型（`operator int()` 已经隐含返回 `int`）
++ 参数列表必须为空（转换运算符不接收额外参数）
++ 必须返回正确类型的值
+
+正确写法：
+```cpp
+class SmallInt {
+public:
+    operator int() const { return val; }  // 正确
+    operator int*() const { return &val; } // 正确
+private:
+    int val;
+};
+```
+
+==== 类型转换实例
+
+```cpp
+class SmallInt {
+public:
+    // 构造函数：从 int 转换为 SmallInt
+    SmallInt(int i=0): val(i) {
+        cout << "SmallInt_Init" << endl;
+    }
+    // 转换运算符：从 SmallInt 转换为 int
+    operator int() const {
+        cout << "Int_Transform" << endl;
+        return val;
+    }
+    void print() { cout << val << endl; }
+private:
+    size_t val;
+};
+int main() {
+    SmallInt si;
+    si = 4.10;
+    si = si + 3;
+    si.print();
+    return 0;
+}
+```
+
+输出：
+```text
+SmallInt_Init      // SmallInt si，调用构造函数
+SmallInt_Init      // si = 4.10，double->int->SmallInt
+Int_Transform      // si + 3，SmallInt->int
+SmallInt_Init      // si = si + 3，int->SmallInt
+7                  // si.print()
+```
+
+#strong[详细执行流程：]
+
+#table(
+  columns: (auto, 1fr, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [*语句*], [*转换过程*], [*输出*],
+  [`SmallInt si;`], [默认构造函数，`val=0`], [`SmallInt_Init`],
+  [`si = 4.10;`], [`4.10`→`4`(double→int)→`SmallInt(4)`→赋值], [`SmallInt_Init`],
+  [`si + 3`], [`si`→`int`（调用 `operator int()`）→ `7`], [`Int_Transform`],
+  [`si = 7`], [`7`→`SmallInt(7)`→赋值], [`SmallInt_Init`],
+  [`si.print()`], [输出 `val`], [`7`],
+)
+
+#rect(
+  fill: rgb("#f0f8ff"),
+  stroke: blue,
+  inset: 10pt,
+  radius: 4pt,
+  width: 100%
+)[
+  *思考题解答：为什么 `si = si + 3` 不是把 `3` 转换为 `SmallInt` 再加呢？*
+
+  因为 `operator+` 是内置的整数加法运算符，不是 `SmallInt` 的成员函数！
+
+  执行过程：
+  + 编译器看到 `si + 3`，首先检查 `SmallInt` 是否有 `operator+`
+  + 没有找到，于是尝试将 `si` 转换为能和 `int` 相加的类型
+  + 发现 `operator int()`，将 `si` 转换为 `int`，得到 `0 + 3 = 3`（初始 `val=0`）
+  + 然后赋值 `si = 3`，调用构造函数将 `3` 转换为 `SmallInt`
+
+  如果想让 `3` 转换为 `SmallInt` 再加，需要重载 `operator+`：
+  ```cpp
+  SmallInt operator+(const SmallInt& other) const {
+      return SmallInt(val + other.val);
+  }
+  ```
+  这样 `si + 3` 就会：`3`→`SmallInt(3)`→`si.operator+(SmallInt(3))`
+]
+
+==== 禁止自动类型转换
+
+如果用 `explicit` 修饰类型转换运算符或类型转换构造函数，则相应的类型转换必须*显式*进行：
+
+```cpp
+// 方法一：explicit 修饰转换运算符
+explicit operator Dst() const;
+
+// 方法二：explicit 修饰构造函数
+explicit Dst(const Src& s);
+```
+
+使用 `explicit` 后：
+
+```cpp
+int main() {
+    Src s;
+    Dst d1(s);               // ✓ 可以执行，被认为是显式初始化
+    // Dst d2 = s;           // ✗ 错误，隐式转换被禁止
+    // Transform(s);         // ✗ 错误，隐式转换被禁止
+    Dst d2 = static_cast<Dst>(s);  // ✓ 显式转换
+    Transform(static_cast<Dst>(s)); // ✓ 显式转换
+    return 0;
+}
+```
+
+==== 强制类型转换
+
+C++ 提供四种强制类型转换：
+
+#table(
+  columns: (auto, 1fr, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [*关键字*], [*功能*], [*应用场景*],
+  [`const_cast`], [去除 `const` 或 `volatile` 属性], [修改常量指针的指向内容],
+  [`static_cast`], [静态类型转换，类似 C 风格], [基本类型转换、void*转其他指针*],
+  [`dynamic_cast`], [动态类型转换（运行时检查）], [多态类型间的安全下行转换],
+  [`reinterpret_cast`], [重新解释类型（不进行二进制转换）], [指针与整数互转、不相关指针互转],
+)
+
+#strong[详细说明：]
+
++ `const_cast`：唯一能去除常量性的转换
+  ```cpp
+  const int* p = &a;
+  int* q = const_cast<int*>(p);  // 去除 const
+  ```
+
++ `static_cast`：最常用的转换，编译时检查
+  ```cpp
+  double d = 3.14;
+  int i = static_cast<int>(d);   // double -> int
+  void* p = malloc(100);
+  int* q = static_cast<int*>(p); // void* -> int*
+  ```
+
++ `dynamic_cast`：安全的下行转换，需要多态支持（有虚函数）
+  ```cpp
+  Base* b = new Derived;
+  Derived* d = dynamic_cast<Derived*>(b);  // 安全转换
+  // 如果转换失败，指针返回 nullptr，引用抛出异常
+  ```
+
++ `reinterpret_cast`：最危险的转换，直接重新解释内存
+  ```cpp
+  int* p = new int(42);
+  long addr = reinterpret_cast<long>(p);  // 指针 -> 整数
+  int* q = reinterpret_cast<int*>(addr);  // 整数 -> 指针
+  ```
+
+==== 强制类型转换示例
+
+```cpp
+int main() {
+    Src s;
+    Dst d1(s);                         // 显式初始化
+    Dst d2 = static_cast<Dst>(s);      // 显式转换
+    Transform(static_cast<Dst>(s));    // 显式转换
+    return 0;
+}
+```
