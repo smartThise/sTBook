@@ -123,5 +123,137 @@ $ F = m omega(t)^2 r(t) = (m omega_0^2 r_0^4) / (r_0 - V t)^3 $
 
 #cpt("h=1",unit:"m")
 #cpt("m=0.008",unit: "k g")
+#cpt("M=2.5",unit:"k g")
+#cpt("d=2",unit:"m")
+
 首先计算物块下落到地面的时间 #cpt("t=sqrt((2*h)/g)",unit:"s")
+
+
+ 
+则从桌面飞出去的速度为 #cpt("v_1=d/t",unit:"m/s ")
+
+由动量定理，
+$
+  m v_0 = (m+M) v_1
+$
+
+则得到子弹初速度为 #cpt("v_0=(m+M)*v_1/m",unit:"m/s")
 ]
+#let mf = 3000 // kg
+#let dv = 10000 // m/s
+
+= 2. Rocket Propulsion in Deep Space
+
+根据齐奥尔科夫斯基火箭方程：
+$ Delta v = v_"ex" ln(m_0 / m_f) arrow m_0 = m_f e^(Delta v / v_"ex") $
+其中负载 $m_f = 3000 "kg"$, 速度增量 $Delta v = 10000 "m/s"$。
+
+== (a) 排气速度 $v_"ex" = 2000 "m/s"$ 时：
+$ m_0 = 3000 times e^(10000 / 2000) = 3000 times e^5 approx 445239 "kg" $
+$ m_"fuel" = m_0 - m_f = 445239 - 3000 = 442239 "kg" approx 442.2 "t" $
+
+== (b) 排气速度 $v_"ex" = 5000 "m/s"$ 时：
+$ m_0 = 3000 times e^(10000 / 5000) = 3000 times e^2 approx 22167 "kg" $
+$ m_"fuel" = m_0 - m_f = 22167 - 3000 = 19167 "kg" approx 19.2 "t" $
+
+=== 3. Falling Chain on a Table
+
+#image("../Assets/hw3/hw3-img-002.png", width: 180pt)
+
+设链条长度为$L$，总质量为$M$。当链条下落距离$x$时，已经落在桌面上的链条重量为：
+$F_g = M g x / L$
+
+同时，不断有新的小段链条落到桌面上，其动量变化产生附加冲击力。由自由落体，下落$x$后的速度满足$v^2 = 2 g x$，即$v = sqrt(2 g x)$。
+
+在$dif t$时间内，落到桌面的链条长度$dif x = v dif t$，其动量变化为：
+$dif p = dif m v = (M / L dif x) v = M v^2 dif t / L$
+
+由动量定理，附加冲击力 $F' dif t = dif p$，得：
+$F' = M v^2 / L = 2 M g x / L$
+
+总作用力为重量与附加冲击力之和（牛顿第三定律保证桌子对链条的力与桌子受到的力大小相等）：
+#box($F = 3 M g x / L$)
+
+=== 4. Center\*
+
+假设原点在这个半圆的圆心，$x$ 轴在其直线段边上。
+
+$vct(r_c)=(integral rho vct(r) dif V) / (integral rho dif V ) = (integral vct(r) dif V) / (integral dif V ) = (integral vct(r) dif A) / (integral dif A )$
+
+此时让 $vct(r)=(x,y);x=r cos theta ,y=r sin theta$
+
+则对于 $x$ 分量，$integral x dif A = integral_0^pi integral_0^R (r cos theta )(r dif r dif theta) = ( integral_0^pi cos theta  d theta ) dot ( integral_0^R r^2 dif r )= 0 dot integral_0^R r^2 dif r =0$，故 $x_c=0$
+
+对于 $y$ 分量，$integral y dif A = integral_0^pi integral_0^R (r sin theta )(r dif r dif theta) = ( integral_0^pi sin theta  d theta ) dot ( integral_0^R r^2 dif r )= -cos theta |_0^pi dot integral_0^R r^2 dif r =2 dot R^3 / 3 = (2 R^3) / 3$，
+
+$integral dif A = (pi R^2)/2$，故 $y_c=(4 R) / (3 pi)$，故 $vct(r_c)=(0,(4 R) / (3 pi))$
+
+=== 5. Two Orbiting Astronauts
+
+#image("../Assets/hw3/hw3-img-004.png", width: 180pt)
+
+两宇航员质量均为$M$，用长$d$的轻绳连接，各以速率$v$绕质心转动。两宇航员绕系统质心做圆周运动，每个宇航员到质心的距离为 $d / 2$。
+
+==== a
+每个宇航员的角动量大小为 $L_i = M v d / 2$，总角动量为：
+#box($L = 2 M v d / 2 = M v d$)
+
+==== b
+绳子缩短是宇航员之间的内力作用，系统不受外力矩，因此由*角动量守恒*，新的角动量仍为：
+#box($L' = M v d$)
+
+==== c
+绳子缩短到 $d / 2$ 后，每个宇航员到质心的距离变为 $d / 4$。设新速度为 $v'$，则总角动量：
+$L' = 2 M v' d / 4 = M v' d / 2$
+
+由角动量守恒 $L' = L$：
+$M v' d / 2 = M v d$
+解得
+#box($v' = 2 v$)
+
+=== 6. Collision Involving a Rotating Rod
+
+建立坐标系：碰撞前，原杆质心在原点 $O$。碰撞瞬间，粒子 $A$ 在位置 $(+a / 2, 0)$，速度 $v_A = +omega a / 2$（沿 $y$ 方向）；粒子 $B$ 在位置 $(-a / 2, 0)$，速度 $v_B = -omega a / 2$；粒子 $C$ 静止在碰撞位置 $(a / 2, 0)$，速度为 $0$。
+
+==== a
+质心坐标由定义计算：
+$
+x_"cm" = (m a / 2 + m (-a / 2) + m a / 2) / (3 m) = (m a / 2) / (3 m) = a / 6
+$
+$y_"cm" = 0$
+
+质心位置在原杆质心与碰撞点连线上，距离原质心 $a / 6$，距离碰撞点 $a / 3$。
+
+质心速度：
+$
+v_"cm" = (m v_A + m v_B + m v_C) / (3 m) = (m omega a / 2 + m (-omega a / 2) + m 0) / (3 m) = #box($0$)
+$
+
+故碰撞前质心速度为零。
+
+==== b
+计算相对于质心（位置 $x = a / 6$）的总角动量：
+
+- 粒子 $A$：相对位置 $a / 2 - a / 6 = a / 3$，速度 $omega a / 2$，角动量 $L_A = m (a / 3) (omega a / 2) = m omega a^2 / 6$
+- 粒子 $B$：相对位置 $-a / 2 - a / 6 = -2 a / 3$，速度 $-omega a / 2$，角动量 $L_B = m (-2 a / 3) (-omega a / 2) = m omega a^2 / 3$
+- 粒子 $C$：相对位置 $a / 2 - a / 6 = a / 3$，速度 $0$，角动量 $L_C = 0$
+
+总角动量：
+#box($L = L_A + L_B + L_C = m omega a^2 / 2$)
+
+碰撞过程中，外力矩为零，*角动量守恒*，所以碰撞后瞬间角动量大小不变，仍为 $m omega a^2 / 2$。
+
+==== c
+碰撞后，计算系统绕质心的转动惯量：
+
+- 复合粒子 $A+C$：质量 $2m$，距质心 $a / 3$，$I_1 = 2m (a / 3)^2 = 2 m a^2 / 9$
+- 粒子 $B$：质量 $m$，距质心 $2 a / 3$，$I_2 = m (2 a / 3)^2 = 4 m a^2 / 9$
+
+总转动惯量：
+$I = I_1 + I_2 = 2 m a^2 / 9 + 4 m a^2 / 9 = 2 m a^2 / 3$
+
+由角动量关系 $L = I omega'$：
+$m omega a^2 / 2 = (2 / 3) m a^2 omega'$
+
+解得：
+#box($omega' = 3 omega / 4$)

@@ -12,7 +12,7 @@
     // 2. 环境与计算
     let ctx = (
       sin: calc.sin, cos: calc.cos, tan: calc.tan,
-      sqrt: calc.sqrt, pi: calc.pi
+      sqrt: calc.sqrt, pi: calc.pi, exp: calc.exp
     ) + vars
     let raw-val = eval(core-expr, scope: ctx)
 
@@ -23,7 +23,6 @@
     })
 
     // 4. 复杂度逻辑判断
-    // 检查是否含有字母变量
     let has-vars = false
     let sorted-keys = vars.keys().sorted(key: k => k.len()).rev()
     for k in sorted-keys {
@@ -32,14 +31,13 @@
         break
       }
     }
-    // 检查是否是纯数字（没有任何运算符）
     let is-single-num = core-expr.match(regex("^[\+\-]?\d+(\.\d+)?$")) != none
 
     // 5. 渲染工具
     let to-m(s) = eval(s, mode: "math")
     let res-rounded = str(calc.round(raw-val, digits: digits))
     
-    // 公式部分：字母紧凑；数值部分：* 变 times
+    // 公式部分：字母紧凑 (* -> "")；数值运算：显示乘号 (* -> times)
     let clean-algebra(s) = s.replace("*", "")
     let beauty-num(s) = s.replace("*", " #math.times ")
 
@@ -47,16 +45,12 @@
     block(inset: 0pt, breakable: false)[
       #set par(leading: 0pt) 
       $ 
-        // 核心逻辑控制
         #{
           if is-single-num {
-            // 情况1：右侧只有数字 -> 一段 (var = num)
             [ #to-m(var-name) = #res-rounded ]
           } else if not has-vars {
-            // 情况2：只有数字运算 -> 两段 (var = 1*2 = 2)
             [ #to-m(var-name) = #to-m(beauty-num(core-expr)) = #res-rounded ]
           } else {
-            // 情况3：含有字母公式 -> 三段 (var = 字母 = 代入 = 结果)
             let substituted = core-expr
             for k in sorted-keys {
               let val = str(calc.round(vars.at(k), digits: digits))
@@ -66,8 +60,12 @@
           }
         }
         
-        // 单位
-        #if unit != "" [ #h(2pt) #math.upright(to-m(unit)) ]
+        // 核心修正：单位处理
+        // 将 "/" 替换为 "\/" 强制 Typst 使用行内斜杠而不是分式，同时保留了 "^" 的幂运算功能
+        #if unit != "" [ 
+          #h(2pt) 
+          #math.upright(to-m(unit.replace("/", "\/"))) 
+        ]
       $
     ]
   }
