@@ -4,11 +4,12 @@
 #import "@preview/cuti:0.2.1": show-cn-fakebold
 #import "@preview/diagraph:0.3.6":*
 
-#let mgraph(num: 1, gap: 20pt, captions: (), prefix: "图", start: 1, ..graphs) = {
+#let mgraph(num: 1, gap: 20pt, captions: (), prefix: "图", start: 1, nodesep: 0.8, ranksep: 1.0, ..graphs) = {
   let inject-defaults(src) = {
+    let spacing = "nodesep=" + str(nodesep) + "\nranksep=" + str(ranksep) + "\n"
     src.replace(
       "{",
-      "{\nnode [shape=circle]\nedge [color=black]\n",
+      "{\nnode [shape=circle]\nedge [color=black]\n" + spacing,
       count: 1
     )
   }
@@ -17,7 +18,8 @@
   let gs = graphs.pos()
 
   let cols = gs.enumerate().map(((i, g)) => {
-    let r = render(inject-defaults(g.text), engine: "neato")
+    let engine = if g.text.contains("digraph") { "dot" } else { "neato" }
+    let r = render(inject-defaults(g.text), engine: engine)
     let cap = if i < caps.len() { caps.at(i) } else { none }
     if cap != none {
       stack(dir: ttb, spacing: 4pt,
