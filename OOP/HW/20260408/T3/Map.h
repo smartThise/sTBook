@@ -11,4 +11,5 @@ public:
     int size() const;
     int & operator [](const string & k);
     int operator [](const string & k) const;
+    // 这么安全？！？！？！
 };
