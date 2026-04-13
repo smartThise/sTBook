@@ -10,6 +10,7 @@ int  main() {
 		CHugeInt a(s);
 		CHugeInt b(n);
 
+		// cout << a << ' ' << b << endl;
 		cout << a + b << endl;
 		cout << n + a << endl;
 		cout << a + n << endl;
