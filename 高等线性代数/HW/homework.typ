@@ -1,4 +1,4 @@
-#import "../module/myutils.typ":*
+#import "../../module/myutils.typ":*
 
 #show:conf
 
@@ -91,3 +91,7 @@ $M_3 = mat(1, 1, 0, 0; 0, 1, 0, 0; 0, 0, 1, 0; 0, 0, 1, 1)$
 
  $f(lambda) = (lambda - 1)^4$。
 - *最小多项式：* $m(lambda) = "lcm"((lambda - 1)^2, (lambda - 1)^2) = (lambda - 1)^2$。
+
+== 第七周作业 #datetime(day:19,month:4,year:2026).display()
+
+=== 1.
