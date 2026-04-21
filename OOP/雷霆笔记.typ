@@ -2726,3 +2726,823 @@ I am running and flying
 I am running
 I am running
 ```
+
+== 柒 虚函数 #datetime(day:14,month:4,year:2026).display()
+<柒-虚函数-2026.4.14>
+
+=== 一、向上类型转换
+
+派生类对象/引用/指针转换成基类对象/引用/指针，称为*向上类型转换*。只对public继承有效，对private、protected继承无效。
+
+向上类型转换可以由编译器自动完成，是一种隐式类型转换。凡是接受基类对象/引用/指针的地方（如函数参数），都可以使用派生类对象/引用/指针。
+
+```cpp
+class Base {
+public:
+    void print() { cout << "Base::print()" << endl; }
+};
+class Derive : public Base {
+public:
+    void print() { cout << "Derive::print()" << endl; }
+};
+void fun(Base obj) { obj.print(); }
+int main() {
+    Derive d;
+    d.print();    // Derive::print()
+    fun(d);       // Base::print() —— 早绑定！
+    return 0;
+}
+```
+
+=== 二、对象切片
+
+当派生类的*对象*（不是指针或引用）被转换为基类的对象时，派生类的对象被*切片*为对应基类的子对象。派生类新定义的数据和方法会丢失。
+
+```cpp
+class Pet {
+public: int att_i;
+    Pet(int x=0): att_i(x) {};
+};
+class Dog: public Pet {
+public: int att_j;
+    Dog(int x=0, int y=0): Pet(x), att_j(y) {}
+};
+int main() {
+    Pet p(1);
+    Dog g(2,3);
+    cout << p.att_i << endl;        // 1
+    cout << g.att_i << " " << g.att_j << endl; // 2 3
+    p = g; // 对象切片，只赋值基类数据
+    cout << p.att_i << endl;        // 2
+    //cout << p.att_j << endl;      // 编译错误，没有该参数
+    return 0;
+}
+```
+
+*对象切片两种情况：*函数传参（值传递）和赋值操作。都会丢失派生类新增的数据和方法。
+
+=== 三、指针（引用）的向上转换
+
+当派生类的指针（引用）被转换为基类指针（引用）时，*不会创建新的对象*，但只保留基类的接口。引用向上转换后修改基类存在的数据，会影响派生类。
+
+```cpp
+Dog g(2,3);
+Pet& p = g;       // 引用向上转换
+cout << p.att_i << endl;  // 2
+p.att_i = 1;              // 修改基类存在的数据
+cout << g.att_i << " " << g.att_j << endl; // 1 3，影响派生类
+```
+
+但引用向上转换后，函数调用仍是*早绑定*：
+
+```cpp
+class Instrument {
+public:
+    void play() { cout << "Instrument::play" << endl; }
+};
+class Wind : public Instrument {
+public:
+    void play() { cout << "Wind::play" << endl; }
+};
+void tune(Instrument& i) { i.play(); }
+int main() {
+    Wind flute;
+    tune(flute);    // Instrument::play —— 早绑定！
+    Instrument &inst = flute;
+    inst.play();    // Instrument::play —— 早绑定！
+    return 0;
+}
+```
+
+=== 四、函数调用捆绑
+
+把函数体与函数调用相联系称为*捆绑*(binding)。
+
++ *早捆绑*(early binding)：捆绑在程序运行之前（由编译器和连接器）完成。上面的程序中 `tune` 里的 `i.play()` 与 `Instrument::play()` 绑定就是早捆绑。
++ *晚捆绑*(late binding)：捆绑根据对象的实际类型，发生在程序运行时，又称动态捆绑或运行时捆绑。*晚捆绑只对类中的虚函数起作用，使用 `virtual` 关键字声明。*
+
+=== 五、虚函数和虚函数表
+
+对于被派生类重新定义的成员函数，若它在基类中被声明为*虚函数*，则通过基类指针或引用调用该成员函数时，编译器将根据所指（或引用）对象的实际类型决定调用哪个函数。
+
+```cpp
+class Instrument {
+public:
+    virtual void play() { cout << "Instrument::play" << endl; }
+};
+class Wind : public Instrument {
+public:
+    void play() { cout << "Wind::play" << endl; } // 重写覆盖
+};
+void tune(Instrument& ins) { ins.play(); }
+int main() {
+    Wind flute;
+    tune(flute); // Wind::play —— 晚绑定！
+    return 0;
+}
+```
+
+*晚绑定只对指针和引用有效！*值传递会产生对象切片，仍是早绑定：
+
+```cpp
+void tune(Instrument ins) { ins.play(); } // 值传递，对象切片，早绑定
+```
+
+==== 虚函数表（VTABLE）
+
++ *虚函数表*(VTABLE)：每个包含虚函数的类用于存储虚函数地址的表（唯一性，即使没有重写虚函数也有自己的表）。
++ *虚函数指针*(VPTR)：每个包含虚函数的类对象中，编译器秘密放一个指针，指向这个类的VTABLE。
++ 编译期间：建立VTABLE，记录每个类或其基类中所有已声明的虚函数入口地址。
++ 运行期间：建立VPTR，在构造函数中发生，指向相应的VTABLE。
+
+```cpp
+class B{
+    int i; float j;
+public:
+    virtual void fun1() { cout << "B::fun1()" << endl; }
+    virtual void fun2() { cout << "B::fun2()" << endl; }
+};
+class D: public B{
+public:
+    double k;
+    virtual void fun1() { cout << "D::fun1()" << endl; }
+};
+int main() {
+    B b; D d;
+    B *pB = &d;
+    pB->fun1(); // D::fun1() —— 通过VPTR查找VTABLE，晚绑定
+    return 0;
+}
+```
+
+==== 存放类型信息
+
+```cpp
+class NoVirtual{ int a; public: void f1() const {} int f2() const {return 1;} };
+class OneVirtual{ int a; public: virtual void f1() const {} int f2() const {return 1;} };
+class TwoVirtual{ int a; public: virtual void f1() const {} virtual int f2() const {return 1;} };
+// 64位机器：
+// sizeof(int) = 4
+// sizeof(NoVirtual) = 4
+// sizeof(void*) = 8
+// sizeof(OneVirtual) = 12  (int 4 + VPTR 8)
+// sizeof(TwoVirtual) = 12  (多个虚函数共享同一个VTABLE)
+```
+
+=== 六、虚函数和构造函数、析构函数
+
+==== 虚函数与构造函数
+
++ 构造函数*不能也不必*是虚函数。不能：如果构造函数是虚函数，创建对象时需要先知道VPTR，但VPTR在构造函数调用前未初始化。不必：构造函数调用时明确指定要创建对象的类型。
++ 在构造函数中调用虚函数，被调用的只是这个函数的*本地版本*（当前类的版本），即虚机制在构造函数中不工作。
++ 原因：基类的构造函数比派生类先执行，调用基类构造函数时派生类中的数据成员还没有初始化。
+
+```cpp
+class Base {
+public:
+    virtual void foo(){cout<<"Base::foo"<<endl;}
+    Base(){foo();} // 构造函数中调用虚函数
+    void bar(){foo();};
+};
+class Derived : public Base {
+public:
+    int _num;
+    void foo(){cout<<"Derived::foo"<<_num<<endl;}
+    Derived(int j):Base(),_num(j){}
+};
+int main() {
+    Derived d(0); // 输出 Base::foo（构造函数中虚机制不工作）
+    Base &b = d;
+    b.bar();      // 输出 Derived::foo0
+    b.foo();      // 输出 Derived::foo0
+    return 0;
+}
+```
+
+==== 虚函数与析构函数
+
++ 析构函数*能是虚的，且常常是虚的*。虚析构函数仍需定义函数体。
++ 若基类析构不是虚函数，则删除基类指针所指派生类对象时，编译器仅自动调用基类的析构函数，可能导致*内存泄漏*。
++ 在析构函数中调用虚函数，虚机制同样不工作。
+
+*重要原则：总是将基类的析构函数设置为虚析构函数！*
+
+```cpp
+class Base1 { public: ~Base1() { cout << "~Base1()\n"; } };
+class Derived1 : public Base1 { public: ~Derived1() { cout << "~Derived1()\n"; } };
+class Base2 { public: virtual ~Base2() { cout << "~Base2()\n"; } };
+class Derived2 : public Base2 { public: ~Derived2() { cout << "~Derived2()\n"; } };
+int main() {
+    Base1* bp = new Derived1;
+    delete bp;   // ~Base1() —— 只调用了基类析构！内存泄漏！
+    Base2* b2p = new Derived2;
+    delete b2p;  // ~Derived2() ~Base2() —— 虚析构，正确调用
+    return 0;
+}
+```
+
+=== 七、重写覆盖与重写隐藏
+
+==== 三者对比
+
+#table(
+  columns: (auto, 1fr, 1fr, 1fr),
+  align: center + horizon,
+  stroke: 0.5pt,
+  table.cell(colspan: 4)[*重载、重写隐藏与重写覆盖*],
+  [], [重载(overload)], [重写隐藏(redefining)], [重写覆盖(override)],
+  [作用域], [相同（同一个类中，或均为全局函数）], [不同（派生类和基类）], [不同（派生类和基类）],
+  [函数名], [相同], [相同], [相同],
+  [函数参数], [不同], [相同/不同], [相同],
+  [返回值], [不能仅返回值不同], [无要求], [相同或协变的],
+  [其他要求], [—], [若参数相同，则基类函数不能为虚函数], [基类函数为虚函数],
+)
+
+*关键区别：*重写覆盖要求基类的函数是虚函数且参数相同；重写隐藏是参数不同或基类函数不是虚函数。重写覆盖会使派生类虚函数表中基类的虚函数指针被派生类的虚函数指针覆盖；重写隐藏不会。
+
+==== 重写覆盖示例
+
+```cpp
+class Base{
+public:
+    virtual void foo(){cout<<"Base::foo()"<<endl;}
+    virtual void foo(int){cout<<"Base::foo(int)"<<endl;} // 重载
+};
+class Derived1 : public Base {
+public:
+    void foo(int){cout<<"Derived1::foo(int)"<<endl;} // 重写覆盖
+};
+class Derived2 : public Base {
+public:
+    void foo(float){cout<<"Derived2::foo(float)"<<endl;} // 参数写错，是重写隐藏！
+};
+int main() {
+    Derived1 d1; Derived2 d2;
+    Base* p1 = &d1; Base* p2 = &d2;
+    p1->foo(3);   // Derived1::foo(int) —— 重写覆盖
+    p2->foo(3.0); // Base::foo(int) —— 重写隐藏，虚函数表中是基类的
+    return 0;
+}
+```
+
+=== 八、override 和 final 关键字
+
+==== override
+
+`override` 关键字明确告诉编译器一个函数是对基类中虚函数的重写覆盖，编译器将对各项条件进行检查。如果没有 `override` 但满足条件，也能实现重写覆盖——它只是编译器的一个检查。
+
+```cpp
+class Derived3 : public Base {
+public:
+    void foo(int) override {cout<<"Derived3::foo(int)"<<endl;}; // 正确
+    //void foo(float) override {}; // 参数不同，编译错误
+    //void bar() override {};     // bar非虚函数，编译错误
+};
+```
+
+==== final
+
+`final` 关键字：在虚函数声明中使用时，确保函数不可被派生类重写；在类定义中使用时，指定此类不可被继承。
+
+```cpp
+class Base{ virtual void foo(){}; };
+class A: public Base {
+    void foo() final {}; // 重写覆盖，且是最终覆盖
+    //void bar() final {}; // bar非虚函数，编译错误
+};
+class B final : public A{
+    //void foo() override {}; // A::foo已是最终覆盖，编译错误
+};
+//class C : public B{}; // B不能被继承，编译错误
+```
+
+=== 九、const 对重写覆盖的影响（课后探究）
+
+使用 `const` 修饰成员函数，可能导致重写覆盖失效（变成重写隐藏）：
+
+```cpp
+class Base1{
+public:
+    virtual void f() {cout << "Base1::f" << endl;}
+};
+class Derive1: public Base1{
+public:
+    void f() const {cout << "Derive1::f" << endl;} // 重写覆盖失效，其实是重写隐藏
+    using Base1::f; // 恢复被隐藏的基类函数
+};
+int main(){
+    Derive1 a; const Derive1 b;
+    a.f(); // Base1::f（非常量对象优先匹配Base1::f）
+    b.f(); // Derive1::f（常量对象调用Derive1::f）
+    return 0;
+}
+```
+
+=== 十、虚函数的返回值（课后探究）
+
+一般来说，派生类虚函数的返回类型应该和基类相同；或者，是*协变*(Covariant)的——基类和派生类的指针/引用是协变的。
+
+```cpp
+class Instrument {
+public:
+    virtual Instrument& getObj() { return *this; }
+};
+class Wind : public Instrument {
+public:
+    virtual Wind& getObj() { return *this; } // Wind&和Instrument&协变
+};
+```
+
+协变条件：都是指针（不能是多级指针）、都是左值引用或都是右值引用，且基类返回类型中被引用的类是派生类返回类型中被引用的类的祖先类。
+
+=== 十一、课后练习
+
+根据以下代码实现 Animal、Bird、Fish 类：
+
+```cpp
+void action(Animal* pAnimal) {
+    pAnimal -> sing();
+    pAnimal -> swim();
+}
+int main(){
+    Animal *myBird = new Bird();
+    Animal *myFish = new Fish();
+    action(myBird);
+    action(myFish);
+    delete myBird;
+    delete myFish;
+    return 0;
+}
+```
+
+参考输出：
+```text
+bird is singing.
+bird can't swim.
+fish can't sing.
+fish is swimming.
+bird has gone.
+fish has gone.
+```
+
+=== 附录：利用返回值优化提高执行效率
+
+返回值优化（RVO）条件：
++ 返回的值类型与函数签名的返回值类型相同
++ 返回的是一个局部对象的左值
+
+```cpp
+Test fn1(){ Test tmp; return tmp; } // 满足RVO条件
+Test&& fn2(){ Test tmp; return move(tmp); } // 不建议：d指向被析构的tmp
+int main(){
+    const Test& a = fn1();  // (4) 常量左值引用接收
+    Test&& b = fn1();       // (5) 右值引用接收
+    Test c = fn1();         // (6) 构造新对象接收
+    // Test&& d = fn2();    // (7) 运行错误
+    return 0;
+}
+```
+
+== 捌 多态与模板 #datetime(day:21,month:4,year:2026).display()
+<捌-多态与模板-2026.4.21>
+
+=== 一、纯虚函数与抽象类
+
+虚函数还可以进一步声明为*纯虚函数*：
+
+```cpp
+virtual 返回类型 函数名(形式参数) = 0;
+```
+
+包含纯虚函数的类被称为*抽象类*。抽象类*不允许定义对象*，主要用途是为派生类规定共性"接口"。
+
+```cpp
+class A {
+public:
+    virtual void f() = 0; // 可在类外定义函数体提供默认实现
+};
+A obj; // 编译错误！不准抽象类定义对象！
+```
+
+抽象类特点：
++ 不允许定义对象
++ 只能为派生类提供接口
++ 能避免对象切片：保证只有指针和引用能被向上类型转换
+
+基类纯虚函数被派生类重写覆盖之前仍是纯虚函数。因此当继承一个抽象类时，除纯虚析构函数外，必须实现所有纯虚函数，否则继承出的类也是抽象类。
+
+```cpp
+class Pet {
+public:
+    virtual void motion()=0;
+};
+void Pet::motion(){ cout << "Pet motion: " << endl; }
+class Dog: public Pet {
+public:
+    void motion() override {Pet::motion(); cout << "dog run" << endl; }
+};
+class Bird: public Pet {
+public:
+    void motion() override {Pet::motion(); cout << "bird fly" << endl; }
+};
+int main() {
+    Pet* p = new Dog;
+    p->motion(); // Pet motion: dog run
+    p = new Bird;
+    p->motion(); // Pet motion: bird fly
+    return 0;
+}
+```
+
+=== 二、纯虚析构函数
+
+析构函数也可以是纯虚函数：
++ 纯虚析构函数*仍然需要函数体*
++ 目的：使基类成为抽象类，不能创建基类的对象
+
+```cpp
+class Base { public: virtual ~Base()=0; };
+Base::~Base() {} // 必须有函数体
+class Derive : public Base {};
+int main() {
+    //Base b;  // 编译错误，基类是抽象类
+    Derive d1; // 派生类不必实现纯虚析构函数
+    return 0;
+}
+```
+
+*与一般纯虚函数的区别：*对于纯虚析构函数，即便派生类中不显式实现，编译器也会自动合成默认析构函数。因此只要派生类覆盖了其他纯虚函数，该派生类就不是抽象类。
+
+=== 三、向下类型转换
+
+基类指针/引用转换成派生类指针/引用，称为*向下类型转换*。
+
+为什么要向下类型转换？当我们用基类指针表示各种派生类时，保留了共性但丢失了特性。使用向下类型转换可以表现特性。
+
+==== dynamic_cast
+
+安全的向下类型转换，使用虚函数表中的信息判断实际类型：
+
+```cpp
+T2* pObj = dynamic_cast<T2*>(obj_p);    // 运行时失败返回nullptr
+T2& refObj = dynamic_cast<T2&>(obj_r);  // 运行时失败抛出bad_cast异常
+```
+
+T1必须是多态类型（声明或继承了至少一个虚函数的类）。
+
+==== static_cast
+
+编译时静态浏览类层次，只检查继承关系，*不安全*：
+
+```cpp
+D* pd1 = static_cast<D*>(&b);  // 有继承关系就允许，但不安全
+D* pd2 = dynamic_cast<D*>(&b); // 运行时检查，安全
+```
+
+==== dynamic_cast 与 static_cast 对比
+
+#table(
+  columns: (auto, 1fr, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [], [dynamic_cast], [static_cast],
+  [检查时机], [运行时], [编译时],
+  [安全性], [安全（失败返回nullptr/异常）], [不安全（不保证指向正确类型）],
+  [性能], [较慢（需要RTTI）], [较快],
+  [要求], [类必须有虚函数], [只需有继承关系],
+)
+
+*重要原则：*
++ 指针或引用的向上转换总是安全的
++ 向下转换时用 `dynamic_cast`，安全检查
++ 避免对象之间的转换
+
+==== 向下类型转换示例
+
+```cpp
+class Pet { public: virtual ~Pet() {} };
+class Dog : public Pet { public: void run() { cout << "dog run" << endl; } };
+class Bird : public Pet { public: void fly() { cout << "bird fly" << endl; } };
+void action(Pet* p) {
+    auto d = dynamic_cast<Dog*>(p);
+    auto b = dynamic_cast<Bird*>(p);
+    if (d) d->run();
+    else if(b) b->fly();
+}
+int main() {
+    Pet* p[2];
+    p[0] = new Dog;
+    p[1] = new Bird;
+    for (int i = 0; i < 2; ++i) action(p[i]);
+    return 0;
+}
+```
+
+=== 四、多重继承中的虚函数
+
+Best Practice：
++ 最多继承一个非抽象类（is-a）
++ 可以继承多个抽象类（接口）
+
+这样避免了多重继承的二义性，且一个对象可以实现多个接口。
+
+```cpp
+class WhatCanSpeak {
+public:
+    virtual ~WhatCanSpeak() {}
+    virtual void speak() = 0;
+};
+class WhatCanMotion {
+public:
+    virtual ~WhatCanMotion() {}
+    virtual void motion() = 0;
+};
+class Human : public WhatCanSpeak, public WhatCanMotion {
+    void speak() { cout << "say" << endl; }
+    void motion() { cout << "walk" << endl; }
+};
+void doSpeak(WhatCanSpeak* obj) { obj->speak(); }
+void doMotion(WhatCanMotion* obj) { obj->motion(); }
+int main() {
+    Human human;
+    doSpeak(&human); // say
+    doMotion(&human); // walk
+    return 0;
+}
+```
+
+=== 五、多态（Polymorphism）
+
+按照基类的接口定义，调用指针或引用所指对象的接口函数，函数执行过程因对象实际所属派生类的不同而呈现不同的效果——这就是"多态"。
+
++ 利用基类指针/引用调用函数时：虚函数在*运行时*确定执行哪个版本；非虚函数在*编译时*绑定
++ 利用类的对象直接调用函数时：无论什么函数，均在*编译时*绑定
+
+*产生多态效果的条件：继承 && 虚函数 && (引用 或 指针)*
+
+多态使得C++可以用一段相同的代码，在运行时完成不同的任务。好处：
++ 通过基类定好接口后，不必对每一个派生类特殊处理，大大提高程序的可复用性
++ 不同派生类对同一接口的实现不同，提高了程序可拓展性和可维护性
+
+```cpp
+class Animal{
+public:
+    void action() { speak(); motion(); }
+    virtual void speak() { cout << "Animal speak" << endl; }
+    virtual void motion() { cout << "Animal motion" << endl; }
+};
+class Bird : public Animal {
+public:
+    void speak() { cout << "Bird singing" << endl; }
+    void motion() { cout << "Bird flying" << endl; }
+};
+class Fish : public Animal {
+public:
+    void speak() { cout << "Fish cannot speak ..." << endl; }
+    void motion() { cout << "Fish swimming" << endl; }
+};
+int main() {
+    Animal *pBase1 = new Fish;
+    Animal *pBase2 = new Bird;
+    pBase1->action(); // Fish cannot speak ... / Fish swimming
+    pBase2->action(); // Bird singing / Bird flying
+    return 0;
+}
+```
+
+==== Template Method 设计模式
+
+在接口的一个方法中定义算法的骨架，将一些步骤的实现延迟到子类中，使得子类可以在不改变算法结构的情况下重新定义算法中的某些步骤。
+
+```cpp
+class Base{
+public:
+    void action() { step1(); step2(); step3(); } // 算法骨架
+    virtual void step1() { cout << "Base::step1" << endl; }
+    virtual void step2() { cout << "Base::step2" << endl; }
+    virtual void step3() { cout << "Base::step3" << endl; }
+};
+class Derived1 : public Base{
+    void step1() { cout << "Derived1::step1" << endl; }
+};
+class Derived2 : public Base{
+    void step2() { cout << "Derived2::step2" << endl; }
+};
+int main(){
+    Base* ba[] = {new Base, new Derived1, new Derived2};
+    for (int i = 0; i < 3; ++i) ba[i]->action();
+    return 0;
+}
+```
+
+=== 六、函数模板和类模板
+
+继承与组合提供了重用*对象代码*的方法，而C++的模板特征提供了重用*源代码*的方法。
+
+==== 函数模板
+
+将函数的参数类型也定义为一种特殊的"参数"：
+
+```cpp
+template <typename T>
+T sum(T a, T b) { return a + b; }
+// typename 也可换为 class
+```
+
+编译器能自动推导出实际参数的类型（实例化）：
+
+```cpp
+cout << sum(9, 3);     // int
+cout << sum(2.1, 5.7); // double
+// cout << sum(9, 2.1); // 编译错误，类型不一致
+cout << sum<int>(9, 2.1); // 手工指定类型
+```
+
+==== 函数模板示例
+
+```cpp
+template<class T>
+void sort(T* data, int len) {
+    for(int i = 0; i < len; i++){
+        for(int j = i + 1; j < len; j++) {
+            if(data[i] > data[j])
+                std::swap(data[i], data[j]);
+        }
+    }
+}
+template<class T>
+void output(T* data, int len) {
+    for(int i = 0; i < len; i++)
+        std::cout << data[i] << " ";
+    std::cout << std::endl;
+}
+int main() {
+    int arr_a[] = {3,2,4,1,5};
+    sort(arr_a, 5); output(arr_a, 5);
+    float arr_b[] = {3.2, 2.1, 4.3, 1.5, 5.7};
+    sort(arr_b, 5); output(arr_b, 5);
+    return 0;
+}
+```
+
+模板也可以支持自定义类型，只要类型满足函数的要求（如定义了 `operator>`）：
+
+```cpp
+class MyInt {
+public:
+    int data;
+    MyInt(int val): data(val) {};
+    bool operator>(const MyInt& b){ return data > b.data; }
+    friend std::ostream& operator<<(std::ostream& out, const MyInt& obj){
+        out << obj.data; return out;
+    }
+};
+```
+
+==== 模板原理
+
+对模板的处理是在*编译期*进行的。每当编译器发现对模板的一种参数的使用，就生成对应参数的一份代码。
+
+这也带来了问题：模板库*必须在头文件中实现*，不可以分开编译。因为分开编译时，`.cpp` 文件只看到模板声明，看不到定义，无法实例化，链接时会找不到定义。
+
+==== 类模板
+
+将类中的类型信息抽取出来用模板参数替换：
+
+```cpp
+template <typename T> class A {
+    T data;
+public:
+    A(T _data): data(_data) {}
+    void print();
+};
+template<typename T>
+void A<T>::print() { cout << data << endl; } // 类外定义
+int main() {
+    A<int> a(1);
+    a.print();
+    return 0;
+}
+```
+
+类模板的模板参数：
++ *类型参数*：使用 `typename` 或 `class` 标记
++ *非类型参数*：整数、枚举、指针、引用。无符号整数比较常用
+
+```cpp
+template<typename T, unsigned size>
+class array { T elems[size]; };
+array<char, 10> array0;
+```
+
+所有模板参数必须在编译期确定，不可以使用变量（可以使用常量或具体数值）。
+
+==== 类模板示例
+
+```cpp
+template<class T, unsigned size>
+class MyArr {
+    T data[size];
+public:
+    void sort(){
+        for(int i = 0; i < size; i++)
+            for(int j = i + 1; j < size; j++)
+                if(data[i] > data[j])
+                    std::swap(data[i], data[j]);
+    }
+    void output(){
+        for(int i = 0; i < size; i++)
+            std::cout << data[i] << " ";
+        std::cout << std::endl;
+    }
+    void input(){
+        for(int i = 0; i < size; i++)
+            std::cin >> data[i];
+    }
+};
+int main() {
+    MyArr<int, 5> arr_a;
+    arr_a.input(); arr_a.sort(); arr_a.output();
+    MyArr<float, 5> arr_b;
+    arr_b.input(); arr_b.sort(); arr_b.output();
+    return 0;
+}
+```
+
+=== 七、模板与多态
+
+模板也是多态的一种体现，但模板的关联是在*编译期*处理，称为*静多态*。
+
+#table(
+  columns: (auto, 1fr, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [], [静多态（模板）], [动多态（虚函数）],
+  [处理时机], [编译期], [运行时],
+  [特点], [高效，省去函数调用；编译后代码增多], [灵活方便；存在函数调用；侵入式，必须继承],
+  [关联方式], [泛型标记+函数重载], [继承+虚函数],
+)
+
+=== 八、成员函数模板（自学）
+
+普通类的成员函数也可以定义为模板函数：
+
+```cpp
+class normal_class {
+public:
+    int value;
+    template<typename T> void set(T const& v) { value = int(v); }
+    template<typename T> T get();
+};
+template<typename T>
+T normal_class::get() { return T(value); }
+```
+
+模板类的成员函数也可以有额外的模板参数：
+
+```cpp
+template<typename T0> class A {
+    T0 value;
+public:
+    template<typename T1> void set(T1 const& v) { value = T0(v); }
+    template<typename T1> T1 get();
+};
+template<typename T0> template<typename T1> // 注意：不能写成 template<typename T0, typename T1>
+T1 A<T0>::get(){ return T1(value); }
+int main() {
+    A<int> a;
+    a.set(5);                    // 自动推导
+    double t = a.get<double>();  // 手动指定返回值类型
+    return 0;
+}
+```
+
+=== 九、课后练习
+
+==== 练习1
+
+重载、重写、虚函数重写的情况下，编译器如何处理返回值不同的函数？
+
+```cpp
+class Base {
+public:
+    virtual void f() {std::cout << "Call Base void f() " << std::endl;}
+    virtual void g() {std::cout << "Call Base void g() " << std::endl;}
+    void h() {std::cout << "Call Base void h()" << std::endl;}
+};
+class Derived : public Base {
+public:
+    void f() { std::cout << "Call Derive void f() " << std::endl; } // 重写覆盖
+    int g() { std::cout << "Call Derive int g()" << std::endl; return 0; } // 编译错误！
+    int h() { std::cout << "Call Base int h()" << std::endl; return 0; } // 重写隐藏
+};
+```
+
+==== 练习2
+
+仿照 C++ 的 vector 实现一个 `Vector` 类，要求使用模板以支持任意类型的元素，并且至少具有以下成员函数：
+
++ `void push_back();`
++ `void pop_back();`
++ `int size();`
++ `operator[]();`
