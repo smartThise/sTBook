@@ -8,20 +8,20 @@ void Splash::buildMap() {
 			tmp = getchar();
 			if (tmp == '1' || tmp == '2' || tmp == '3') {
 				this->map[i][j] = new Water(tmp - '0', i, j, this);
-				cout << i << ' ' << j << "是 WATER\n";
+				// cout << i << ' ' << j << "是 WATER\n";
 			}
 			else if (tmp == '#') {
 				this->map[i][j] = new Void(i, j, this);
-				cout << i << ' ' << j << "是 VOID\n";
+				// cout << i << ' ' << j << "是 VOID\n";
 			}
 			else if (tmp == '*') {
 				this->map[i][j] = new Barrier(i, j, this);
-				cout << i << ' ' << j << "是 BARRIER\n";
+				// cout << i << ' ' << j << "是 BARRIER\n";
 			}
 			else if (tmp == '-') {
 				tmp = getchar();
 				this->map[i][j] = new Toxic(tmp - '0', i, j, this);
-				cout << i << ' ' << j << "是 TOXIC\n";
+				// cout << i << ' ' << j << "是 TOXIC\n";
 			}
 			getchar();
 		}
