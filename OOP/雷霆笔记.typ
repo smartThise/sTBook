@@ -3546,3 +3546,454 @@ public:
 + `void pop_back();`
 + `int size();`
 + `operator[]();`
+
+== 玖 模板与STL初步 #datetime(day:28,month:4,year:2026).display()
+<玖-模板与STL初步-2026.4.28>
+
+=== 一、命名空间
+
+为了避免在大规模程序中使用各种C++库时标识符命名冲突，C++引入了 `namespace`（命名空间）。
+
+标准C++库中所有内容（常量、变量、结构、类和函数等）都被定义在命名空间 `std` 中。
+
+定义命名空间：
+
+```cpp
+namespace A {
+    int x, y;
+}
+```
+
+使用命名空间：
+
+```cpp
+A::x = 3;
+A::y = 6;
+```
+
+使用 `using` 声明简化：
+
+```cpp
+using namespace A;    // 使用整个命名空间，所有成员直接可用
+x = 3; y = 6;
+
+using A::x;           // 使用部分成员
+x = 3; A::y = 6;
+```
+
+#strong[任何情况下，都不应出现命名冲突。]
+
+=== 二、STL简介
+
+标准模板库（Standard Template Library，STL）是高效的C++软件库，包含4个组件：*算法、容器、函数、迭代器*。
+
+关键理念：将"在数据上执行的操作"与"要执行操作的数据"分离。
+
++ STL的命名空间是 `std`
++ 一般使用 `std::name` 来使用STL的函数或对象
++ 也可以使用 `using namespace std`（不推荐在大型工程中使用，容易污染命名空间）
+
+=== 三、STL容器
+
+容器是包含、放置数据的工具，通常为数据结构。包括：简单容器、序列容器、关系容器。
+
+==== pair
+
+最简单的容器，由两个单独数据组成：
+
+```cpp
+template<class T1, class T2> struct pair {
+    T1 first;
+    T2 second;
+};
+```
+
+使用：
+
+```cpp
+std::pair<int, int> t;
+t.first = 4; t.second = 5;
+// 创建：使用 make_pair，自动推导类型
+auto t = std::make_pair("abc", 7.8);
+```
+
+pair 支持小于、等于等比较运算符：先比较 first，后比较 second。
+
+```cpp
+std::make_pair(1, 4) < std::make_pair(2, 3);  // true
+std::make_pair(1, 4) > std::make_pair(1, 2);  // true
+```
+
+==== tuple（C++11）
+
+pair的扩展，由若干成员组成的元组类型：
+
+```cpp
+template<class ...Types> class tuple;
+```
+
+创建：`make_tuple` 和 `tie` 函数：
+
+```cpp
+auto t = std::make_tuple("abc", 7.8, 123, '3');
+// tie 返回左值引用的元组
+std::string x; double y; int z;
+std::tie(x, y, z) = std::make_tuple("abc", 7.8, 123);
+```
+
+通过 `std::get` 获取数据（下标需在编译时确定）：
+
+```cpp
+auto v0 = std::get<0>(t);
+int i = 0;
+// v = std::get<i>(t); // 编译错误！下标必须编译时常量
+```
+
+tuple 常用于函数多返回值的传递：
+
+```cpp
+std::tuple<int, double> f(int x) {
+    return std::make_tuple(x, double(x) / 2);
+}
+int main() {
+    int xval; double half_x;
+    std::tie(xval, half_x) = f(7);
+    return 0;
+}
+```
+
+==== vector
+
+会自动扩展容量的数组，STL中最基本的序列容器：
+
+```cpp
+template<class T, class Allocator = std::allocator<T>>
+class vector;
+```
+
+常用操作：
+
+```cpp
+std::vector<int> x;       // 创建
+x.size();                  // 当前长度
+x.clear();                 // 清空
+x.push_back(1);            // 末尾添加（高速）
+x.pop_back();              // 末尾删除（高速）
+x.insert(x.begin()+1, 5);  // 中间添加（低速）
+x.erase(x.begin()+1);      // 中间删除（低速）
+```
+
+==== vector原理
+
+除了 `size`，另保存 `capacity`（最大容量限制）。如果 `size` 达到了 `capacity`，则另申请一片 `capacity*2` 的空间，并整体迁移内容。
+
++ `push_back` 等修改 vector 大小的方法可能会使*所有迭代器失效*（因为整体迁移）
++ `insert/erase` 后，所修改位置之后的所有迭代器失效
++ 时间复杂度为均摊 O(1)
+
+=== 四、迭代器
+
+一种检查容器内元素并遍历元素的数据类型，为遍历不同的聚合结构提供统一的接口。使用上类似指针。
+
+以 vector 为例：
+
+```cpp
+vector<int>::iterator iter; // 定义迭代器
+x.begin();  // 第一个元素的迭代器
+x.end();    // 最后一个元素之后的位置的迭代器
+// begin 和 end 构成左闭右开区间
+```
+
+迭代器操作：
+
++ `++iter` / `--iter`：下一个/上一个元素
++ `iter += n` / `iter -= n`：移动 n 个元素
++ `*iter`：解引用，返回左值引用
++ `iter1 - iter2`：元素位置差
+
+遍历 vector：
+
+```cpp
+// 迭代器遍历
+for (auto it = vec.begin(); it != vec.end(); ++it)
+    *it *= 2;
+// C++11 按范围遍历（等价）
+for (auto& x : vec)
+    x *= 2;
+```
+
+==== 迭代器失效
+
+当迭代器不再指向本应指向的元素时，称此迭代器*失效*。
+
++ `insert/erase` 后，所修改位置之后的所有迭代器失效
++ `push_back` 等修改 vector 大小的方法可能会使所有迭代器失效（整体迁移）
++ 修改容器后，#strong[不使用之前的迭代器]（绝对安全的准则）
+
+=== 五、STL其他容器
+
+==== list
+
+链表容器（底层实现是双向链表）：
+
+```cpp
+std::list<int> l;
+l.push_front(1);     // 插入前端
+l.push_back(2);      // 插入末端
+std::find(l.begin(), l.end(), 2); // 查询，返回迭代器
+l.insert(it, 4);     // 在迭代器位置插入
+```
+
++ 不支持下标等随机访问
++ 支持在任意位置高速插入/删除
++ 插入和删除操作不会导致迭代器失效（除指向被删除元素的迭代器外）
+
+==== set
+
+不重复元素构成的集合（内部按大小顺序排列）：
+
+```cpp
+std::set<int> s;
+s.insert(val);              // 插入（不允许重复）
+s.find(val);                // 查询，返回迭代器
+s.erase(s.find(val));       // 删除
+s.count(val);               // val的个数，总是0或1
+```
+
+注意：set 的"无序"是指不保持插入顺序，内部按元素大小排列。
+
+==== map
+
+关联数组，将一个数据项映射到另一个数据项。值类型为 `pair<Key, T>`，key必须互不相同。
+
+```cpp
+std::map<std::string, int> s;
+s["Monday"] = 1;            // 下标访问（key不存在则创建）
+s.insert(std::make_pair(std::string("Tuesday"), 2));
+s.find(key);                // 查询，返回迭代器
+s.count(key);               // 返回0或1
+s.erase(s.find(key));       // 删除
+```
+
+map 常用作稀疏数组或以字符串为下标的数组：
+
+```cpp
+std::map<std::string, std::string> M;
+M["fp"] = "c";
+M["oop"] = M["fp"] + "++"; // M["oop"] = "c++"
+```
+
+==== 关联容器原理
+
+set 和 map 底层数据结构都是红黑树（一种二叉平衡树），几乎所有操作复杂度均为 O(log n)。
+
+==== 容器总结
+
+#table(
+  columns: (auto, 1fr, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [], [vector], [list],
+  [底层结构], [动态数组], [双向链表],
+  [随机访问], [支持（高速）], [不支持],
+  [中间插入/删除], [低速], [高速],
+  [迭代器失效], [操作位置之后全部失效], [仅被删除元素失效],
+)
+
+#table(
+  columns: (auto, 1fr, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [], [set], [map],
+  [底层结构], [红黑树], [红黑树],
+  [特点], [不重复有序集合], [键值映射],
+  [操作复杂度], [O(log n)], [O(log n)],
+)
+
+选择容器的参考：
++ 频繁在中间插入/删除 → `list`，否则 → `vector`
++ 需要按值快速查找 → `set`、`map`
++ 希望迭代器尽量不失效 → `list`、关联容器
+
+=== 六、string字符串类
+
+STL提供的变长字符串类型，比 C 风格的 `char` 数组更方便：
+
+```cpp
+string fullname = firstname + " " + lastname; // 简洁拼接
+cout << fullname << endl;
+```
+
+==== 构造方式
+
+```cpp
+string s0("Initial string");            // 从C风格字符串构造
+string s1;                              // 默认空字符串
+string s2(s0, 8, 3);                    // 截取："str"（从index 8开始，长度3）
+string s3("Another character sequence", 12); // 截取："Another char"
+string s4(10, 'x');                     // 复制字符："xxxxxxxxxx"
+string s5(s0.begin(), s0.begin()+7);    // 迭代器范围复制："Initial"
+```
+
+转为C风格字符串：`str.c_str()`（返回 `const char*`）。
+
+==== 常用函数
+
+与 vector 类似：`str[i]`、`str.size()`、`str.clear()`、`str.empty()`、`str.push_back('a')`、`str.append(s2)`。
+
+不同之处：
++ 查询长度也可以用 `str.length()`，与 `size()` 返回值相同
++ 向尾部增加也可以用 `str += 'a'` 或 `str += s2`
+
+==== 输入方式
+
+```cpp
+cin >> firstname;                       // 读到空格为止
+getline(cin, fullname);                 // 读一行
+getline(cin, fullnames, '#');           // 读到指定分隔符为止（可读入换行符）
+```
+
+==== 拼接与比较
+
+```cpp
+// 拼接
+string fullname = firstname + " " + lastname;
+// 注意：拼接时间复杂度为生成字符串长度
+// 多次拼接应使用 operator+= 或 stringstream
+for (int i = 0; i < n; i++)
+    allname = allname + name[i] + "\n"; // O(n^2 * L)，很慢！
+allname += name[i] + "\n";              // 改用 += 更高效
+
+// 比较：按字典序
+string a = "alice", b = "bob";
+a == b;  // false
+a < b;   // true
+```
+
+==== 数值转换
+
+```cpp
+// 数值 → 字符串
+to_string(1);            // "1"
+to_string(3.14);         // "3.14"
+
+// 字符串 → 数值
+int a = stoi("2001");                          // a = 2001
+std::string::size_type sz;
+int b = stoi("50 cats", &sz);                  // b = 50, sz = 2
+int c = stoi("40c3", nullptr, 16);             // c = 0x40c3（十六进制）
+int d = stoi("0x7f", nullptr, 0);              // d = 0x7f（自动检查进制）
+double e = stod("34.5");                       // e = 34.5
+```
+
+=== 七、同义词查询库（自学）
+
+使用 `map<string, vector<string>>` 构建词语与同义词的映射：
+
+```cpp
+class SynonymBase {
+    map<string, vector<string>> synonyms;
+public:
+    void add(string word, string synonym) {
+        synonyms[word].push_back(synonym);
+    }
+    void query(string word) {
+        if (synonyms.find(word) == synonyms.end())
+            cout << "no synonyms found" << endl;
+        else
+            for (auto& x : synonyms[word]) cout << x << endl;
+    }
+};
+```
+
+增加判定两个词是否为同义词的需求时，将 `vector` 改为 `set` 以提高查找效率：
+
+```cpp
+class SynonymBase {
+    map<string, set<string>> synonyms;
+public:
+    bool _has_synonym(string word1, string word2) {
+        return synonyms.find(word1) != synonyms.end() &&
+               synonyms[word1].find(word2) != synonyms[word1].end();
+    }
+    bool isSynonyms(string word1, string word2) {
+        if (word1 == word2) return true;
+        return _has_synonym(word1, word2) || _has_synonym(word2, word1);
+    }
+};
+```
+
+=== 八、函数模板与类模板特化（自学）
+
+==== 函数模板特化
+
+对模板在某种具体类型下进行特殊处理：
+
+```cpp
+template<class T>
+T div2(const T& val) {
+    cout << "using template" << endl;
+    return val / 2;
+}
+template<>
+int div2(const int& val) {  // 函数模板特化
+    cout << "better solution!" << endl;
+    return val >> 1;         // 右移取代除以2
+}
+```
+
+注意：函数模板有多个模板参数时，特化必须提供#strong[所有]参数的特例类型，不能部分特化。但可以用重载来替代。
+
+函数模板重载解析顺序：
++ 类型匹配的普通函数 → 基础函数模板 → 全特化函数模板
++ 先从基础模板中选择最匹配的，再查看有无对应的全特化版本
+
+#strong[重要：]函数模板的全特化版本匹配优先级可能低于重载的非特化基础模板，因此最好直接使用重载函数而非全特化。
+
+==== 类模板特化
+
+类模板可以进行全部特化和部分特化：
+
+```cpp
+// 通用模板
+template<typename T1, typename T2> class A { ... };
+// 全部特化：指定所有类型
+template<> class A<int, int> { ... };
+// 部分特化：只限制部分类型
+template<typename T1> class A<T1, int> { ... };
+```
+
+全部特化示例：
+
+```cpp
+template<typename T1, typename T2>
+class Sum {
+public:
+    Sum(T1 a, T2 b) { cout << "Sum general: " << a+b << endl; }
+};
+template<>
+class Sum<int, int> {
+public:
+    Sum(int a, int b) { cout << "Sum specific: " << a+b << endl; }
+};
+Sum<int, int> s1(1, 2);         // Sum specific: 3
+Sum<int, double> s2(1, 2.5);    // Sum general: 3.5
+```
+
+部分特化示例：
+
+```cpp
+template<typename T1>
+class Sum<T1, int> {
+public:
+    Sum(T1 a, int b) { cout << "Sum specific: " << a+b << endl; }
+};
+Sum<double, int> s1(1.5, 2);        // Sum specific: 3.5
+Sum<double, double> s2(1.5, 2.5);   // Sum general: 4
+```
+
+==== 模板特化总结
+
++ 类模板可以部分特化或全部特化，编译器根据类型参数自动选择
++ 函数模板只能全部特化，但可通过重载代替部分特化
++ 函数模板全特化匹配优先级可能低于重载的非特化基础模板，最好直接用重载
