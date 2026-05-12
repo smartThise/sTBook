@@ -3997,3 +3997,834 @@ Sum<double, double> s2(1.5, 2.5);   // Sum general: 4
 + 类模板可以部分特化或全部特化，编译器根据类型参数自动选择
 + 函数模板只能全部特化，但可通过重载代替部分特化
 + 函数模板全特化匹配优先级可能低于重载的非特化基础模板，最好直接用重载
+== 拾 iostream与函数对象和智能指针 #datetime(day:12,month:5,year:2026).display()
+<拾-iostream与函数对象和智能指针-2026.5.12>
+
+=== 一、iostream输入输出流
+<一iostream输入输出流>
+
+==== STL输入输出流层次
+
+流的继承关系：
+
+#table(
+  columns: (auto, 1fr, 1fr, 1fr, 1fr),
+  align: center + horizon,
+  stroke: 0.5pt,
+  [], [输入流], [输出流], [文件流], [字符串流],
+  [头文件], [`<istream>`], [`<ostream>`], [`<fstream>`], [`<sstream>`],
+  [基类], [`istream`], [`ostream`], [`fstream`], [`stringstream`],
+  [标准对象], [`cin`], [`cout`], [], [],
+)
+
+文件流和字符串流都是继承自相应的基类。注意 `iostream` 是多重继承自 `istream` 和 `ostream` 的？！
+`ifstream` 是 `istream` 的子类，`ofstream` 是 `ostream` 的子类。
+
+==== ostream和cout
+
+`ostream` 即 output stream，是STL库中所有输出流的基类。
+它重载了针对基础类型的输出流运算符（`<<`），统一了输出接口，改善了C中 `printf` 方式混乱的状况。
+
+`cout` 是STL中内建的一个 `ostream` 对象，它会将数据送到标准输出流（一般是屏幕）。
+
+#strong[`<<` 运算符为左结合！] 原理如下：
+
+```cpp
+cout << "hello" << ' ' << "world";
+// 先执行 cout << "hello" → 返回 cout 的引用 c1
+// 再执行 c1 << ' '      → 返回 cout 的引用 c2
+// 再执行 c2 << "world"  → 完成
+```
+
+==== 实现自己的ostream
+
+可以自己实现一个简易的 `ostream` 来理解原理：
+
+```cpp
+class ostream {
+public:
+    ostream& operator<<(char c) {
+        printf("%c", c);
+        return *this;
+    }
+    ostream& operator<<(const char* str) {
+        printf("%s", str);
+        return *this;
+    }
+} cout;
+```
+
+关键：返回 `*this` 的引用，使得链式调用得以实现！
+
+==== 格式化输出
+
+使用 `#include <iomanip>` 进行格式化：
+
+```cpp
+cout << fixed << 2018.0 << " " << 0.0001 << endl;
+// 浮点数 → 2018.000000 0.000100
+cout << scientific << 2018.0 << " " << 0.0001 << endl;
+// 科学计数法 → 2.018000e+03 1.000000e-04
+cout << defaultfloat; // 还原默认输出格式
+cout << setprecision(2) << 3.1415926 << endl;
+// 输出精度设置为2 → 3.2
+cout << oct << 12 << " " << hex << 12 << endl;
+// 八进制 → 14  十六进制 → c
+cout << dec; // 还原十进制
+cout << setw(3) << setfill('*') << 5 << endl;
+// 设置对齐长度为3，对齐字符为* → **5
+```
+
+==== 流操纵算子
+
+`setprecision(2)` 看起来像函数调用，实际上它是创建了一个类的对象！
+
+```cpp
+class setprecision {
+private:
+    int precision;
+public:
+    setprecision(int p) : precision(p) {}
+    friend class ostream;
+};
+// setprecision(2) 是一个类的对象
+```
+
+`ostream` 中有对应的重载：
+
+```cpp
+class ostream {
+private:
+    int precision; // 记录流的状态
+public:
+    ostream& operator<<(const setprecision &m) {
+        precision = m.precision;
+        return *this;
+    }
+} cout;
+```
+
+#strong[借助辅助类设置成员变量，这种类叫流操纵算子（stream manipulator）。]
+
+===== endl
+
+`endl` 也是一个函数：
+
+```cpp
+ostream& endl(ostream& os) {
+    os.put('\n');
+    os.flush();
+    return os;
+}
+// 等同于输出 '\n'，再清空缓冲区 os.flush()
+```
+
+`endl` 同时也是流操纵算子，如何实现 `cout << endl`？
+
+```cpp
+ostream& operator<<(ostream& (*fn)(ostream&)) {
+    // 流运算符重载，函数指针作为参数
+    return (*fn)(*this);
+}
+```
+
+#strong[缓冲区]的目的是减少外部读写次数。写文件时，只有清空缓冲区或关闭文件才能保证内容正确写入。
+
+==== 不能复制的cout
+
+`ostream` 的复制构造函数被禁用了：
+
+```cpp
+ostream(const ostream&) = delete;  // 禁止复制
+ostream(ostream&& x);              // 只允许移动
+```
+
+#strong[为什么重载流运算符要返回引用？] 避免复制！`ostream` 不能被复制。
+为什么只能使用一个对象？
++ 减少复制开销
++ 一个对象对应一个标准输出，符合OOP思想
++ 多个对象之间无法同步输出状态
+
+#rect(
+  fill: rgb("#fff0f0"),
+  stroke: red,
+  inset: 10pt,
+  radius: 2pt,
+  width: 100%
+)[
+  *注意：* 全局对象往往引入初始化顺序问题。更好的方式是单件模式（Singleton Pattern），在设计模式中会介绍。
+]
+
+==== 文件输入输出流
+
+`ifstream` 是 `istream` 的子类，功能是从文件中读入数据。
+
+```cpp
+// 打开文件
+ifstream ifs("input.txt");
+ifstream ifs("binary.bin", ifstream::binary); // 二进制形式
+ifstream ifs;
+ifs.open("file");
+// do something
+ifs.close();
+```
+
+读入示例：
+
+```cpp
+ifstream ifs("input.txt");
+while(ifs) { // 利用了重载的bool运算符判断文件是否到末尾
+    ifs >> ws; // 除去前导空格，ws也是流操纵算子
+    int c = ifs.peek(); // 检查下一个字符，但不读取
+    if (c == EOF) break;
+    if (isdigit(c)) {
+        int n;
+        ifs >> n;
+        cout << "Read a number: " << n << endl;
+    } else {
+        string str;
+        ifs >> str;
+        cout << "Read a word: " << str << endl;
+    }
+}
+```
+
+其他操作：
++ `getline(cin, str)` 读一行（`ifstream` 是 `istream` 的子类，所以 `getline(ifs, str)` 也有效）
++ `get()` 读取一个字符
++ `ignore(int n=1, int delim=EOF)` 丢弃 n 个字符，或直至遇到 delim
++ `peek()` 查看下一个字符
++ `putback(char c)` / `unget()` 返还一个字符
+
+===== istream与scanf
+
+为什么C++使用流输入取代了 `scanf`？
++ *友好性*：`scanf` 不同类型要使用不同的标识符
+  ```cpp
+  scanf("%d %hd %f %lf %s", &i, &s, &f, &d, name);
+  cin >> i >> s >> f >> d >> name;
+  ```
++ *安全性*：`scanf` 可能写入非法内存
++ *可拓展性*：可以重载 `>>` 支持自定义类型 `cin >> obj`
++ *性能*：`scanf` 在运行期间解析格式字符串，`istream` 在编译期间已解析完毕
+
+==== 字符串输入输出流
+
+`stringstream` 是 `iostream` 的子类，而 `iostream` 多重继承自 `istream` 和 `ostream`。
+
+`stringstream` 在对象内部维护了一个 buffer：
++ 用流输出函数可以将数据写入 buffer
++ 用流输入函数可以从 buffer 中读出数据
+
+```cpp
+// 构造方式
+stringstream ss;       // 空字符串流
+stringstream ss(str);  // 以字符串初始化流
+```
+
+使用示例：
+
+```cpp
+stringstream ss;
+ss << "10";
+ss << "0 200";
+int a, b;
+ss >> a >> b; // a=100, b=200
+```
+
+#strong[获取buffer]：`ss.str()` 返回一个 `string` 对象，内容为 stringstream 的 buffer。
+
+注意 buffer 内容并不是未读取的内容：
+
+```cpp
+stringstream ss;
+ss << "100 200";
+cout << ss.str() << endl; // "100 200"
+int a, b;
+ss >> a; // a = 100
+cout << ss.str() << endl; // 仍然是 "100 200"！
+ss >> b; // b = 200
+```
+
+===== 类型转换函数
+
+利用 `stringstream` 可以实现通用的类型转换：
+
+```cpp
+template<class outtype, class intype>
+outtype convert(intype val) {
+    static stringstream ss; // 静态变量避免重复初始化
+    ss.str("");  // 清空缓冲区
+    ss.clear();  // 清空状态位（不是清空内容！）
+    ss << val;
+    outtype res;
+    ss >> res;
+    return res;
+}
+```
+
+#strong[`ss.str("")` 和 `ss.clear()` 的区别]：前者清空内容，后者清空状态位（记录流的状态，例如是否读入了非法字符）。两个都要做！
+
+=== 二、函数对象
+<二函数对象>
+
+==== 函数指针
+
+如果 `flag` 为 1 则对每个元素调用 `increase`，否则调用 `decrease`。如何减少重复逻辑？
+
+可以用函数指针：
+
+```cpp
+void (*func)(int&); // 函数指针的声明
+// 返回值  指针符号  声明的变量名  参数列表
+```
+
+```cpp
+void (*func)(int&);
+if (flag == 1) func = increase;
+else func = decrease;
+for (int &x : arr) { func(x); }
+```
+
+也可以用 `auto` 自动推断：
+
+```cpp
+auto func = flag==1 ? increase : decrease;
+for (int &x : arr) { func(x); }
+// auto 自动推断出 func 的类型为 void (*)(int&)
+```
+
+和数组类似：数组名 = 指向数组第一个元素的指针，函数名 = 指向函数的指针。
+
+==== 函数作为变量
+
+`std::sort` 来自 `<algorithm>`：
+
+```cpp
+int arr[5] = { 5, 2, 3, 1, 7 };
+std::sort(arr, arr + 5); // 默认从小到大
+```
+
+如果想倒序排序？`sort` 重载了另一套参数：
+
+```cpp
+template <class Iterator, class Compare>
+void sort(Iterator first, Iterator last, Compare comp);
+```
+
+比较函数 `comp`：传入两个值，若 `a` 在 `b` 前则返回 `true`。
+
+```cpp
+bool comp(int a, int b) { return a > b; }
+std::sort(arr, arr + 5, comp); // 7 5 3 2 1
+```
+
+STL 还提供了预定义的比较函数（`#include <functional>`）：
+
+```cpp
+sort(arr, arr+5, less<int>());    // 从小到大
+sort(arr, arr+5, greater<int>()); // 从大到小
+```
+
+疑问：`greater<int>()` 为什么带括号？是什么？
+
+==== 函数对象
+
+`greater<int>()` 实际上是一个对象！
++ `greater` 是一个模板类
++ `greater<int>` 是用 `int` 实例化的类
++ `greater<int>()` 是该类的一个对象
+
+同时它表现得像一个函数：
+
+```cpp
+auto func = greater<int>();
+cout << func(2, 1) << endl; // True
+cout << func(1, 1) << endl; // False
+cout << func(1, 2) << endl; // False
+```
+
+因此，这种对象被称为*函数对象*（Functor）。
+
+===== 如何实现函数对象
+
+```cpp
+template<class T>
+class Greater {
+public:
+    bool operator()(const T &a, const T &b) const {
+        return a > b;
+    }
+};
+```
+
+#strong[注意三个 `const`！] 排序中 `comp` 不能修改数据，一般情况下 `comp` 也不应该修改自身。
+
+函数对象的要求：
++ 需要重载 `operator()` 运算符
++ 该函数需要是 `public` 访问权限
+
+*小知识：Duck Typing 鸭子类型* —— 如果一个物体，叫声像鸭子、走路像鸭子，那么它就是鸭子。如果一个对象用起来像函数，那么它就是函数对象！C++没有严格定义什么是函数对象，但实践上按 Duck Typing 来处理。
+
+===== 自己实现sort
+
+`sort` 的第三个参数 `Compare` 是模板类型，可以接受函数指针或函数对象：
+
+```cpp
+template<class Iterator, class Compare>
+void mysort(Iterator first, Iterator last, Compare comp) {
+    for (auto i = first; i != last; i++)
+        for (auto j = i; j != last; j++)
+            if (!comp(*i, *j)) swap(*i, *j);
+}
+mysort(arr, arr + 5, comp);            // 函数指针
+mysort(arr, arr + 5, greater<int>());  // 函数对象
+```
+
+==== 自定义类型的排序
+
+假设有 `class People { public: int age, weight; };`
+
+*方法一：重载小于运算符* —— 但只能定义一种排序规则，体重怎么办？
+
+```cpp
+class People {
+public:
+    int age, weight;
+    bool operator<(const People &b) const { return age < b.age; }
+};
+sort(vec.begin(), vec.end());
+```
+
+*方法二：定义比较函数*
+
+```cpp
+bool compByAge(const People &a, const People &b) { return a.age < b.age; }
+sort(vec.begin(), vec.end(), compByAge);
+```
+
+*方法三：定义比较函数对象*
+
+```cpp
+class AgeComp {
+public:
+    bool operator()(const People &a, const People &b) const { return a.age < b.age; }
+};
+sort(vec.begin(), vec.end(), AgeComp());
+```
+
+==== std::function类
+
+来自 `<functional>` 头文件。问题：想用数组储存函数指针和函数对象的选项？`auto` 无法推导！因为函数指针和函数对象不是同一种类型。
+
+`std::function` 为两者提供了统一的接口：
+
+```cpp
+function<string()> readArr[] =
+    {readFromScreen, ReadFromFile()};
+function<string(string)> calculateArr[] =
+    {calculateAdd, CalculateMul()};
+function<void(string)> writeArr[] =
+    {writeToScreen, WriteToFile()};
+```
+
+`function` 也允许赋值和改写：
+
+```cpp
+function<string()> readFunc;
+readFunc = readFromScreen;   // 允许函数的赋值
+readFunc = ReadFromFile();   // 也允许函数对象的赋值
+
+string (*readFunc2)();
+readFunc2 = readFromScreen;
+// readFunc2 = ReadFromFile(); // 错误！类型不一致
+```
+
+#strong[对比几种实现方式：]
+
+#table(
+  columns: (auto, 1fr, 1fr, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [], [虚函数], [模板], [`std::function`],
+  [支持函数指针], [否], [✓], [✓],
+  [支持函数对象], [✓ (子类)], [✓], [✓],
+  [确定时机], [运行时], [编译期], [运行时],
+  [需要基类], [✓], [否], [否],
+)
+
+`std::function` 的意义：
++ 函数对象化，万物皆对象，符合OOP设计理念
++ 函数可以作为参数传递、作为变量储存
++ 不再需要模板来调用不同的函数，所有的函数都可以看做 `std::function`
+
+==== STL与函数对象
+
+STL有大量函数用到了函数对象（`#include <algorithm>`）：
++ `for_each` 对序列进行指定操作
++ `find_if` 找到满足条件的对象
++ `count_if` 对满足条件的对象计数
++ `binary_search` 二分查找满足条件的对象
+
+预置的函数对象（`#include <functional>`）：
++ `less` 比较 `a < b`
++ `equal_to` 比较 `a == b`
++ `greater` 比较 `a > b`
++ `plus` 返回 `a + b`
+
+=== 三、智能指针与引用计数
+<三智能指针与引用计数>
+
+==== shared_ptr
+
+问题：A、B对象共享一个C对象，C对象不想交由外部销毁。A、B中的谁负责销毁C？应该在A、B都销毁时C才能销毁！
+
+`shared_ptr` 来自 `<memory>` 库：
+
+```cpp
+// 构造方法
+shared_ptr<int> p1(new int(1));
+shared_ptr<MyClass> p2 = make_shared<MyClass>(2);
+shared_ptr<MyClass> p3 = p2;       // 共享所有权
+shared_ptr<int> p4;                 // 空指针
+
+// 访问对象
+int x = *p1;        // 从指针访问对象
+int y = p2->val;    // 访问成员变量
+
+// 销毁对象
+// p2和p3指向同一对象，当两者均出作用域才会被销毁
+```
+
+==== 引用计数
+
+为什么智能指针能够知道何时销毁对象？#strong[引用计数！] 当引用计数归0时，销毁对象。
+
+```cpp
+shared_ptr<int> p1(new int(4));
+cout << p1.use_count() << ' '; // 1
+{
+    shared_ptr<int> p2 = p1;
+    cout << p1.use_count() << ' '; // 2
+    cout << p2.use_count() << ' '; // 2
+} // p2 出作用域
+cout << p1.use_count() << ' '; // 1
+} // p1 出作用域，引用计数归0，销毁 int* 4
+```
+
+==== 实现自己的引用计数
+
+使用辅助指针类 `U_Ptr` 来存放实际数据和计数：
+
+```cpp
+template <typename T>
+class U_Ptr { // 辅助指针
+    friend class SmartPtr<T>;
+    U_Ptr(T *ptr) : p(ptr), count(1) {}
+    ~U_Ptr() { delete p; }
+    int count;
+    T *p; // 实际数据存放
+};
+```
+
+智能指针类：
+
+```cpp
+template <typename T>
+class SmartPtr {
+    U_Ptr<T> *rp;
+public:
+    SmartPtr(T *ptr) : rp(new U_Ptr<T>(ptr)) {}
+    SmartPtr(const SmartPtr<T> &sp) : rp(sp.rp) {
+        ++rp->count;
+    }
+    SmartPtr& operator=(const SmartPtr<T>& rhs) {
+        ++rhs.rp->count;
+        if (--rp->count == 0) // 减少自身所指rp的引用计数
+            delete rp;
+        rp = rhs.rp;
+        return *this;
+    }
+    ~SmartPtr() {
+        if (--rp->count == 0)
+            delete rp;
+    }
+    T& operator*() { return *(rp->p); }
+    T* operator->() { return rp->p; }
+};
+```
+
+#rect(
+  fill: rgb("#fff0f0"),
+  stroke: red,
+  inset: 10pt,
+  radius: 2pt,
+  width: 100%
+)[
+  *注意：* 不能使用同一裸指针初始化多个智能指针！
+  ```cpp
+  int* p = new int();
+  shared_ptr<int> p1(p);
+  shared_ptr<int> p2(p); // 会产生多个辅助指针，双重释放！
+  ```
+]
+
+`shared_ptr` 其他用法：
++ `p.get()` 获取裸指针
++ `p.reset()` 清除指针并减少引用计数
++ `static_pointer_cast<int>(p)` 类似 `static_cast`，无类型检查
++ `dynamic_pointer_cast<Base>(p)` 类似 `dynamic_cast`，动态类型检查
+
+==== weak_ptr：解决循环引用
+
+#strong[智能指针不总是智能！] Parent 和 Child 互相持有 `shared_ptr` 会怎样？
+
+```cpp
+class Parent {
+    shared_ptr<Child> child;
+    ...
+};
+class Child {
+    shared_ptr<Parent> parent; // 互相引用！
+    ...
+};
+// test() 结束后没有析构！内存泄漏！
+```
+
+原因：两个对象的引用计数都是1，谁都不会先销毁。
+
+解决：使用 `weak_ptr`，指向对象但不增加引用计数：
+
+```cpp
+class Child {
+    weak_ptr<Parent> parent; // 修改为弱引用
+    ...
+};
+```
+
+`weak_ptr` 的用法：
++ `wp.use_count()` 获取引用计数
++ `wp.reset()` 清除指针
++ `wp.expired()` 检查对象是否无效
++ `sp = wp.lock()` 从弱引用获得一个 `shared_ptr`
+
+```cpp
+std::weak_ptr<int> wp;
+{
+    auto sp1 = std::make_shared<int>(20);
+    wp = sp1;
+    cout << wp.use_count() << endl; // 1
+    auto sp2 = wp.lock();
+    cout << wp.use_count() << endl; // 2
+    sp1.reset();
+    cout << wp.use_count() << endl; // 1
+} // sp2 销毁
+cout << wp.use_count() << endl; // 0
+cout << wp.expired() << endl;   // true
+```
+
+==== unique_ptr：独享所有权
+
+`shared_ptr` 涉及引用计数，性能较差。如果保证一个对象只被一个指针引用，使用 `unique_ptr`：
+
+```cpp
+auto up1 = std::make_unique<int>(20);
+// unique_ptr<int> up2 = up1;       // 错误！不能复制
+unique_ptr<int> up2 = std::move(up1); // 可以移动
+int* p = up2.release();              // 放弃指针控制权，返回裸指针
+delete p;
+```
+
+==== 智能指针总结
+
+#table(
+  columns: (auto, 1fr, 1fr, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [], [`shared_ptr`], [`weak_ptr`], [`unique_ptr`],
+  [所有权], [共享], [不拥有], [独占],
+  [引用计数], [✓], [可查询但不增加], [无],
+  [可复制], [✓], [✓], [否（可移动）],
+  [适用场景], [一般共享], [解决循环引用], [独占所有权],
+)
+
+优点：
++ 帮助管理内存，避免内存泄露
++ 区分 `unique_ptr` 和 `shared_ptr` 能够明确语义
++ 在手动维护指针不可行、复制对象开销太大时是唯一选择
+
+缺点：
++ 引用计数会影响性能
++ 智能指针不总是智能，需要了解内部原理
++ 需要小心环状结构和数组指针
+
+=== 四、字符串处理与正则表达式（自学）
+<四字符串处理与正则表达式>
+
+==== 正则表达式基础
+
+正则表达式：由字母和符号组成的特殊文本，搜索文本时定义的一种规则。
+
+三种模式：
++ *匹配*：判断整个字符串是否满足条件
++ *搜索*：找出符合正则表达式的子串
++ *替换*：按规则替换字符串的子串
+
+===== 字符簇
+
++ `[a-z]` 匹配所有单个小写字母
++ `[0-9]` 匹配所有单个数字
++ `\d` 等价 `[0-9]`
++ `\w` 匹配字母、数字、下划线，等价 `[a-zA-Z0-9_]`
++ `\S` 匹配所有非空白字符
++ `.` 匹配除换行以外任意字符
++ `[^a-z]` 匹配所有非小写字母的单个字符
+
+===== 重复模式
+
++ `x{n,m}` 前面内容出现 $n$ 到 $m$ 次
++ `+` 至少出现1次（等价 `{1,}`）
++ `*` 至少出现0次（等价 `{0,}`）
++ `?` 出现0次或1次（等价 `{0,1}`）
++ `^` 代表字符串开头，`$` 代表字符串结尾
+
+===== 或连接符
+
++ `(Chapter|Section) [1-9][0-9]?` 匹配 Chapter 1、Section 10 等
++ `m|food` 匹配 `m` 或 `food`
++ `(m|f)ood` 匹配 `mood` 或 `food`
+
+==== C++ `<regex>` 库
+
+创建正则表达式对象：
+
+```cpp
+regex re("^[1-9][0-9]{10}$"); // 11位数
+// 注意：C++字符串中 "\" 也是转义字符
+regex re("\\d+"); // 如果需要 \d+，应该写成 "\\d+"
+```
+
+原生字符串：`R"(str)"` 表示 `str` 的字面值，取消转义。
+`"\\d+"` = `R"(\d+)"` = `\d+`
+
+===== 匹配：regex_match
+
+```cpp
+string s("subject");
+regex e("sub.*");
+if(regex_match(s, e))
+    cout << "matched" << endl; // matched
+```
+
+===== 捕获和分组
+
+使用 `()` 进行标识，每个标识的内容被称作分组。匹配后每个分组的内容将被*捕获*。
+
+```cpp
+string s("version10");
+regex e(R"(version(\d+))");
+smatch sm;
+if(regex_match(s, sm, e)) {
+    cout << sm.size() << " matches\n"; // 2 matches
+    for (unsigned i = 0; i < sm.size(); ++i)
+        cout << sm[i] << endl; // version10 → 10
+}
+```
+
+分组编号：0号永远是匹配的字符串本身，之后按顺序编号。
+
+===== 搜索：regex_search
+
+搜索字符串中能匹配正则表达式的*第一个*子串：
+
+```cpp
+string s("this subject has a submarine");
+regex e(R"((sub)([\S]*))");
+smatch sm;
+while(regex_search(s, sm, e)) {
+    for (unsigned i = 0; i < sm.size(); ++i)
+        cout << "[" << sm[i] << "] ";
+    cout << endl;
+    s = sm.suffix().str(); // 继续搜索剩余部分
+}
+// [subject] [sub] [ject]
+// [submarine] [sub] [marine]
+```
+
+===== 替换：regex_replace
+
+```cpp
+string s("this subject has a submarine");
+regex e(R"((sub)([\S]*))");
+cout << regex_replace(s, e, "SUBJECT") << endl;
+// this SUBJECT has a SUBJECT
+cout << regex_replace(s, e, "[$&]") << endl;
+// this [subject] has a [submarine]  ($& = 匹配的子串)
+cout << regex_replace(s, e, "$1") << endl;
+// this sub has a sub  ($1 = 第1个分组)
+cout << regex_replace(s, e, "$2") << endl;
+// this ject has a marine  ($2 = 第2个分组)
+```
+
+===== 例题：学生信息提取
+
+从自我介绍中提取名字、出生年月、电话号码、邮箱：
+
+```cpp
+void extract(string input) {
+    smatch sm;
+    regex get_name(R"((My name is |I am )(\w+)\.)");
+    regex get_date(R"((\d{4})[\.-](\d{1,2})[\.-](\d{1,2}))");
+    regex get_mobile(R"([1-9]\d{10})");
+    regex get_email(R"([\w]+@(\w+\.)+\w+)");
+    if (regex_search(input, sm, get_name))
+        cout << sm[2] << endl;
+    if (regex_search(input, sm, get_date))
+        cout << sm[1] << "." << sm[2] << "." << sm[3] << endl;
+    if (regex_search(input, sm, get_mobile))
+        cout << sm[0] << endl;
+    if (regex_search(input, sm, get_email))
+        cout << sm[0] << endl;
+}
+```
+
+===== 更多正则内容（自学）
+
++ `(?:pattern)` 不捕获的分组
++ 正向预查 `(?=pattern)` / `(?!pattern)`
++ 反向预查 `(?<=pattern)` / `(?<!pattern)`
++ 后向引用：`\b(\w+)\b\s+\1\b` 匹配重复两遍的单词（如 go go）
++ 贪婪与懒惰：默认贪婪匹配，在重复模式后加 `?` 变为懒惰匹配
+
+=== 五、拓展自学：function绑定优先级
+<五拓展自学function绑定优先级>
+
+对于 `function<______> pf = func`，有如下准则：
+
+#rect(
+  fill: rgb("#f0f0ff"),
+  stroke: blue,
+  inset: 10pt,
+  radius: 2pt,
+  width: 100%
+)[
+  *绑定准则：*
+  + `function` 的参数要比实际参数*更严格*（所有能被 `function` 接受的参数都应被实际函数接受）
+  + `function` 的返回值要比实际返回值*更宽松*（所有可能的实际函数返回值都可能被 `function` 返回）
+]
+
+绑定优先级表：
+
+#table(
+  columns: (auto, auto, auto, auto, auto),
+  align: center + horizon,
+  stroke: 0.5pt,
+  [], [lvalue], [const lvalue], [rvalue], [const rvalue],
+  [`int`], [✓], [✓], [✓], [✓],
+  [`int&`], [✓], [], [], [],
+  [`const int&`], [✓], [✓], [✓], [✓],
+  [`int&&`], [], [], [✓], [],
+  [`const int&&`], [], [], [✓], [✓],
+)
+
+例外：当实际参数为 `T&&` 时，`function` 参数可以为 `T`。`pf2` 在内部拷贝了一份参数，然后将该拷贝的右值传给 `Func2()`。
