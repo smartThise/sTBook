@@ -4828,3 +4828,402 @@ void extract(string input) {
 )
 
 例外：当实际参数为 `T&&` 时，`function` 参数可以为 `T`。`pf2` 在内部拷贝了一份参数，然后将该拷贝的右值传给 `Func2()`。
+
+== 拾壹 行为型模式 #datetime(day:19,month:5,year:2026).display()
+<拾壹-行为型模式-2026.5.19>
+
+=== 一、设计模式概述
+<一设计模式概述>
+
+设计模式（Design Pattern）是在长时间实践中开发人员总结出的优秀架构与解决方案。
+
++ 首见于《Design Patterns - Elements of Reusable Object-Oriented Software》
++ 遵循面向对象设计原则：对接口编程而不是对实现编程；优先使用对象组合而不是继承
+
+三大类设计模式：
+
+#table(
+  columns: (auto, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [*行为型模式*], [关注对象行为功能上的抽象，提升可拓展性，以最少代码变动完成功能增减],
+  [*结构型模式*], [关注对象之间结构关系上的抽象，提升可维护性和健壮性，在结构层面解耦合],
+  [*创建型模式*], [将对象的创建与使用划分，规避复杂对象创建的资源消耗，高效创建对象],
+)
+
+本讲内容：12.1 模板方法、12.2 策略模式、12.3 迭代器模式
+
+=== 二、引例：负载监视器
+<二引例负载监视器>
+
+监视计算节点的负载状态（如CPU占用率），不同OS获得CPU占用率的方法不同。
+
+==== 简单枚举（不好）
+
+用 `switch-case` 枚举所有系统类型：
+
+```cpp
+enum MonitorType {Win32, Win64, Ganglia};
+
+class Monitor {
+public:
+    void getLoad();
+    void getTotalMemory();
+    void getUsedMemory();
+    void getNetworkLatency();
+    void show();
+private:
+    float load, latency;
+    long totalMemory, usedMemory;
+    Display* m_display;
+};
+
+void Monitor::getLoad() {
+    switch (type) {
+        case Win32: load = ...; break;
+        case Win64: load = ...; break;
+        case Ganglia: load = ...; break;
+    }
+}
+```
+
+问题：每新增一种系统就要修改 `Monitor` 类内部的 `switch`，违反开放封闭原则。
+
+=== 三、模板方法（Template Method）模式
+<三模板方法模板方法模式>
+
+#image("images/figL12_p10.png", width: 70%)
+
++ 在接口的一个方法中定义*算法的骨架*，将一些步骤的实现延迟到子类中
++ 子类可以在不改变算法结构的情况下，重新定义算法中的某些步骤
++ 抽象类定义骨架，子类实现细节；扩展时只需新增子类，无需修改已有类
+
+==== 代码实现
+
+```cpp
+class Monitor {
+public:
+    virtual void getLoad() = 0;
+    virtual void getTotalMemory() = 0;
+    virtual void getUsedMemory() = 0;
+    virtual void getNetworkLatency() = 0;
+    void show();
+protected:
+    float load, latency;
+    long totalMemory, usedMemory;
+    Display* m_display;
+};
+
+// 子类只需实现纯虚函数
+class MonitorWin32 : public Monitor {
+public:
+    void getLoad() { ... load = ...; }
+    void getTotalMemory() { ... totalMemory = ...; }
+    void getUsedMemory() { ... usedMemory = ...; }
+    void getNetworkLatency() { ... latency = ...; }
+};
+
+// 使用基类指针调用
+int main() {
+    Monitor* monitor = new MonitorWin32(&display);
+    while (running()) {
+        monitor->getLoad();
+        monitor->getTotalMemory();
+        monitor->getUsedMemory();
+        monitor->getNetworkLatency();
+        monitor->show();
+        sleep(1000);
+    }
+    delete monitor;
+}
+```
+
+==== 针对接口编程
+
++ 抽象出"接口类"，有一系列（纯）虚函数描述"接口"
++ 继承并实现这些虚函数，形成"实现类"
++ 使用接口类引用概念，不直接使用实现类 → 避免实现变化造成大规模代码变动
+
+==== 开放封闭原则
+
++ 对*扩展开放*：有新需求时可以方便地扩展，无需整体变动
++ 对*修改封闭*：新的扩展类一旦设计完成，可以独立工作
++ 核心：对*抽象*编程，而不对*具体*编程。抽象结构简单稳定，具体实现复杂多变
+
+==== 模板方法的局限
+
+若 `getLoad()` 有 $n$ 种实现、`getNetworkLatency()` 有 $m$ 种实现、`getTotalMemory()` 与 `getUsedMemory()` 有 $k$ 种实现，则需要 $n times k$ 个子类。大量冗余！
+
+=== 四、策略（Strategy）模式
+<四策略策略模式>
+
+#image("images/figL12_p23.png", width: 90%)
+
++ 定义一系列算法并加以封装，使得这些算法可以互相替换
++ 将每个功能抽象为独立的策略接口，Monitor 类通过*组合*策略对象来工作
++ 类数量：$1$ 个 Monitor $+$ $3$ 个抽象策略类 $+$ $(n+m+k)$ 个策略实现类 $= n+m+k+4$
+
+==== 代码实现
+
+```cpp
+// 负载策略基类
+class LoadStrategy {
+public:
+    virtual float getLoad() = 0;
+};
+class LoadStrategyImpl1 : public LoadStrategy {
+public:
+    float getLoad() { ... return load; }
+};
+
+// 内存策略基类
+class MemoryStrategy {
+public:
+    virtual long getTotal() = 0;
+    virtual long getUsed() = 0;
+};
+class MemoryStrategyImpl1 : public MemoryStrategy {
+public:
+    long getTotal() { ... return total; }
+    long getUsed() { ... return used; }
+};
+
+// Monitor 组合各个策略
+class Monitor {
+public:
+    Monitor(LoadStrategy *ls, MemoryStrategy *ms,
+            LatencyStrategy *lts, Display *display);
+    void getLoad() { load = m_loadStrategy->getLoad(); }
+    void getTotalMemory() { totalMemory = m_memStrategy->getTotal(); }
+    void getUsedMemory() { usedMemory = m_memStrategy->getUsed(); }
+    void getNetworkLatency() { latency = m_latencyStrategy->getLatency(); }
+    void show();
+private:
+    LoadStrategy *m_loadStrategy;
+    MemoryStrategy *m_memStrategy;
+    LatencyStrategy *m_latencyStrategy;
+    Display *m_display;
+    float load, latency;
+    long totalMemory, usedMemory;
+};
+
+// 使用：为每个策略选择具体实现
+int main() {
+    GangliaLoadStrategy loadStrategy;
+    WinMemoryStrategy memoryStrategy;
+    PingLatencyStrategy latencyStrategy;
+    WindowsDisplay display;
+    Monitor monitor(&loadStrategy, &memoryStrategy, &latencyStrategy, &display);
+    while (running()) {
+        monitor.getLoad();
+        monitor.getTotalMemory();
+        monitor.getUsedMemory();
+        monitor.getNetworkLatency();
+        monitor.show();
+        sleep(1000);
+    }
+}
+```
+
+==== 单一责任原则
+
++ 一个类（接口）只负责一项职责，不要存在多于一个导致类变更的原因
++ 职责过多 → 耦合度大 → 职责变化可能削弱其他职责的能力
++ 核心：在*功能*层面上解耦
+
+==== 模板方法 vs 策略模式
+
+#table(
+  columns: (auto, 1fr, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [], [*模板方法*], [*策略模式*],
+  [核心思路], [定义算法骨架，延迟到子类实现；优先继承], [定义一系列算法封装替换；优先组合],
+  [新增 getTotalMemory\()+getUsedMemory()], [需新增 $n times m$ 个子类], [只需新增 1 个 MemoryStrategy 实现类],
+  [优点], [基类高度抽象统一，逻辑简洁；封装性好], [每个策略只负责一个功能，易于拓展；算法修改不影响整体],
+  [弊端], [接口同时负责所有功能，任何算法修改导致整个实现类变化], [功能较多时结构复杂；策略组合对外暴露，封装性较差],
+)
+
++ 模板方法：适合*逻辑复杂但结构稳定*的场景，部分步骤变化剧烈且无相互关联
++ 策略模式：适合*算法本身灵活多变*的场景，且多种算法需协同工作
++ 业务简单时二者几乎等效
+
+=== 五、迭代器（Iterator）模式
+<五迭代器迭代器模式>
+
+#image("images/figL12_p48.png", width: 80%)
+
++ 提供一种方法顺序访问聚合对象中各个元素，又不暴露该对象的内部表示
++ 与对象内部数据结构形式无关（数组还是链表）
++ 分离"变"（存储方式）与"不变"（访问方式）
+
+==== 引例：遍历学生成绩
+
+```cpp
+// 数组遍历
+for (int i = 0; i != STUDENT_COUNT; i++) {
+    if (scores[i] >= 60) passed++;
+}
+// 链表遍历
+for (Student *p = head; p != NULL; p = p->next) {
+    if (p->score >= 60) passed++;
+}
+```
+
+如何实现与底层数据结构无关的统一算法接口？→ 迭代器！
+
+==== 迭代器基类
+
+```cpp
+class Iterator {
+public:
+    virtual ~Iterator() {}
+    virtual Iterator& operator++() = 0;    // 前缀++
+    virtual float& operator++(int) = 0;    // 后缀++
+    virtual float& operator*() = 0;        // 解引用
+    virtual float* operator->() = 0;       // 箭头
+    virtual bool operator!=(const Iterator &other) const = 0;
+    bool operator==(const Iterator &other) const {
+        return !(*this != other);
+    }
+};
+```
+
+==== Collection 基类
+
+```cpp
+class Collection {
+public:
+    virtual ~Collection() {}
+    virtual Iterator* begin() const = 0;   // 头迭代器 [begin, end)
+    virtual Iterator* end() const = 0;     // 尾迭代器
+    virtual int size() = 0;
+};
+```
+
+==== 数组实现
+
+```cpp
+class ArrayCollection : public Collection {
+    friend class ArrayIterator;
+    float* _data;
+    int _size;
+public:
+    ArrayCollection(int size, float* data) : _size(size) {
+        _data = new float[_size];
+        for (int i = 0; i < size; i++) _data[i] = data[i];
+    }
+    ~ArrayCollection() { delete[] _data; }
+    int size() { return _size; }
+    Iterator* begin() const { return new ArrayIterator(_data, 0); }
+    Iterator* end() const { return new ArrayIterator(_data, _size); }
+};
+
+class ArrayIterator : public Iterator {
+    float* _data;
+    int _index;
+public:
+    ArrayIterator(float* data, int index) : _data(data), _index(index) {}
+    Iterator& operator++() { _index++; return *this; }
+    float& operator++(int) { _index++; return _data[_index - 1]; }
+    float& operator*() { return *(_data + _index); }
+    float* operator->() { return (_data + _index); }
+    bool operator!=(const Iterator &other) const {
+        return (_data != ((ArrayIterator*)(&other))->_data ||
+                _index != ((ArrayIterator*)(&other))->_index);
+    }
+};
+```
+
+==== 使用迭代器
+
+```cpp
+// 算法不依赖具体数据结构！
+void analyze(Iterator* begin, Iterator* end) {
+    int passed = 0, count = 0;
+    for (Iterator* p = begin; *p != *end; (*p)++) {
+        if (**p >= 60) passed++;
+        count++;
+    }
+    cout << "passing rate = " << (float)passed / count << endl;
+}
+
+int main() {
+    float scores[] = {90, 20, 40, 40, 30, 60, 70, 30, 90, 100};
+    Collection *collection = new ArrayCollection(10, scores);
+    analyze(collection->begin(), collection->end());
+}
+```
+
+#rect(
+  fill: rgb("#f0f0ff"),
+  stroke: blue,
+  inset: 10pt,
+  radius: 2pt,
+  width: 100%
+)[
+  *前缀 `++` 返回 `Iterator&`，后缀 `++` 返回 `float&`（而非 `Iterator`）—— 因为 `Iterator` 是抽象类，无法实例化。*
+]
+
+==== 另一种迭代器接口
+
+```cpp
+// hasNext/next/getValue 风格
+Iterator* it = collection->iterator();
+while (it->hasNext()) {
+    it->next();
+    Object object = it->getValue();
+}
+```
+
+==== STL 中的迭代器
+
+STL 用*模板*而非继承实现迭代器模式，更简洁：
+
+```cpp
+// 基于继承：需要基类指针，间接调用
+void analyze(Iterator* begin, Iterator* end);
+
+// 基于模板：直接使用迭代器对象，但对每种类型都生成一份代码
+template<class Iterator>
+void analyze(Iterator begin, Iterator end) {
+    int passed = 0, count = 0;
+    for (Iterator p = begin; p != end; p++) {
+        if (*p >= 60) passed++;
+        count++;
+    }
+    cout << "passing rate = " << (float)passed / count << endl;
+}
+
+int main() {
+    std::vector<float> scores{90, 20, 40, 40, 30, 60, 70, 30, 90, 100};
+    analyze(scores.begin(), scores.end());
+}
+```
+
+#table(
+  columns: (auto, 1fr, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [], [*继承*], [*模板*],
+  [调用方式], [基类指针间接调用], [直接使用迭代器对象],
+  [代码量], [只生成一份代码], [对每种类型生成一份，编译慢、可执行文件大],
+  [返回类型], [`Iterator*`], [`vector::iterator<T>`],
+)
+
+`for (auto i : container)` 语法糖本质上也是基于迭代器。
+
+==== 迭代器模式总结
+
+#image("images/figL12_p67.png", width: 70%)
+
+迭代器模式实现了*算法*和*数据存储*的隔离：$m$ 个算法 $times$ $n$ 种存储 → 只需 $m+n$ 份代码（而非 $m times n$ 份）。
+
+=== 六、总结
+<六总结>
+
+行为型设计模式核心：抽象行为功能中*不变*的成分，具体实现*变*的成分。
+
++ *模板方法*：归纳通用功能，基类固定接口，子类实现细节 → 体现开放封闭原则
++ *策略模式*：抽象功能的选择与组合，隔离不同功能互不影响 → 体现单一责任原则
++ *迭代器模式*：抽象数据访问方法，不暴露底层实现，隔离具体算法与数据结构
