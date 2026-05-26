@@ -2881,3 +2881,234 @@ $ f^'(e) = cases(
 + Ford-Fulkerson标号算法（1956）
 + 最短增广路算法：Edmonds-Karp、Dinic（分层），$O(n^2 m)$
 + 预流推进算法：Push-relabel，$O(n^2 m)$；FIFO策略 $O(n^3)$；结合动态树 $O(n m log n)$
+
+== 十、代数结构 #datetime(day:21, month:5, year:2026).display()
+<十代数结构-2026.5.21>
+
+*代数结构*：由一个集合和定义在这个集合中的一种或若干种运算所构成的系统。研究的中心问题是集合上的抽象运算及运算的性质和结构。
+
+研究内容：半群、群、环、域、格和布尔代数等。应用：
++ 半群 → 自动机、形式语言
++ 群 → 纠错码的设计
++ 格和布尔代数 → 计算机硬件设计、通讯系统设计
+
+=== （1）集合与映射
+<集合与映射-代数结构>
+
+==== 集合运算
+<集合运算-代数结构>
+
+基本符号回顾：$a in A, |S|$ 表示集合的基数，$P(S)$ 是 $S$ 的幂集，$|P(S)| = 2^|S|$。
+
+分配律：
++ $A inter (B union C) = (A inter B) union (A inter C)$
++ $A union (B inter C) = (A union B) inter (A union C)$
+
+==== 映射
+<映射-代数结构>
+
+*定义7.1.1*：设 $S$ 和 $T$ 是给定的两个集合，如果有一个规则 $f$，使对任意一个元素 $x in S$，在 $T$ 中有唯一的元素 $y$ 与之对应，则称 $f$ 是 $S$ 到 $T$ 的一个映射，记作 $f: S arrow.r T$ 和 $y = f(x)$。$S$ 称为定义域，$T$ 为值域，$y$ 称为 $x$ 的象，$x$ 称为 $y$ 的原象。
+
+*定义7.1.2*：两个映射 $f, g$ 相等，当且仅当定义域、值域相同，且对任意 $x$ 都有 $f(x) = g(x)$。
+
+*定义7.1.3*：设 $f$ 是 $A$ 到 $B$ 的映射：
++ 若 $a_i != a_j arrow.r f(a_i) != f(a_j)$，称 $f$ 为#strong[单射]
++ 若 $f(A) = B$，称 $f$ 为#strong[满射]
++ 若 $f$ 既是单射又是满射，称 $f$ 为#strong[双射]
+
+==== 映射的合成
+<映射的合成>
+
+*定义7.1.4*：设 $f: A arrow.r B$，$g: B arrow.r C$，则 $h: a arrow.r g(f(a))$ 称为 $f$ 与 $g$ 的合成，记作 $h = g f$。
+
+合成满足结合律，但#strong[不满足交换律]。
+
+*定理7.1.1*：设 $f$ 是 $A$ 到 $B$ 的映射，$I_A$ 和 $I_B$ 分别是恒等映射，则 $I_B f = f$，$f I_A = f$。
+
+==== 可逆映射
+<可逆映射>
+
+*定义7.1.5*：设 $f: A arrow.r B$，$g: B arrow.r A$：
++ 若 $g f = I_A$，则 $f$ 是#strong[左可逆映射]，$g$ 是 $f$ 的左逆映射
++ 若 $f g = I_B$ 也成立，则 $f$ 和 $g$ 都是#strong[可逆映射]
+
+#text(fill:blue)[*定理7.1.2*：$f: A arrow.r B$ 的映射 $f$：
++ $f$ 是左可逆的充要条件是 $f$ 为单射
++ $f$ 是右可逆的充要条件是 $f$ 为满射
++ $f$ 是可逆映射，当且仅当 $f$ 是双射
+]
+
+口诀：#strong[入要单，出要满]。
+
+*定理7.1.3*：设 $g f = I_A$，$f h = I_B$，则 $g = h$。
+
+证明：$g = g I_B = g(f h) = (g f)h = I_A h = h$。
+
+推论：#strong[可逆映射的逆映射是唯一的]。
+
+推论：若 $f: A arrow.r B$，$g: B arrow.r C$ 都是双射，则 $g f$ 是双射，且 $(g f)^(-1) = f^(-1) g^(-1)$。
+
+=== （2）等价关系
+<等价关系-代数结构>
+
+==== 二元关系与等价关系
+<二元关系与等价关系>
+
+*定义7.2.0*：$A times B = {(a, b) | a in A, b in B}$ 称为 $A$ 和 $B$ 的笛卡尔积。
+
+*定义7.2.1*：$A times B$ 的任一子集 $R$ 称为 $A$ 与 $B$ 之间的一个#strong[二元关系]。当 $A = B$ 时，称 $R$ 为集合 $A$ 上的二元关系。
+
+*定义7.2.2*：设 $R$ 是集合 $A$ 上的二元关系，如果：
++ #strong[自反性]：$forall a in A$，$a R a$
++ #strong[对称性]：若 $a R b$，则 $b R a$
++ #strong[传递性]：若 $a R b$ 且 $b R c$，则 $a R c$
+
+则称 $R$ 是 $A$ 上的#strong[等价关系]，用符号 $tilde$ 表示。
+
+==== 等价类与商集
+<等价类与商集>
+
+设 $R$ 是 $A$ 上的等价关系，元素 $a in A$ 的#strong[等价类]为 $overline(a) = {x in A | x tilde a}$，$a$ 为该等价类的代表元。
+
+等价类的性质：
++ $a in overline(a)$
++ 若 $b, c in overline(a)$，则 $b tilde c$（等价类中任两个元素都有等价关系）
++ 若 $b in overline(a)$ 且 $b tilde x$，则 $x in overline(a)$
+
+#text(fill:blue)[*定理7.2.1*：设 $tilde$ 是 $A$ 上的等价关系，对任意 $a, b in A$，要么 $overline(b) = overline(a)$，要么 $overline(b) inter overline(a) = emptyset$。]
+
+#text(fill:blue)[*定理7.2.2*：等价关系 $tilde$ 确定的全部等价类构成 $A$ 的一个划分，即 $union_(i=1)^n overline(a_i) = A$，且 $overline(a_i) inter overline(a_j) = emptyset$（$i != j$）。]
+
+等价类族记为 $overline(A) = A \/ \sim$，称为 $A$ 关于 $tilde$ 的#strong[商集]。
+
+*自然映射*：$gamma: a arrow.r overline(a)$ 为 $A$ 到 $A \/ \sim$ 的映射，显然是满射。
+
+#text(fill:blue)[*定理7.2.3*：集合 $A$ 的一个划分可以确定 $A$ 的一个等价关系。]
+
+证明：设 $A = union A_i$ 为划分，构造 $R = {(x, y) | exists A_i, x in A_i "且" y in A_i}$，验证自反性、对称性、传递性即可。
+
+$R$ 与等价关系/划分是一一对应的。
+
+*例*：设 $A = {0, 1, 2, ...}$ 是非负整数集合，$m$ 是正整数，模 $m$ 同余关系 $R$ 是等价关系，$A \/ R = {overline(0), overline(1), ..., overline(m-1)}$。
+
+=== （3）代数系统的概念
+<代数系统的概念>
+
+==== 定义
+<代数系统定义>
+
+*定义7.3.1*：设 $A$ 是非空集合，$A^2$ 到 $A$ 的映射 $f: A^2 arrow.r A$ 称为 $A$ 的一个#strong[二元运算]。
+
+*定义7.3.2*：设 $A$ 是非空集合，$A^n$ 到 $A$ 的映射 $f: A^n arrow.r A$ 称为 $A$ 的一个#strong[$n$ 元运算]。
+
+*定义7.3.3*：集合 $A$ 和运算 $f_1, f_2, ..., f_s$ 所组成的系统称为#strong[代数系统]（代数结构），记作 $(A, f_1, f_2, ..., f_s)$。两要素：#strong[集合]和#strong[代数运算]。
+
+判定代数系统的条件：定义的运算满足映射成立条件，且所有运算具有#strong[封闭性]。
+
+*例*：
++ $(R, +, times)$ 是代数系统
++ $(R - {0}, div)$ 是代数系统
++ $(R, -)$ 是代数系统
++ $(N, -)$ #strong[不是]代数系统（减法在自然数集上不封闭）
+
+*例*：设 $Z_m = {overline(0), overline(1), ..., overline(m-1)}$ 是整数模 $m$ 同余确定的等价类集合，$overline(i) + overline(j) = overline((i + j) "mod" m)$，则 $(Z_m, +)$ 是代数系统。
+
+==== 运算律
+<运算律>
+
+#strong[交换律]：$forall x_i, x_j in X$，$x_i dot x_j = x_j dot x_i$。
+
+#strong[结合律]：$forall x_i, x_j, x_k in X$，$(x_i dot x_j) dot x_k = x_i dot (x_j dot x_k)$。
+
+#strong[指数律 / 广义结合律]（定理7.3.1）：若 $(X, dot)$ 适合结合律，则对任意正整数 $m, n$：
++ $x^m dot x^n = x^(m+n)$
++ $(x^m)^n = x^(m n)$
+
+证明：对 $n$ 归纳。
+
+#strong[消去律]：若 $forall a, b, c in X$：
++ $a b = a c arrow.r.double b = c$（左消去）
++ $b a = c a arrow.r.double b = c$（右消去）
+
+==== 单位元
+<单位元-代数系统>
+
+*定义7.3.4*：给定代数系统 $V = (X, dot)$：
++ 若 $exists e_L in X$，使得 $forall x in X$ 都有 $e_L dot x = x$，称 $e_L$ 为#strong[左单位元]
++ 同理定义#strong[右单位元]
++ 若 $e$ 既是左单位元又是右单位元，称之为#strong[单位元]
+
+*例*：
++ $(R, +)$：单位元是 0
++ $(R, times)$：单位元是 1
++ $(R, -)$：右单位元是 0
+
+#text(fill:blue)[*定理7.3.2*：若代数系统既有左单位元 $e_L$ 又有右单位元 $e_R$，则 $e = e_L = e_R$ 是唯一的单位元。]
+
+证明：$e_L = e_L dot e_R = e_R$。
+
+==== 逆元
+<逆元-代数系统>
+
+*定义7.3.5*：设 $V = (X, dot)$ 有单位元 $e$，对于 $x in X$：
++ 若 $exists x^' in X$，使 $x^' dot x = e$，称 $x^'$ 为 $x$ 的#strong[左逆元]
++ 同理定义#strong[右逆元]
++ 若 $x$ 既有左逆元又有右逆元，称 $x$ 为#strong[可逆元]
+
+#text(fill:blue)[*定理7.3.3*：设代数系统具有单位元 $e$，且适合结合律，则若 $x$ 有左逆元 $x^'$ 又有右逆元 $x^('')$ ，则 $x$ 有唯一的逆元 $x^(-1) = x^' = x^('')$ ，且 $(x^(-1))^(-1) = x$。]
+
+证明：
++ $x^' = x^' dot e = x^' dot (x dot x^('') ) = (x^' dot x) dot x^('') = e dot x^('') = x^('')$
++ 设 $x$ 有两个逆元 $a, b$，则 $b = b dot e = b dot (x dot a) = (b dot x) dot a = e dot a = a$
++ 逆元唯一
+
+=== （4）同构与同态
+<同构与同态>
+
+==== 基本定义
+<同构与同态基本定义>
+
+有些代数系统，它们除了元素的名称和运算符号不同以外，在结构上是没有差别的。
+
+*定义7.4.1*：设 $V_1 = (X, o_1, o_2, ..., o_r)$ 和 $V_2 = (Y, overline(o)_1, overline(o)_2, ..., overline(o)_r)$ 是两个代数系统，若 $o_i$ 和 $overline(o)_i$ 都是 $k_i$ 元运算，$k_i$ 为正整数，则说 $V_1$ 和 $V_2$ 是#strong[同类型]的。
+
+*定义7.4.2（同构）*：设 $(X, dot)$ 和 $(Y, ast)$ 是两个同类型的代数系统，$f: X arrow.r Y$ 是一个#strong[双射]。如果 $forall a, b in X$，恒有 $f(a dot b) = f(a) ast f(b)$，则称 $f$ 是 $(X, dot)$ 到 $(Y, ast)$ 的一个#strong[同构映射]，并称 $(X, dot)$ 与 $(Y, ast)$ #strong[同构]，记作 $X tilde.equiv Y$。
+
+*例*：$(Z_4, +)$ 与 $(Y, dot)$ 同构，其中 $Z_4 = {overline(0), overline(1), overline(2), overline(3)}$，$Y = {a, b, c, d}$，映射 $f: overline(0) arrow.r a, overline(1) arrow.r b, overline(2) arrow.r c, overline(3) arrow.r d$ 是同构映射。
+
+*定义7.4.3（同态）*：设 $(X, dot)$ 和 $(Y, ast)$ 是两个同类型的代数系统，$f: X arrow.r Y$ 是一个映射（不要求双射）。如果 $forall a, b in X$，恒有 $f(a dot b) = f(a) ast f(b)$，则称 $f$ 是 $(X, dot)$ 到 $(Y, ast)$ 的一个#strong[同态映射]。
+
+*例*：$(Z, +, times)$ 到 $(Z_m, +_m, times_m)$ 的映射 $f: i arrow.r overline(i)$ 是同态。
+
+==== 子代数与同态象
+<子代数与同态象>
+
+*定义7.4.4*：设 $(X, dot)$ 是代数系统，$R$ 是 $X$ 的非空子集，如果 $R$ 在运算 $dot$ 下是封闭的，则称 $(R, dot)$ 是 $(X, dot)$ 的一个#strong[子代数系统]（子代数）。
+
+#text(fill:blue)[*定理7.4.1*：设 $f: X arrow.r Y$ 是 $(X, dot)$ 到 $(Y, ast)$ 的同态，则 $(f(X), ast)$ 是 $(Y, ast)$ 的一个子代数，称为在 $f$ 作用下 $(X, dot)$ 的#strong[同态象]。]
+
+证明 $f(X)$ 对运算 $ast$ 封闭：设 $y_1, y_2 in f(X)$，则存在 $x_1, x_2 in X$ 使 $f(x_1) = y_1, f(x_2) = y_2$。因为 $(X, dot)$ 是代数系统，$x_1 dot x_2 = x_3 in X$，故 $y_1 ast y_2 = f(x_1) ast f(x_2) = f(x_1 dot x_2) = f(x_3) in f(X)$。
+
+*定义7.4.5*：设 $f: X arrow.r Y$ 是同态：
++ 若 $f$ 是单射，称 $f$ 为#strong[单一同态]
++ 若 $f$ 是满射，称 $f$ 为#strong[满同态]，记作 $X tilde Y$，$Y$ 是 $X$ 的同态象
+
+==== 满同态的性质
+<满同态的性质>
+
+#text(fill:blue)[*定理7.4.2*：设 $f: X arrow.r Y$ 是 $(X, dot)$ 到 $(Y, ast)$ 的满同态，则：
++ 若 $dot$ 是可交换的或可结合的运算，则 $ast$ 也是
++ 若 $(X, dot)$ 有单位元 $e$，则 $(Y, ast)$ 有单位元 $f(e)$
++ 若 $x in X$ 有逆元 $x^(-1)$，则 $f(x)$ 有逆元 $f(x^(-1))$
+]
+
+证明要点：
++ 单位元：$f(x) ast f(e) = f(x dot e) = f(x)$，$f(e) ast f(x) = f(e dot x) = f(x)$，故 $f(e)$ 是 $(Y, ast)$ 的单位元
++ 逆元：$f(x) ast f(x^(-1)) = f(x dot x^(-1)) = f(e)$，$f(x^(-1)) ast f(x) = f(x^(-1) dot x) = f(e)$，故 $f(x^(-1))$ 是 $f(x)$ 的逆元
+
+#strong[总结]：代数系统所适合的运算性质（结合律、交换律、单位元、可逆元等），在满同态映射所构造的任何代数系统（满同态象和同构象）中都能完整地保持下来。
+
+==== 自同态与自同构
+<自同态与自同构>
+
+*定义7.4.6*：代数系统 $(X, dot)$ 上的同态映射 $f: X arrow.r X$ 称为#strong[自同态]，若 $f$ 是同构映射，则称之为#strong[自同构]。

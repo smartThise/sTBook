@@ -5227,3 +5227,312 @@ int main() {
 + *模板方法*：归纳通用功能，基类固定接口，子类实现细节 → 体现开放封闭原则
 + *策略模式*：抽象功能的选择与组合，隔离不同功能互不影响 → 体现单一责任原则
 + *迭代器模式*：抽象数据访问方法，不暴露底层实现，隔离具体算法与数据结构
+
+== 拾贰 结构型模式 #datetime(day:26,month:5,year:2026).display()
+<拾贰-结构型模式-2026.5.26>
+
+=== 一、引例：栈
+<一引例栈>
+
+功能类似数组，但元素访问规则是"后进先出"（LIFO）。简单起见，只支持 `int` 类型。
+
+==== 堆栈基类
+
+```cpp
+#include <climits>
+#include <vector>
+#include <iostream>
+using namespace std;
+
+class Stack {
+public:
+    virtual ~Stack() { }
+    virtual bool full() = 0;
+    virtual bool empty() = 0;
+    virtual void push(int i) = 0;
+    virtual void pop() = 0;
+    virtual int size() = 0;
+    virtual int top() = 0;
+};
+```
+
+==== 简单实现
+
+```cpp
+class MyStack : public Stack {
+private:
+    int *m_data; const int m_size; int m_top;
+public:
+    MyStack(int size) : m_size(size), m_top(-1), m_data(NULL) {
+        if (m_size > 0) m_data = new int[m_size];
+    }
+    virtual ~MyStack() {
+        if (m_data) delete [] m_data;
+    }
+    bool full() { return m_size <= 0 || (m_top+1) == m_size; }
+    bool empty() { return m_top < 0; }
+    void push(int i) { if (m_top+1 < m_size) m_data[++ m_top] = i; }
+    void pop() { if (!empty()) --m_top; }
+    int size() { return m_top+1; }
+    int top() {
+        if (!empty()) return m_data[m_top];
+        else return INT_MIN;
+    }
+};
+```
+
+问题：工作量太大，需要自行管理内存。STL 中 `vector` 已有 `push_back()`、`size()`、`back()`、`pop_back()` 等方法，#strong[功能上满足要求但接口不一致]，需要进行接口的"转换"。
+
+=== 二、适配器（Adapter）模式
+<二适配器adapter模式>
+
+#image("images/figL13_p14.png", width: 70%)
+
+将一个类的接口转换成客户希望的另一个接口，使得原本由于接口不兼容而不能一起工作的类可以在统一接口环境下工作。
+
++ *目标（Target）*：客户所期待的接口
++ *被适配类（Adaptee）*：需要适配的类
++ *适配器（Adapter）*：包装被适配类，把原接口转换成目标接口
+
+==== 实现一：组合方式（对象适配器）
+
+#image("images/figL13_p15.png", width: 70%)
+
+`Vector2Stack` 内部组合一个 `std::vector<int>`，将 Stack 接口翻译为 vector 调用：
+
+```cpp
+class Vector2Stack : public Stack {
+private:
+    std::vector<int> m_data;
+    const int m_size;
+public:
+    Vector2Stack(int size) : m_size(size) { }
+    bool full() { return (int)m_data.size() >= m_size; }
+    bool empty() { return (int)m_data.size() == 0; }
+    void push(int i) { m_data.push_back(i); }
+    void pop() { if (!empty()) m_data.pop_back(); }
+    int size() { return m_data.size(); }
+    int top() {
+        if (!empty()) return m_data[m_data.size()-1];
+        else return INT_MIN;
+    }
+};
+```
+
+==== 实现二：继承方式（类适配器）
+
+#image("images/figL13_p20.png", width: 70%)
+
+`Vector2Stack` 同时*私有继承* `std::vector<int>` 和*公开继承* `Stack`：
+
+```cpp
+class Vector2Stack : private std::vector<int>, public Stack {
+private:
+    int m_size;
+public:
+    Vector2Stack(int size) : m_size(size) { reserve(size); }
+    bool full() { return false; }
+    bool empty() { return vector<int>::empty(); }
+    void push(int i) { push_back(i); }
+    void pop() { pop_back(); }
+    int size() { return vector<int>::size(); }
+    int top() { return back(); }
+};
+```
+
+私有继承使得外界只能接触到 `Vector2Stack` 中的接口，无法直接访问 vector 的方法。
+
+==== 适配器模式小结
+
++ 通过适配器，客户端可以用统一接口调用各种底层类，#strong[提高代码复用率]
++ 将目标类和适配者类解耦，无需修改原有代码
++ 适用场景：复用已有类但接口不一致、接入第三方组件、旧系统迁移
+
+=== 三、代理/委托（Proxy）模式
+<三代理委托proxy模式>
+
+#image("images/figL13_p32.png", width: 70%)
+
+在一些应用中直接访问对象会带来问题（远程访问、创建开销大、安全控制），可以在被访问对象上加上一个*访问层*，将复杂操作包裹在内部，仅对外暴露功能接口——这就是代理/委托模式。
+
+==== 场景
+
++ *远程代理*：从其他进程或远程地址获取资源
++ *资源安全*：多进程编程中检查访问权限
+
+==== 例子：智能指针引用计数
+
+```cpp
+// 辅助指针，存储指针计数及封装实际指针地址
+template <typename T>
+class U_Ptr {
+private:
+    friend class SmartPtr<T>;
+    U_Ptr(T *ptr) : p(ptr), count(1) { }
+    ~U_Ptr() { delete p; }
+    int count;
+    T *p;
+};
+```
+
+```cpp
+template <typename T>
+class SmartPtr {
+private:
+    U_Ptr<T> *rp;
+public:
+    SmartPtr(T *ptr) : rp(new U_Ptr<T>(ptr)) { }
+    SmartPtr(const SmartPtr<T> &sp) : rp(sp.rp) { ++rp->count; }
+    SmartPtr& operator=(const SmartPtr<T>& rhs) {
+        ++rhs.rp->count;
+        if (--rp->count == 0) delete rp;
+        rp = rhs.rp;
+        return *this;
+    }
+    ~SmartPtr() {
+        if (--rp->count == 0) delete rp;
+    }
+    T& operator*() { return *(rp->p); }
+    T* operator->() { return rp->p; }
+};
+```
+
+使用代理包裹指针，之后操作均通过代理进行：
+
+```cpp
+int *i = new int(2);
+SmartPtr<int> ptr1(i);
+SmartPtr<int> ptr2(ptr1);
+SmartPtr<int> ptr3 = ptr2;
+cout << *ptr1 << endl;
+*ptr1 = 20;
+cout << *ptr2 << endl;
+```
+
+==== "变"与"不变"
+
+`SmartPtr<int>` 与 `int*` 有相同的接口（`*`、`->`、赋值、析构），但增加了引用计数的控制操作：
++ 拷贝构造时引用计数加一
++ 析构时引用计数减一，为 0 时释放
++ 赋值时分别处理当前和参数的引用计数
+
+代理类好比被代理类的"经纪人"：一方面提供被代理类所有接口的功能，另一方面可进行额外的控制操作（引用计数、权限控制、远程代理、延迟初始化等）。
+
+==== 代理 vs 适配器
+
+#table(
+  columns: (auto, 1fr, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [], [*适配器*], [*代理*],
+  [核心目的], [变换接口], [分割访问对象与被访问对象，减少耦合],
+  [接口变化], [可能会改变接口], [不会改变接口],
+  [额外控制], [不会增加控制], [可能增加控制功能],
+)
+
+=== 四、装饰器（Decorator）模式
+<四装饰器decorator模式>
+
+==== 引例：TextView
+
+有一个对象 `TextView` 在窗口中显示文本，希望#strong[接口不变]，增加滚动条、边框等功能。
+
+==== 用继承？——类爆炸
+
+#image("images/figL13_p40.png", width: 70%)
+
+随着功能增多，继承类的数量急剧膨胀——最大派生类数目可以是所有功能的组合数。且基类新增接口时所有派生类都需修改。
+
+==== 用策略？——策略个数固定
+
+#image("images/figL13_p42.png", width: 70%)
+
+策略的个数是基类中预先定义好的，若要增加新功能（如滚动条和边框之外的），就要修改基类。
+
+==== 装饰器
+
+#image("images/figL13_p44.png", width: 70%)
+
+创建装饰类包装原有类，保持接口完整的前提下提供额外功能。装饰类与被包装类继承同一基类，因此装饰后的类可以#strong[再次被包装]，递归增加功能。
+
+```cpp
+class Component {
+public:
+    virtual ~Component() { }
+    virtual void draw() = 0;
+};
+
+class TextView : public Component {
+public:
+    void draw() { cout << "TextView." << endl; }
+};
+```
+
+```cpp
+class Decorator : public Component {
+    Component* _component;
+public:
+    Decorator(Component* component) : _component(component) { }
+    virtual void addon() = 0;
+    void draw() {
+        addon();
+        _component->draw();
+    }
+};
+
+class Border : public Decorator {
+public:
+    Border(Component* c) : Decorator(c) { }
+    void addon() { cout << "Bordered "; }
+};
+
+class HScroll : public Decorator {
+public:
+    HScroll(Component* c) : Decorator(c) { }
+    void addon() { cout << "HScrolled "; }
+};
+
+class VScroll : public Decorator {
+public:
+    VScroll(Component* c) : Decorator(c) { }
+    void addon() { cout << "VScrolled "; }
+};
+```
+
+使用——逐层包装：
+
+```cpp
+TextView textView;
+VScroll vs_TextView(&textView);
+HScroll hs_vs_TextView(&vs_TextView);
+Border b_hs_vs_TextView(&hs_vs_TextView);
+b_hs_vs_TextView.draw();
+// 输出：Bordered HScrolled VScrolled TextView.
+```
+
+==== 调用链
+
+#image("images/figL13_p49.png", width: 70%)
+
+每个对象无需了解整个链的全貌。每一次都是将之前的版本完全包裹住再增加新功能——有多少个新功能就包裹几次。
+
+==== 装饰 vs 策略 vs 代理
+
+#table(
+  columns: (auto, 1fr, 1fr, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [], [*策略*], [*装饰*], [*代理*],
+  [核心], [修改功能内核（行为）], [修改功能外壳（结构）], [对被代理对象精细控制],
+  [组件认知], [组件须了解有哪些策略], [组件无需了解有哪些装饰], [被代理对象不存在时常创建],
+  [嵌套], [不常见], [经常多重嵌套], [少见多重嵌套],
+)
+
+=== 五、总结
+<五总结-拾贰>
+
+结构型设计模式关心对象组成结构上的抽象，包括接口、层次、对象组合等。核心在于*抽象结构层次上的不变量*，尽可能减少类与类之间的联系与耦合，以最小代价支持新功能的增加。
+
++ *适配器模式*：在类与类之间进行转接，提高类的复用度与灵活性
++ *代理/委托模式*：减少类与类层次间的耦合，使各类职责清晰
++ *装饰器模式*：动态扩展被装饰类的功能，并留有接口持续扩展
