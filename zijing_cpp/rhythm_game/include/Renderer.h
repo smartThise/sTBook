@@ -32,6 +32,8 @@ public:
     void drawScreenFlash(float flash);
     void drawJudgment(JudgeResult judge, float elapsed);
     void drawUI(int score, int combo, float comboScale, float progress);
+    void drawCountdown(int count);
+    void drawDemoOverlay(const std::string& title, float bgPhase);
     void endFrame();
 
 private:

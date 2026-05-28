@@ -335,6 +335,46 @@ void Renderer::drawUI(int score, int combo, float comboScale, float progress) {
     DrawRectangle(0, Config::SH - 3, (int)(Config::SW * progress), 3, ColorAlpha(Config::ROSE_GOLD, 0.5f));
 }
 
+void Renderer::drawCountdown(int count) {
+    if (count <= 0) return;
+    const char* txt;
+    if (count >= 4)      txt = "READY";
+    else if (count == 3) txt = "3";
+    else if (count == 2) txt = "2";
+    else                 txt = "1";
+
+    float frac = fmodf(GetTime(), 1.0f);
+    float scale = 1.0f + (1.0f - frac) * 0.3f;
+    float alpha = 0.6f + (1.0f - frac) * 0.4f;
+    int fs = (int)(80 * scale);
+    int tw = MeasureText(txt, fs);
+    int cx = Config::SW / 2 - tw / 2;
+    int cy = Config::SH / 2 - fs / 2 - 40;
+
+    DrawCircleV({(float)Config::SW / 2, (float)Config::SH / 2 - 40}, 100,
+                ColorAlpha(Config::PASTEL[0], 0.08f));
+    DrawText(txt, cx + 2, cy + 2, fs, ColorAlpha(Config::INK, 0.1f));
+    DrawText(txt, cx, cy, fs, ColorAlpha(Config::ROSE_GOLD, alpha));
+}
+
+void Renderer::drawDemoOverlay(const std::string& title, float bgPhase) {
+    // DEMO badge top-right
+    float a = 0.6f + sinf(bgPhase * 6) * 0.3f;
+    DrawRectangle(Config::SW - 140, 8, 132, 30, ColorAlpha(Config::PASTEL[0], 0.2f));
+    DrawText("AUTO DEMO", Config::SW - 135, 13, 18, ColorAlpha(Config::PASTEL[0], a));
+
+    // Song title bar at bottom
+    int tw = MeasureText(title.c_str(), 20);
+    DrawRectangle(Config::SW / 2 - tw / 2 - 15, Config::SH - 65, tw + 30, 28,
+                  ColorAlpha(Config::INK, 0.15f));
+    DrawText(title.c_str(), Config::SW / 2 - tw / 2, Config::SH - 62, 20,
+             ColorAlpha(Config::ROSE_GOLD, 0.7f));
+
+    // ESC hint
+    DrawText("ESC to stop", Config::SW / 2 - 45, Config::SH - 35, 14,
+             ColorAlpha(Config::INK_LIGHT, 0.3f));
+}
+
 void Renderer::drawMenu(float bgPhase) {
     ClearBackground(Config::BG_CREAM);
     for (auto& p : petals_) {
@@ -352,8 +392,8 @@ void Renderer::drawMenu(float bgPhase) {
                             12 + ring * 6, ColorAlpha(Config::PASTEL[(i + ring) % 6], 0.12f));
         }
     }
-    DrawText("RHYTHM BEAT", Config::SW / 2 - 230, 140, 50, Config::PASTEL[0]);
-    DrawText("RHYTHM BEAT", Config::SW / 2 - 228, 138, 50, ColorAlpha(WHITE, 0.4f));
+    DrawText("aeacrA", Config::SW / 2 - 85, 140, 50, Config::PASTEL[0]);
+    DrawText("aeacrA", Config::SW / 2 - 83, 138, 50, ColorAlpha(WHITE, 0.4f));
     DrawLineBezier({Config::SW / 2 - 200, 200}, {Config::SW / 2 + 200, 200}, 1, ColorAlpha(Config::ROSE_GOLD, 0.3f));
     DrawText("Keys:  S  D  F  J  K  L", Config::SW / 2 - 130, 310, 24, Config::INK_LIGHT);
     float a = 0.3f + sinf(bgPhase * 4) * 0.3f;
@@ -391,8 +431,8 @@ void Renderer::drawSelect(float bgPhase, const std::vector<SongEntry>& songs,
 
     float a = 0.3f + sinf(bgPhase * 4) * 0.3f;
     if (hasImport) {
-        DrawText("UP/DOWN select  ENTER play  I import  ESC back",
-                 Config::SW / 2 - 240, Config::SH - 40, 17, ColorAlpha(Config::ROSE_GOLD, a));
+        DrawText("ENTER play  A auto-demo  I import  UP/DOWN select  ESC back",
+                 Config::SW / 2 - 270, Config::SH - 40, 17, ColorAlpha(Config::ROSE_GOLD, a));
     } else {
         DrawText("UP/DOWN select  ENTER play  ESC back",
                  Config::SW / 2 - 190, Config::SH - 40, 17, ColorAlpha(Config::ROSE_GOLD, a));

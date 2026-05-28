@@ -10,7 +10,7 @@ void Chart::reset() { notes_.clear(); }
 void Chart::generate() {
     notes_.clear();
     title_ = "Generated";
-    float t = 3.0f;
+    float t = 4.0f;
     auto add = [&](float time, int lane) {
         notes_.push_back({time, lane, NoteType::TAP, 0});
     };

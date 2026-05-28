@@ -48,4 +48,6 @@ private:
     // Import state
     std::string importStatus_;
     float importProgress_ = 0;
+    bool musicStarted_ = false;
+    bool autoplay_ = false;
 };
