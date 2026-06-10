@@ -5536,3 +5536,564 @@ b_hs_vs_TextView.draw();
 + *适配器模式*：在类与类之间进行转接，提高类的复用度与灵活性
 + *代理/委托模式*：减少类与类层次间的耦合，使各类职责清晰
 + *装饰器模式*：动态扩展被装饰类的功能，并留有接口持续扩展
+
+== 拾叁 创建型模式 #datetime(day:2,month:6,year:2026).display()
+<拾叁-创建型模式-2026.6.2>
+
+=== 一、单例（Singleton）模式
+<一单例singleton模式>
+
+==== 引例：全局计数器
+
+一个在多个地方被调用的计数器：
+
+```cpp
+void func() {
+    addCount();
+}
+int main() {
+    addCount();
+    func();
+    cout << getCount() << endl; // 2
+}
+```
+
+如何实现 `addCount` 和 `getCount` 函数？
+
+===== 方法一：全局变量
+
+最直接的方法：
+
+```cpp
+int count = 0;
+void addCount() {
+    count += 1;
+}
+int getCount() {
+    return count;
+}
+```
+
+#strong[好的设计应当避免全局变量！] 用户可能访问到 `count` 并修改数据，不安全。
+
+===== 方法二：静态方法
+
+定义一个类，将函数实现为静态方法：
+
+```cpp
+class Counter {
+private:
+    static int count;
+public:
+    static void addCount() { count += 1; }
+    static int getCount() { return count; }
+};
+int Counter::count = 0;
+
+Counter::addCount();
+cout << Counter::getCount() << endl;
+```
+
+===== 静态方法 + 虚函数 = 编译错误
+
+如果我们有多种不同的 Counter：
+
+```cpp
+class BaseCounter {
+public:
+    static virtual void addCount() = 0; // 编译错误！
+    // ...
+};
+```
+
+#strong[静态方法不可以是虚的！] 静态方法只与类相关而不与实例相关，调用时必须知道类名。
+
+我们想用静态方法实现的是：无论在何处调用，都会访问到相同的函数和变量。也即，#strong[类存在全局唯一的实例]。
+
+==== 单例模式实现
+
+所谓单例，就是#strong[只能构造一份实例]的类：
+
+```cpp
+class Counter {
+    // 显式删除拷贝构造函数与赋值操作符
+    Counter(const Counter &) = delete;
+    void operator=(const Counter &) = delete;
+    int count;
+    Counter() { count = 0; } // 构造函数为private
+    ~Counter() {}             // 析构函数也为private
+    static Counter _instance; // 全局唯一的实例
+public:
+    static Counter &instance() {
+        return _instance;
+    }
+    // 成员函数而非静态方法
+    void addCount() { count += 1; }
+    int getCount() { return count; }
+};
+// 定义类中的静态成员，单例在此被初始化
+Counter Counter::_instance;
+```
+
+调用单例：
+
+```cpp
+int main() {
+    // 由于删去了拷贝构造函数，必须存为引用
+    Counter &c = Counter::instance();
+    c.addCount();
+    cout << c.getCount() << endl;
+}
+```
+
+==== 惰性初始化（Lazy Initialization）
+
+能否在使用时再构造单例实例？
+
+```cpp
+class Counter {
+    // ...
+public:
+    static Counter &instance() {
+        static Counter _instance;
+        return _instance;
+    }
+    // ...
+};
+```
+
+#strong[在第一次调用 `instance` 方法时才会构造单例。]
+
+==== 单例模式的陷阱
+
+需要避免的情况：
+
++ #strong[实例被重复构造]：由于构造函数为 `private`，且拷贝构造函数、赋值操作符被显式删除，故无法重复构造。
++ #strong[实例被意外删除]：考虑下面的代码：
+
+```cpp
+Counter &c = Counter::instance();
+delete &c; // 可以成功执行！
+c.addCount(); // 运行时错误
+```
+
+#rect(
+  fill: rgb("#fff0f0"),
+  stroke: red,
+  inset: 10pt,
+  radius: 2pt,
+  width: 100%
+)[
+  *应当把析构函数也设为 `private`！*
+  ```cpp
+  class Counter {
+  private:
+      ~Counter() {}
+      // ...
+  };
+  // error: calling a private destructor of class 'Counter'
+  ```
+]
+
+==== 单例模式 + 虚函数
+
+回到一开始的问题——多种 Counter 的多态：
+
+```cpp
+class BaseCounter {
+public:
+    virtual void addCount() = 0;
+    virtual int getCount() = 0;
+};
+
+class SimpleCounter : public BaseCounter {
+    // ... 单例相关的一大堆逻辑 ...
+    int count;
+    SimpleCounter() { count = 0; }
+public:
+    virtual void addCount() { count += 1; }
+    virtual int getCount() { return count; }
+};
+
+class NotSimpleCounter : public BaseCounter { ... };
+```
+
+使用：
+
+```cpp
+void doStuff(BaseCounter *counter) {
+    counter->addCount();
+    counter->addCount();
+    cout << counter->getCount() << endl;
+}
+int main() {
+    doStuff(&SimpleCounter::instance()); // 2
+    doStuff(&NotSimpleCounter::instance()); // ...
+    doStuff(&SimpleCounter::instance()); // 4
+}
+```
+
+#strong[唯一的不便]：单例相关的逻辑较多，有很多重复代码，却无法在基类中实现——因为基类不知道派生类的类别。
+
+==== CRTP：奇特的递归模板模式
+
+Curiously Recurring Template Pattern (CRTP)：
+
+```cpp
+template <class Derived> // 模板参数为派生类类型
+class Singleton {
+    Singleton(const Singleton &) = delete;
+    void operator=(const Singleton &) = delete;
+protected:
+    Singleton() {}
+    virtual ~Singleton() {}
+public:
+    static Derived &instance() { // 魔法在此发生
+        static Derived _instance;
+        return _instance;
+    }
+};
+```
+
+#image("images/figL14_p17.png", width: 70%)
+
+===== CRTP + 多重继承
+
+基于 `Singleton` 类实现计数器派生类：
+
+```cpp
+class SimpleCounter : public BaseCounter,
+                      public Singleton<SimpleCounter> {
+    // 友元声明是必要的，因为Singleton类需要访问派生类的
+    // 构造函数，而为了实现单例，构造函数是私有的
+    friend class Singleton<SimpleCounter>;
+    // ... 只需实现计数器逻辑即可
+};
+```
+
+#strong[注意]：不能直接将 `Singleton` 类的逻辑实现在 `BaseCounter` 类中，否则不存在"基类指针"。
+
+===== 关于 CRTP
+
+CRTP 是实现多态的另一种方式。与虚函数不同，本质上实现的还是*编译期多态*：
+
++ 使用虚函数实现：运行时通过虚函数表寻找调用的方法
++ 使用 CRTP 实现：函数需要被实现为模板函数，编译时由编译器为每种被调用的派生类进行模板实例化
+
+==== 关于单例模式
+
+单例模式是存在争议的一种设计模式：
+
++ *优点*：实现似乎比较简单；以相对安全的形式提供可供全局访问的数据
++ *缺点*：难以完全正确地实现；违反单一职责原则；过度使用会使得实际的依赖关系变得隐蔽
+
+=== 二、工厂方法（Factory Method）模式
+<二工厂方法factory-method模式>
+
+==== 引例：泡茶程序
+
+根据客户需求提供绿茶或者红茶：
+
+```cpp
+GreenTea *orderGreenTea() {
+    GreenTea *greenTea = new GreenTea();
+    greenTea->addIngredients(); // 加料
+    greenTea->brew();           // 泡茶
+    greenTea->pour();           // 装杯
+    return greenTea;
+}
+
+BlackTea *orderBlackTea() {
+    BlackTea *blackTea = new BlackTea();
+    blackTea->addIngredients(); // 加料
+    blackTea->brew();           // 泡茶
+    blackTea->pour();           // 装杯
+    return blackTea;
+}
+```
+
+代码存在大量冗余！
+
+抽出公共逻辑并简化：
+
+```cpp
+Tea *orderTea(string type) {
+    Tea *tea;
+    if (type == "GreenTea")
+        tea = new GreenTea;
+    else if (type == "BlackTea")
+        tea = new BlackTea;
+    tea->addIngredients(); // 加料
+    tea->brew();           // 泡茶
+    tea->pour();           // 装杯
+    return tea;
+}
+```
+
+类似的构造过程可能在许多地方用到，进一步抽象为一个方法。
+
+==== 工厂方法
+
+在 `Tea` 类中添加一个 `factory` 静态方法：
+
+```cpp
+class Tea {
+    // ...
+public:
+    static Tea *factory(string type) {
+        if (type == "GreenTea")
+            return new GreenTea;
+        else if (type == "BlackTea")
+            return new BlackTea;
+        // ... 其他可能的茶叶类型
+    }
+};
+```
+
+这一方法被称为"工厂方法"。
+
+==== 单独的工厂类
+
+当构造逻辑过于复杂，或者有必要进行分离时，可以把工厂方法放在单独的类中：
+
+```cpp
+class TeaFactory {
+public:
+    void setMilk(int amount) { ... }
+    void setSugar(int amount) { ... }
+    Tea *createTea(string type) {
+        Tea *tea = nullptr;
+        if (type == "GreenTea")
+            tea = new GreenTea;
+        else if (type == "BlackTea")
+            tea = new BlackTea;
+        if (milkAmount > 0) tea->addMilk(...);
+        if (sugarAmount > 0) tea->addSugar(...);
+        // ...
+    }
+};
+```
+
+==== 工厂方法的用途
+
++ #strong[包装复杂的构造逻辑]
++ #strong[为重载的构造函数提供描述性名称]
++ 对象构造需要用到当前函数体无法访问的信息
++ 需要集中管理被构造对象的生命周期
+
+==== 构造函数的描述性名称
+
+一些类可能具有多个重载的构造函数，可以改写为工厂方法以使用描述性的名称：
+
+```cpp
+class Complex { // 复数类
+    float real, imag; // 实部、虚部
+    Complex(float real, float imag) { ... }
+public:
+    // 笛卡尔坐标
+    static Complex fromCartesian(float x, float y) {
+        return Complex(x, y);
+    }
+    // 极坐标
+    static Complex fromPolar(float r, float a) {
+        return Complex(r * cos(a), r * sin(a));
+    }
+};
+```
+
+==== 一个现实的例子：Box2D
+
+#image("images/figL14_p30.png", width: 70%)
+
+Box2D 是一款高性能、工业级的 2D 物理引擎。它在处理物理对象（如刚体、碰撞体）的创建时，并没有直接让用户使用 `new` 操作符，而是采用了严格的工厂模式。
+
+===== Box2D 中的主要类型
+
+#table(
+  columns: (auto, 1fr, 1fr, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [], [`b2World`（物理世界）], [`b2BodyDef`（配置描述）], [`b2Body`（刚体实例）],
+  [角色], [管理所有刚体的"容器"；负责物理步进、碰撞检测等核心逻辑；持有内存分配器], [纯数据对象，无业务逻辑，可复用，可序列化；作用：解耦配置和创建], [构造函数为 `private`；只能通过 `b2World::createBody` 创建；内部持有 `b2World` 引用，用于内存管理],
+)
+
+构造 `b2Body` 必须使用工厂方法：
+
+```cpp
+b2World *world = new b2World(...);
+b2BodyDef bodyDef(...);
+b2Body *body = world->createBody(&bodyDef);
+```
+
+#strong[原因有二：]
++ `b2Body` 在构造时需要用到 `b2World` 的私有成员
++ Box2D 需要频繁申请并释放小块内存，为高效处理，自己实现了小块内存分配器 `b2BlockAllocator` 并手动管理内存。通过工厂方法，可以避免用户误用系统的内存分配机制
+
+#strong[优势：]
++ 封装复杂创建逻辑（内存分配、世界注册、碰撞初始化等）
++ 保证对象状态一致性
++ 支持未来扩展（如添加新类型刚体，只需改工厂逻辑即可）
+
+另外，使用 `b2BodyDef` 可以避免在函数调用中标明所有属性，也可以方便地构造多个属性相同或类似的 `b2Body` 对象。
+
+=== 三、抽象工厂（Abstract Factory）模式
+<三抽象工厂abstract-factory模式>
+
+==== 工厂方法的局限性
+
+工厂方法的目的是构造*单个类*的对象。如果我们要构造的是*多个类*的对象，而且有特定的组合方式呢？
+
+一个很现实的例子：编译器前端——由代码构建统一格式的中间表示，需要三个步骤：语法分析、语义分析、中间代码生成。对于每种语言来说，每个步骤的实现不同，同一种语言应该使用同一种实现。不妨假设有两种语言：C++ 和 Java。
+
+==== 编译器前端设计
+
+三个步骤的类：
++ 语法分析 `Lexer`：`CppLexer` / `JavaLexer`
++ 语义分析 `Parser`：`CppParser` / `JavaParser`
++ 中间代码生成 `Generator`：`CppGenerator` / `JavaGenerator`
+
+框架的实现：
+
+```cpp
+class Compiler {
+    string type;
+public:
+    Compiler(string type) { this->type = type; }
+    LexResult *lex(Code *input) {
+        Lexer *lexer;
+        if (type == "cpp")
+            lexer = new CppLexer;
+        else if (type == "java")
+            lexer = new JavaLexer;
+        return lexer->lex(input);
+    }
+    ParseResult *parse(LexResult *input) {
+        Parser *parser;
+        if (type == "cpp")
+            parser = new CppParser;
+        else if (type == "java")
+            parser = new JavaParser;
+        return parser->parse(input);
+    }
+    // ...
+};
+```
+
+问题：当前实现有过多的代码重复。如果要添加新语言支持，需要在每个步骤中加一条 `if` 分支。
+
+==== 添加一层抽象
+
+设计一个基类，抽象同一语言所需的所有步骤：
+
+```cpp
+class AbstractFactory {
+public:
+    virtual Lexer *createLexer();
+    virtual Parser *createParser();
+    virtual Generator *createGenerator();
+};
+
+class CppFactory : public AbstractFactory {
+public:
+    Lexer *createLexer() { return new CppLexer; }
+    Parser *createParser() { return new CppParser; }
+    Generator *createGenerator() { return new CppGenerator; }
+};
+
+class JavaFactory : public AbstractFactory {
+    // ... Java 的三个步骤实现
+};
+```
+
+修改框架实现：
+
+```cpp
+class Compiler {
+    AbstractFactory *factory;
+public:
+    Compiler(AbstractFactory *factory) {
+        this->factory = factory;
+    }
+    LexResult *lex(Code *input) {
+        return factory->createLexer()->lex(input);
+    }
+    ParseResult *parse(LexResult *input) {
+        return factory->createParser()->parse(input);
+    }
+    // ...
+};
+```
+
+==== 抽象工厂模式
+
+将刚才的类对应到术语：
+
+#table(
+  columns: (auto, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [*术语*], [*对应类*],
+  [抽象工厂], [`AbstractFactory`],
+  [具体（Concrete）工厂], [`CppFactory`、`JavaFactory`],
+  [抽象产品], [`Lexer`、`Parser`、`Generator`],
+  [具体产品], [`CppLexer`、`JavaParser`、……],
+)
+
+抽象工厂模式即，将同类的具体产品包装为一个具体工厂，以抽象工厂的形式呈现给上层代码；上层代码只需要关心抽象工厂和抽象产品，而不需要知道具体的工厂和产品是哪些。
+
+#image("images/figL14_p40.png", width: 80%)
+
+=== 四、设计模式总结
+<四设计模式总结-拾叁>
+
+==== 三大设计模式回顾
+
+===== 行为型模式（Behavioral Patterns）
+
+关注对象行为功能上的抽象，提升对象在行为功能上的可扩展性，能以最少的代码变动完成功能的增减。常用于描述对类和对象的交互与职责分配。
+
++ *模板方法模式*：定义算法骨架，将具体步骤的实现放到子类中实现。可以在不改变算法流程的情况下，自定义某些步骤
++ *策略模式*：定义一类算法，将每个算法分别封装，不同算法可以相互替换
++ *迭代器模式*：用于遍历数据集合（数组、链表、树、图等），解耦算法与数据访问
+
+===== 结构型模式（Structural Patterns）
+
+关注对象之间结构关系上的抽象，从而提升对象结构的可维护性、代码的健壮性，能在结构层面上尽可能解耦合。常用于处理类和对象的组合关系。
+
++ *适配器模式*：将不兼容的接口转换为可兼容的接口
++ *代理/委托模式*：在不改变原始类接口的条件下，为原始类定义一个代理类，增加控制访问
++ *装饰器模式*：用组合来替代继承，给原始类添加增强功能
+
+===== 创建型模式（Creational Patterns）
+
+将对象的创建与使用进行划分，从而规避复杂对象创建带来的资源消耗，能以简短的代码完成对象的高效创建。用于对象的创建。
+
++ *单例模式*：用来创建全局唯一的对象
++ *工厂方法模式*：用来创建不同但相关类型的对象，由给定的参数来决定创建哪种类型的对象
++ *抽象工厂模式*：提供一个创建一系列相关或相互依赖对象的接口，而无需指定它们具体的类
+
+==== 七大设计原则
+
+#table(
+  columns: (auto, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [*原则*], [*说明*],
+  [开闭原则], [一个软件实体（类、模块、函数）应该对扩展开放，对修改关闭。最基础的设计原则],
+  [单一职责原则], [每个类应该只有一个职责，只有一个原因可以引起它的改变。例如：迭代器模式使得数据结构与算法分离],
+  [里氏代换原则], [只要父类出现的地方子类就可以出现，即子类尽量不修改父类的数据与方法，实现基类代码的充分复用],
+  [依赖倒转原则], [要依赖于抽象，不要依赖于具体。针对接口编程，而不是针对实现编程。上层模块不应该依赖底层模块],
+  [接口隔离原则], [不要建立臃肿庞大的接口。接口尽量细化的同时接口中的方法尽量少],
+  [迪米特原则], [最少知道原则，一个对象应该对其他对象有最少的了解，使得功能模块相对独立],
+  [合成复用原则], [在新对象里通过关联关系来使用已有的对象，使之成为新对象的一部分；优先考虑使用组合而不是继承],
+)
+
+#rect(
+  fill: rgb("#f0f0ff"),
+  stroke: blue,
+  inset: 10pt,
+  radius: 2pt,
+  width: 100%
+)[
+  *注意：*在程序设计中尽量遵循七大原则，但也需根据实际情况调整，切勿滥用设计模式使得代码过度冗余。
+]
