@@ -38,6 +38,9 @@ A falling rhythm game built with raylib
 **外部依赖**：raylib、aubio（音频特征分析）
 **Dependencies**: raylib, aubio (audio feature analysis)
 
+**按键布局** / **Key Layout**: `S D F J K L` — 左手无名指→右手无名指，对称设计
+*Left ring → right ring, symmetric ergonomic layout*
+
 ---
 
 # 项目结构 / Project Structure
@@ -78,6 +81,9 @@ aeacrA/
 
 弱耦合：Renderer 不依赖 Judge，InputManager 不依赖 Chart
 Loosely coupled: Renderer has no dependency on Judge, InputManager none on Chart
+
+**数据流** / **Data Flow**: Input → Game 协调 → Judge 判定 → Chart 更新 → Renderer 绘制 → Particles 反馈
+*Input → Game orchestrates → Judge evaluates → Chart updates → Renderer draws → Particles feedback*
 
 ---
 
@@ -120,6 +126,21 @@ Four-tier timing window: the more precise, the higher the score
 超时未按自动 MISS；空按（无对应音符）也触发 MISS
 Expired notes auto-MISS; empty presses (no matching note) also trigger MISS
 
+```cpp
+// 判定窗口常量 (Config.h)
+constexpr float JW_PERFECT = 0.045f; // 45ms
+constexpr float JW_GREAT   = 0.09f;  // 90ms
+constexpr float JW_GOOD    = 0.14f;  // 140ms
+
+// 核心判定逻辑 (Judge.cpp)
+JudgeResult JudgeSystem::judge(float diff) const {
+    if (diff <= JW_PERFECT) return PERFECT;
+    if (diff <= JW_GREAT)   return GREAT;
+    if (diff <= JW_GOOD)    return GOOD;
+    return NONE;  // 超出窗口
+}
+```
+
 ---
 
 # 创新点 ① Hold 双段判定 / Hold Dual Judgment
@@ -138,6 +159,17 @@ Tail: release time vs hold end → independent second judgment, scored twice
 
 早松超出窗口直接 MISS，保证长按的挑战性
 Early release beyond window triggers MISS, ensuring hold note challenge
+
+```cpp
+void JudgeSystem::applyHold(JudgeResult head, JudgeResult tail) {
+    apply(head);  // 头部走标准判定（含 Combo 逻辑）
+    // 尾部额外加分，仅头部非 MISS 时有效
+    if (head != MISS && tail != MISS) {
+        counts_[idx(tail)]++; score_ += pts(tail);
+        combo_++; if (combo_ > maxCombo_) maxCombo_ = combo_;
+    }
+}
+```
 
 ---
 
@@ -190,6 +222,13 @@ Onset detection: onset timestamps + 80ms minimum gap
 FFT 频谱：spectral centroid + bass ratio → 轨道分配
 FFT spectrum: spectral centroid + bass ratio → lane assignment
 
+**BPM 算法** / **BPM Algorithm**:
+```
+BPM = 60.0 / median(beat_intervals)  // 中位数抗噪声
+clamp to [60, 300]
+```
+*Median of beat intervals → robust against outlier detections*
+
 ---
 
 # 创新点 ③ Onset 检测 / Onset Detection
@@ -208,6 +247,18 @@ Filter: discard onsets closer than 80ms to avoid duplicates
 效果：跑完整首歌得到打击点时间列表，即音符出现的时间
 Result: a list of timestamps where notes should appear
 
+```cpp
+// 核心去重逻辑 Core dedup logic
+aubio_onset_do(od, buf, onsetOut);
+if (onsetOut->data[0] != 0) {
+    float t = aubio_onset_get_last_s(od);
+    if (t - lastOnset > 0.08f) {  // 80ms 最小间隔
+        // 记录该 onset / record this onset
+        lastOnset = t;
+    }
+}
+```
+
 ---
 
 # 创新点 ③ FFT 频谱分析 / FFT Spectrum Analysis
@@ -223,6 +274,20 @@ Get 256 frequency bins, extract two metrics:
 
 **centroid** = 加权重心位置 → 频谱质心，越高高频越多
 **centroid** = weighted center → spectral centroid, higher = more high-freq
+
+```cpp
+// FFT 特征提取 (ChartGenerator.cpp)
+float totalEnergy = 0, weightedFreq = 0, bassEnergy = 0;
+int bassBins = 256 / 8;  // 前32bin = 低音区域
+for (int i = 0; i < 256; i++) {
+    float mag = fftC->norm[i];
+    totalEnergy += mag;
+    weightedFreq += mag * i;
+    if (i < bassBins) bassEnergy += mag;
+}
+bassRatio = bassEnergy / totalEnergy;
+centroid   = weightedFreq / totalEnergy / 256.0f;
+```
 
 ---
 
@@ -240,6 +305,15 @@ Neither dominant → mid → center lane (2,3)
 效果：低沉鼓点按左手，明亮高音按右手，模拟真实演奏
 Low drums → left hand, bright highs → right hand, like real performance
 
+```cpp
+if (bass > 0.5f)
+    lane = (centroid < 0.15f) ? 0 : 1;      // 低音→左手
+else if (centroid > 0.6f)
+    lane = (centroid > 0.75f) ? 5 : 4;       // 高音→右手
+else
+    lane = (centroid > 0.35f) ? 3 : 2;       // 中频→中间
+```
+
 ---
 
 # 创新点 ③ 段落变化策略 / Section Variation
@@ -255,6 +329,14 @@ Switch lane assignment mode every 8 beats to avoid monotony
 | 3 | 频谱 ± 大幅偏移 / Spectrum ± wide offset |
 | 4 | 镜像：`5 - lane` / Mirror |
 
+**Hold 生成条件** / **Hold Generation**:
+`energy < 0.4 && bass > 0.3 && noteIndex % 10 == 0`
+低能量持续音 + 低音特征 → Hold 长按，时长 `beatDur * (1~3)`
+*Low-energy sustained sounds + bass character → Hold, duration 1~3 beats*
+
+**后处理** / **Post-processing**: 移除 Hold 区间内的 Tap 重叠 → 按时间排序 → 去重 (同lane<10ms)
+*Remove taps overlapping with holds → sort by time → dedup same lane*
+
 ---
 
 # 渲染系统 / Rendering System
@@ -269,6 +351,17 @@ Switch lane assignment mode every 8 beats to avoid monotony
          ╱ ╲
         ╱   ╲
        ╱     ╲  ← 判定线 (HIT_Y)
+```
+
+```cpp
+// 非线性深度映射 — 幂函数制造隧道感
+float perspY(float d) {
+    return VP_Y + TRACK_LEN * powf(d, 1.55f);
+}
+float perspX(float hx, float d) {
+    return VP_X + (hx - VP_X) * d;  // 线性收敛到消失点
+}
+// d=0 消失点 (y=15), d=1 判定线 (y=530)
 ```
 
 ---
@@ -297,6 +390,22 @@ Angles rotate with time, using adjacent lane colors
 窄角度向上的大粒子，营造连续击打的成就感
 Narrow-angle large particles, creating a satisfying streak feel
 
+```cpp
+// 粒子物理 (ParticleSystem.cpp)
+void ParticleSystem::update(float dt) {
+    for (auto& p : particles_) {
+        p.pos.x += p.vel.x * dt;
+        p.pos.y += p.vel.y * dt;
+        p.vel.y += 400.0f * dt;   // 重力 gravity
+        p.vel.x *= 0.97f;         // 水平阻力 drag
+        p.life -= dt;
+    }
+    // erase-remove idiom: 自动回收过期粒子
+    particles_.erase(remove_if(..., [](Particle& p) {
+        return p.life <= 0; }), particles_.end());
+}
+```
+
 ---
 
 # JSON 解析器 / JSON Parser
@@ -315,6 +424,9 @@ struct JsonValue {
 
 链式访问：`root["notes"][0]["time"]`
 Chain access: `root["notes"][0]["time"]`
+
+递归下降解析 / Recursive descent: `parseValue()` → 根据首字符分发 `"`→parseStr, `{`→parseObj, `[`→parseArr, 否则→parseNum
+约 100 行零依赖 / ~100 lines, zero dependencies
 
 ---
 
@@ -380,6 +492,71 @@ Obj-C++: `.mm` files bridge C++ and macOS
 
 ---
 
+# 程序化音频合成 / Procedural Audio Synthesis
+
+按键音：6 个轨道独立正弦波音色 / Lane hit sounds: 6 independent sine-wave tones
+```
+S=440Hz(A4) D=494Hz(B4) F=523Hz(C5) J=587Hz(D5) K=659Hz(E5) L=784Hz(G5)
+```
+
+**Kick 底鼓** / **Kick drum**:
+```cpp
+buf[i] = sin(2π * (150*e^(-20t) + 40) * t)  // 频率 190→40Hz 快速下降
+       * 0.3 * (1 - t/0.15)³ * 32767;        // 模拟鼓膜振动
+```
+
+**Hat 踩镲** / **Hi-hat**:
+```cpp
+buf[i] = (rand()*2-1) * 0.1 * (1 - t/0.04)⁶ * 32767;  // 白噪声 40ms
+```
+
+无音频文件时节拍器自动接管 / Metronome auto-fallback when no audio file
+
+---
+
+# 自动演示模式 / Auto-Demo Mode
+
+选歌界面按 `A` 激活 / Press `A` in song select to activate
+
+```cpp
+// autoplay_ 标志切换策略 (Game.cpp)
+if (autoplay_) {
+    // Tap: 到达前 5ms 内自动 PERFECT
+    if (n.type == TAP && diff <= 0.005f && diff > -JW_PERFECT) {
+        n.result = PERFECT;  judge_.apply(PERFECT);
+        // 触发全效果：粒子爆炸+螺旋+火焰+屏幕闪光
+        spawnExplosion(); spawnSpiral();
+        if (combo > 10) spawnFire();  screenFlash_ = 1;
+    }
+    // Hold: 头部自动按 + 尾部自动释放
+    // 自动管理 keysDown_[] 状态
+}
+```
+
+Auto-release 逻辑：释放不再需要的按键，模拟真实演奏
+*Release keys no longer needed, simulates real performance*
+
+---
+
+# 测试与验证 / Testing & Verification
+
+**20 项手动测试全部通过** ✅ / *20 manual tests all passed* ✅
+
+| # | 测试内容 / Test | 状态 |
+|---|----------------|------|
+| 1-3 | 主菜单显示 → ENTER选歌 → UP/DOWN切换 / Menu→Select→Switch | ✓ |
+| 4-6 | 手动游玩 / 音符判定 / HOLD双段 / Manual play/Judge/Hold | ✓ |
+| 7-8 | 分数+Combo累计 / MISS断连 / Score+Combo/MISS break | ✓ |
+| 9-10 | 结算画面(S/A/B/C/D等级) / 返回主菜单 / Results→Menu | ✓ |
+| 11 | 自动演示(A键全PERFECT) / Auto-demo (all PERFECT) | ✓ |
+| 12 | ESC退出游玩 / ESC quit during play | ✓ |
+| 13-14 | I键导入→文件选择器→分析→游玩 / Import→Analyze→Play | ✓ |
+| 15 | Random随机生成谱面 / Random generated chart | ✓ |
+| 16-17 | 粒子特效(爆炸/螺旋/火焰) / 屏幕闪光 / Particles/Flash | ✓ |
+| 18-20 | 节拍脉动 / 透视效果 / ESC选歌返回 / Pulse/Persp/ESC | ✓ |
+
+---
+
 # 总结 / Summary
 
 
@@ -387,6 +564,9 @@ Obj-C++: `.mm` files bridge C++ and macOS
 多级下落判定系统、Obj-C++ 原生文件选择器、音频分析自动谱面生成
 Multi-tier judgment, native Obj-C++ file picker, audio-driven auto chart generation
 
+全栈技术 / Full-stack tech：C++17 · raylib · aubio · Obj-C++ · AppKit · Makefile
+代码规模 / Code scale：14 headers + 11 sources ≈ 2500 lines · 手写 JSON parser
+设计亮点 / Design highlights：弱耦合组合式架构 · 程序化音频合成 · 3D透视渲染 · 粒子特效系统
 
 ---
 

@@ -4182,3 +4182,284 @@ $ sigma = (1, 2, 3, 4) = (2, 3)(3, 4)(4, 1) = (1, 4)(1, 3)(1, 2) $
 - 置换的表示：轮换、对换、恒等变换
 - 逆序、逆序数、置换的逆序数性质
 - Cayley 定理：任意群与一个变换群同构
+
+== 十一、群 (3) #datetime(day:12, month:6, year:2026).display()
+<十一群3-2026.6.12>
+
+=== （1）陪集与群的陪集分解
+<陪集与群的陪集分解>
+
+==== 引入：子群诱导的等价关系
+<子群诱导等价关系>
+
+群内的子群反映了群的结构和性质。利用子群 $H$ 可以在群 $G$ 的元素之间确定一个二元关系 $R$：
+
+$a R b$ 当且仅当 $a b^(-1) in H$
+
+$R$ 是 $G$ 中的一个等价关系，因此由等价关系可以确定 $G$ 的一个划分，其划分块就是子群 $H$ 的陪集。
+
+==== 定义8.5.1：左陪集与右陪集
+<定义8.5.1>
+
+设 $H$ 是群 $G$ 的一个子群，对任意的 $a in G$，集合
+$ a H = {a h | h in H} $
+称为子群 $H$ 在 $G$ 中的一个#strong[左陪集]。同理，$H$ 在 $G$ 中的一个#strong[右陪集]是
+$ H a = {h a | h in H} $
+
+#strong[注意]：左陪集和右陪集不一定相等！
+
+*例*：$S_3$ 中，$H = {e, (1\;2)}$：
++ $e H = H = {e, (1\;2)}$，$H e = H$
++ $(1\;3) H = {(1\;3), (1\;2\;3)}$，$H (1\;3) = {(1\;3), (1\;3\;2)}$
++ $(2\;3) H = {(2\;3), (1\;3\;2)}$，$H (2\;3) = {(2\;3), (1\;2\;3)}$
+
+可见 $(1\;3) H != H (1\;3)$，$(2\;3) H != H (2\;3)$。
+
+*例*：$G = (Z, +)$，$H = {k m | k in Z}$，$H$ 是 $G$ 的子群。因为 $G$ 是交换群，左、右陪集相等：
++ $0 + H = H + 0 = {k m | k in Z}$
++ $1 + H = H + 1 = {1 + k m | k in Z}$
++ ...
++ $(m-1) + H = H + (m-1) = {m-1 + k m | k in Z}$
+
+每个陪集正好与一个同余类对应。
+
+==== 定理8.5.1：左陪集的六条性质
+<定理8.5.1>
+
+#text(fill:blue)[*定理8.5.1*：设 $H$ 是 $G$ 的子群，则 $H$ 的左陪集具有下述性质：]
+
++ #strong[性质1]：$H = e H$，$a in a H$。（$H$ 自身是 $e$ 的左陪集，每个元素属于自己代表的左陪集）
+
++ #strong[性质2]：$|a H| = |H|$。（每个左陪集的元素个数与 $H$ 相同）
+  - 证明：由消去律，$forall h_1, h_2 in H$，若 $h_1 != h_2$，则 $a h_1 != a h_2$，故 $a H$ 中没有共同元素。
+
++ #strong[性质3]：$a in H arrow.l.r a H = H$。（子群中任意元素与子群自身作用的左陪集仍为子群自身）
+  - $=>$：因为 $a in H$，所以 $a H subset.eq H$。又 $forall h in H, h = a(a^(-1) h) in a H$，故 $H subset.eq a H$。
+  - $<=$：$a = a e in a H = H$。
+
++ #strong[性质4]：$forall x in a H$，都有 $x H = a H$，$a$ 称为 $a H$ 的一个#strong[陪集代表]。（左陪集中任意元素与 $H$ 作用的左陪集不变）
+  - 证明：$forall x in a H$，必有 $x = a h_1$（$h_1 in H$）。
+    - $forall x h in x H$，$x h = a h_1 h = a(h_1 h) in a H$，即 $x H subset.eq a H$。
+    - $forall a h^' in a H$，$a = x h_1^(-1)$，$a h^' = x h_1^(-1) h^' in x H$，即 $a H subset.eq x H$。
+
++ #strong[性质5]：$a H = b H arrow.l.r a in b H$ 或 $b in a H$ $arrow.l.r b^(-1) a in H$ 或 $a^(-1) b in H$
+
++ #strong[性质6]：$forall a, b in G$，若非 $a H = b H$，必有 $a H inter b H = emptyset$。（同一子群的两个左陪集要么相等、要么交集为空）
+  - 证明：假如 $a H inter b H != emptyset$，则存在 $x in a H inter b H$，由性质4，$x H = a H = b H$。
+
+#block(inset: 8pt, stroke: 0.5pt + gray, radius: 3pt)[
+  #strong[核心结论]：子群 $H$ 的所有左陪集构成群 $G$ 的一个划分！
+]
+
+==== 定理8.5.2：群的陪集分解
+<定理8.5.2>
+
+#text(fill:blue)[*定理8.5.2*：设 $G$ 是有限群，$H$ 是 $G$ 的子群，则存在一个正整数 $k$，满足
+$ G = a_1 H union a_2 H union ... union a_k H $
+其中 $a_i H inter a_j H = emptyset$（$i != j$）。]
+
+#strong[思考]：单位元 $e$ 在哪个陪集中？——在 $e H = H$ 中。
+
+==== 定义8.5.2：指数
+<定义8.5.2>
+
+群 $G$ 关于其子群 $H$ 的左陪集的个数，称为 $H$ 在 $G$ 中的#strong[指数]，记作 $[G : H]$。
+
+观察 $H = {e}$：左陪集个数就是 $|G|$，$[G : H] = [G : 1] = |G|$。
+
+==== Lagrange 定理
+<Lagrange定理>
+
+#text(fill:blue)[*Lagrange 定理*：设 $G$ 是有限群，$H$ 是 $G$ 的子群，则
+$ [G : 1] = [G : H] [H : 1] $
+即 $|G| = [G : H] dot |H|$。]
+
+#strong[意义]：#text(fill:red)[*有限群中，子群的阶只能是群的阶的因子！*]
+
+==== Lagrange 定理的推论
+<Lagrange定理推论>
+
+#strong[推论1]：#text(fill:blue)[设有限群 $G$ 的阶为 $n$，则 $G$ 中任意元素的阶都是 $n$ 的因子，且适合 $x^n = e$。]
+
+#strong[证明]：
++ $forall a in G$，可以得到 $G$ 的循环子群 $H = bracket.l a bracket.r$
++ 根据 Lagrange 定理，$|H| | |G| = n$（设 $|H| = p$）
++ 又 $a^(|H|) = e$，故 $a^n = (a^p)^(n\/p) = e^(n\/p) = e$
+
+#strong[推论2]：#text(fill:blue)[阶为素数 $p$ 的群 $G$ 是循环群。]
+
+#strong[证明]：
++ 取 $G$ 中一非单位元 $a$，可以得到循环子群 $H = bracket.l a bracket.r$
++ 根据推论1，$a$ 的阶为 $p$ 的因子，因此只能为 $p$，$O(a) = p$
++ 所以 $G = bracket.l a bracket.r$
+
+#strong[推论3]：#text(fill:blue)[设 $A, B$ 是群 $G$ 的两个有限子群，则
+$ |A B| = (|A| dot |B|) \/ |A inter B| $
+其中 $A B = {a b | a in A, b in B} = union_(a in A) a B$。]
+
+#strong[证明]：
++ $a B$ 是 $B$ 的左陪集，令 $S_1 = {a_i B}$ 为不同的左陪集集合，$D = A inter B$
++ 令 $S_2 = {a_i D}$，构造双射 $sigma: a_i B arrow.r a_i D$
++ $forall a_i, a_j in A$，若 $a_i B = a_j B$，必有 $a_j^(-1) a_i in B$（定理8.5.1）
++ 且 $a_j^(-1) a_i in A$，故 $a_j^(-1) a_i in D arrow.l.r a_i D = a_j D$
++ 故 $sigma$ 为双射，$|S_1| = |S_2| = k = [A : D] = |A| \/ |D|$
++ 因此 $|A B| = |S_1| dot |B| = k dot |B| = (|A| dot |B|) \/ |D|$，证毕。
+
+==== 例题：6 阶群必有 3 阶子群
+<6阶群必有3阶子群>
+
+#strong[证明]：对于 6 阶群 $G$，非单位元的元素的阶只可能为 2, 3, 6（Lagrange 定理）。
+
++ 如果存在 6 阶元 $a$，则子群 $bracket.l a^2 bracket.r$ 为 3 阶子群
++ 如果存在 3 阶元 $a$，则子群 $bracket.l a bracket.r$ 为 3 阶子群
++ 然后用反证法，证明 $G$ 不能只由单位元和 2 阶元构成：
+  - 如果 $G$ 只由单位元和 2 阶元构成，即每个元素的逆都是自身
+  - 则 $a b = a^(-1) b^(-1) = b^(-1) a^(-1) = b a$，故 $G$ 为交换群
+  - 取两个 2 阶元 $a, b$，其生成的子群为 ${e, a, b, a b}$，为一个四阶子群
+  - 但 4 不是 6 的因子，由 Lagrange 定理，矛盾！
++ 综上，6 阶群 $G$ 必有 3 阶子群。
+
+=== （2）正规子群与商群
+<正规子群与商群>
+
+==== 引入
+<正规子群引入>
+
+子群 $H$ 的左陪集可以完成群的分解。右陪集也有对称的性质。但是，在许多情况下，群 $G$ 的子群的左右陪集并不相等。
+
+#strong[思考]：任意给定一个群 $G$，它是否存在子群 $H$，使得其左右陪集相等？
+- 答案：${e}$ 和 $G$ 本身一定满足。但可能还有其他。
+
+==== 定义8.6.1：正规子群
+<定义8.6.1>
+
+#text(fill:blue)[*定义8.6.1*：设 $H$ 是 $G$ 的一个子群，如果对任意的 $a in G$，都有 $a H = H a$，则称 $H$ 是 $G$ 的一个#strong[正规子群]（亦称不变子群），用符号 $H triangle.l.small G$ 表示。]
+
+对正规子群 $H$ 就不必区分其左右陪集，而简称为 $H$ 的陪集。
+
+==== 定理8.6.1：正规子群的等价条件
+<定理8.6.1>
+
+#text(fill:blue)[*定理8.6.1*：设 $H$ 是 $G$ 的子群，则以下条件等价：
++ $H triangle.l.small G$
++ $forall g in G, g H g^(-1) = H$
++ $forall g in G, g H g^(-1) subset.eq H$
++ $forall g in G, h in H, g h g^(-1) in H$
+]
+
+#strong[证明]（$1 => 2$）：因为 $H$ 为正规子群，$forall g in G, g H = H g$。
+$ g H g^(-1) = (g H) g^(-1) = (H g) g^(-1) = H (g g^(-1)) = H e = H $
+
+#strong[证明]（$2 => 3$）：$g H g^(-1) = H => g H g^(-1) subset.eq H$，显然。
+
+#strong[证明]（$3 => 4$）：$g H g^(-1) subset.eq H => forall g in G, h in H, g h g^(-1) in H$，显然。
+
+#strong[证明]（$4 => 1$）：求证 $forall g in G, g H = H g$。
++ 据已知条件：$forall g in G, forall h in H$，都有 $h^' in H$ 使得 $g h g^(-1) = h^'$
++ 即 $g h = h^' g in H g$，因此 $g H subset.eq H g$
++ 反之（取 $g^(-1) in G$，类似的过程），$H g subset.eq g H$
++ 因此 $g H = H g$
+
+#block(inset: 8pt, stroke: 0.5pt + gray, radius: 3pt)[
+  #strong[实用判定]：最常用的是性质4——$forall g in G, h in H$，验证 $g h g^(-1) in H$。
+]
+
+==== 定理8.6.2：正规子群的运算
+<定理8.6.2>
+
+#text(fill:blue)[*定理8.6.2*：设 $A, B$ 是 $G$ 的两个子群，
++ 若 $A triangle.l.small G, B triangle.l.small G$，则 $A inter B triangle.l.small G$，$A B triangle.l.small G$
++ 若 $A triangle.l.small G, B <= G$，则 $A inter B triangle.l.small B$，$A B <= G$
+]
+
+#strong[记忆口诀]：
+- 正规 $inter$ 正规 = 正规（对 $G$）
+- 正规 $times$ 正规 = 正规（对 $G$）
+- 正规 $inter$ 普通 = 正规（对普通子群）
+- 正规 $times$ 普通 = 普通（对 $G$）
+
+#strong[证明]（$A triangle.l.small G, B triangle.l.small G => A inter B triangle.l.small G$）：
++ $forall h in A inter B$（$h in A, h in B$），$forall g in G$
++ $g h g^(-1) in A$（因为 $A triangle.l.small G$），$g h g^(-1) in B$（因为 $B triangle.l.small G$）
++ 故 $g h g^(-1) in A inter B$，$A inter B triangle.l.small G$
+
+#strong[证明]（$A triangle.l.small G, B triangle.l.small G => A B triangle.l.small G$）：
++ $forall h = a b in A B$（$a in A, b in B$），$forall g in G$
++ $g h g^(-1) = g a b g^(-1) = (g a g^(-1))(g b g^(-1)) = a^' b^' in A B$
++ 故 $A B triangle.l.small G$
+
+#strong[证明]（$A triangle.l.small G, B <= G => A B <= G$）：
++ 单位元：$e in A, e in B => e in A B$
++ 封闭性：$forall a b, a_1 b_1 in A B$，$(a b)(a_1 b_1)^(-1) = a b b_1^(-1) a_1^(-1)$。由 $A triangle.l.small G$，$b b_1^(-1) a_1^(-1) = a_2 (b b_1^(-1))$（某个 $a_2 in A$），故原式 $= (a a_2)(b b_1^(-1)) in A B$
++ 逆元：$forall a b in A B$，$(a b)^(-1) = b^(-1) a^(-1) = a^' b^(-1) in A B$（由 $A triangle.l.small G$，$b^(-1) a^(-1) in A B$）
++ 故 $A B <= G$
+
+==== 定理8.6.3：商群
+<定理8.6.3>
+
+#text(fill:blue)[*定理8.6.3*：设 $H$ 是 $G$ 的一个正规子群，$G \/ H$ 表示 $H$ 的所有陪集构成的集合，即
+$ G \/ H = {g H | g in G} $
+则 $G \/ H$ 关于#strong[陪集乘法]作成群。称之为 $G$ 关于 $H$ 的#strong[商群]。]
+
+*例*：$G = (Z, +)$，$H = ({k m}, +)$，$G \/ H = (Z_m, +)$。
+
+#strong[陪集乘法定义]：$(a H)(b H) = (a b) H$
+
+#strong[证明]（封闭性）：
++ $forall a H, b H in G \/ H$，$a H dot b H = {a h_1 dot b h_2 | h_1, h_2 in H}$
++ 由正规性 $b H = H b$，$a h_1 dot b h_2 = a(h_1 b) h_2 = a(b h_1^') h_2 = (a b)(h_1^' h_2) in a b H$
++ 故 $a H dot b H subset.eq a b H$
++ 又 $forall h in H$，$(a b) h = a(e) dot b h in a H dot b H$
++ 故 $a b H subset.eq a H dot b H$
++ 因此 $a H dot b H = a b H in G \/ H$
+
+#strong[证明]（群公理）：
++ *结合律*：$(a H dot b H) dot c H = (a b) H dot c H = (a b) c H = a(b c) H = a H dot (b c) H = a H dot (b H dot c H)$
++ *单位元*：$e H$，因为 $e H dot a H = e a H = a H$
++ *逆元*：$a^(-1) H$，因为 $a^(-1) H dot a H = a^(-1) a H = e H$
+
+==== 例题：二阶矩阵群
+<例题二阶矩阵群>
+
+设 $G = (M_2(Z), +)$ 是整数集 $Z$ 上全体二阶方阵关于矩阵加法构成的群。
+
+$A = {mat(delim: "[", a, b; c, d) | a, b, c, d "均为偶数"}$
+
++ #strong[证 $A <= G$]：$forall X, Y in A$，$-X + Y$ 的各元素均为偶数，故 $-X + Y in A$
++ #strong[$A$ 是正规子群]：矩阵加法满足交换律，$G$ 为交换群，因此 $A$ 自然是 $G$ 的正规子群
++ #strong[$G \/ A$ 的元素]：共有 $2^4 = 16$ 个元素，分别为
+$ {mat(delim: "[", x, y; z, w) + A | x, y, z, w in {0, 1}} $
+
+==== 例题：换位子群
+<例题换位子群>
+
+设 $G$ 是一个群，$x, y in G$，把所有形如 $x y x^(-1) y^(-1)$ 的元素称为#strong[换位子]。群 $G$ 的所有换位子生成的子群称为 $G$ 的#strong[换位子群] $G^'$。
+
++ #strong[证 $G^' triangle.l.small G$]：要证正规性，即证 $forall g in G, h in G^'$，有 $g h g^(-1) in G^'$。
+  - $g h g^(-1) = g h g^(-1) h^(-1) h = (g h g^(-1) h^(-1)) dot h in G^'$（因为 $g h g^(-1) h^(-1)$ 是换位子）
+
++ #strong[证 $G \/ G^'$ 是交换群]：
+  - $G \/ G^'$ 中的元素是 ${g G^' | g in G}$
+  - 要证 $forall a, b in G$，$a G^' dot b G^' = b G^' dot a G^'$
+  - 由正规性知 $a G^' dot b G^' = a b G^'$，$b G^' dot a G^' = b a G^'$
+  - 而 $a^(-1) b^(-1) a b in G^'$，即 $a b = b a h$（$h in G^'$）
+  - 故 $a b G^' = b a h G^' = b a G^'$，证毕
+
+=== （3）群 (3) 小结
+<群3小结>
+
+#strong[8.5 陪集和群的陪集分解 Lagrange 定理]：
+- 左陪集、右陪集的定义（$a H = {a h | h in H}$，$H a = {h a | h in H}$）
+- 左陪集六条性质（重点：大小相同、要么相等要么不相交、构成划分）
+- 群的陪集分解（有限群 = 不相交左陪集的并）
+- 指数 $[G : H]$（陪集的个数）
+- Lagrange 定理：$|G| = [G : H] dot |H|$（子群阶整除群阶）
+- 推论1：元素的阶整除群阶，$x^n = e$
+- 推论2：素数阶群是循环群
+- 推论3：$|A B| = |A| dot |B| \/ |A inter B|$
+
+#strong[8.6 正规子群与商群]：
+- 正规子群：$forall a in G, a H = H a$（左右陪集相等）
+- 等价条件：$a H = H a arrow.l.r g H g^(-1) = H arrow.l.r g h g^(-1) in H$
+- 正规子群的运算：交集保持正规，乘积保持正规
+- 商群 $G \/ H$：正规子群的所有陪集关于陪集乘法构成的群
