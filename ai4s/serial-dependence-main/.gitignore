@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Local config
+config.yaml
+
+# Outputs and logs
+outputs/
+logs/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Generated analysis results if you do not want to track them
+*/results/
+*:Zone.Identifier

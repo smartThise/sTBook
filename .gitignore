@@ -2,9 +2,19 @@
 **/.DS_Store
 ._*
 **/._*
-VA2/thumbs.db
-.claude/settings.json
+Thumbs.db
+**/Thumbs.db
+.reasonix/
+logs/
+*.log
 .claude/settings.local.json
+.vscode/
 package-lock.json
 package.json
-写作与沟通/.~文章.docx
+~$*
+**/~$*
+
+# 独立 git 仓库（不在笔记库中发布）
+ai4s/pi-release-exp/
+ai4s/Unable-to-Forget-paper/
+ai4s/psyst-lab/

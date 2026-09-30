@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c ' *)",
+      "Bash(python3 -c \"import pdfplumber; print\\('ok'\\)\")",
+      "Bash(pdftotext -layout \"/Users/st/Documents/mynotebook/离散数学_2/slides/14-代数结构.pdf\" /tmp/algebra_slides.txt)",
+      "Bash(echo '$A sect B$')",
+      "Bash(echo '$A intersection B$')",
+      "Bash(echo '$A inter B$')",
+      "Bash(echo '$A union B$')",
+      "Bash(grep -n '\\\\$.*cap.*\\\\$' \"离散数学_2_笔记部分.typ\")",
+      "Bash(grep -n '\\\\$.*sim.*\\\\$' \"离散数学_2_笔记部分.typ\")",
+      "Bash(echo '$A sim B$')",
+      "Bash(echo '$A tilde B$')",
+      "Bash(echo '$A \\\\sim B$')",
+      "Bash(open \"/Users/st/Documents/mynotebook/离散数学_2/离散数学_2_笔记部分.pdf\")"
+    ]
+  }
+}

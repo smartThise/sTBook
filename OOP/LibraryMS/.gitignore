@@ -1,0 +1,10 @@
+# 构建产物
+build/
+# 运行时生成的数据（首次运行会自动重建）
+build/data/
+data/*.txt
+
+# 临时与系统文件
+*.o
+*.app
+.DS_Store

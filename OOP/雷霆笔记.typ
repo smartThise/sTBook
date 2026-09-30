@@ -15,8 +15,51 @@ eg.类型是什么？！#strong[数据的存储和表示+数据支持的操作�
 
 == 壹 编译源程序 #datetime(day:3,month:3,year:2026).display()
 <壹-编译源程序-2026.3.3>
-=== 一、编译链接
-<一编译链接>
+#rect(fill: rgb("#f0f8ff"), stroke: 0.5pt + blue, inset: 8pt, radius: 2pt, width: 100%)[幻灯片 L3 涵盖函数重载、auto/decltype、nullptr、范围for、内联函数等，以下为全面补充版本。]
+
+=== 〇、函数重载深入
+
+==== 为什么需要函数重载？
+
++ 同一任务，输入类型不同（如 print 可以接受 `const char*` 也可以接受 `int`）
++ 同一任务，存储形式不同（如排序 int 数组 vs float 数组）
++ 概念抽象层面相似的任务（如输出到屏幕、打印机、文件）
+
+==== 返回值不能区分重载
+
+```cpp
+float f(int s) { return s / 2.0; }
+int   f(int s) { return s * 2; }
+// cout << f(3) << endl;  // 二义性！编译器不知道调用哪个
+```
+
+==== 重载与自动类型转换
+
+当函数重载时，会*优先调用类型匹配的函数实现*，否则才会进行类型转换：
+
+```cpp
+void print(float x) { cout << "float: " << x << endl; }
+void print(int x)   { cout << "int: " << x << endl; }
+print(1.7);    // float: 1.7（类型匹配）
+print(1);      // int: 1（类型匹配）
+print('c');    // int: 99（char→int，优先匹配int而非float）
+```
+
+#strong[类型转换方向：] `float→int` 会截断（向零取整，1.7→1，-3.9→-3），`int→float` 会提升。
+
+==== 缺省参数的规则
+
+```cpp
+void print(const char* msg = "hello") { cout << msg << '#'; }
+print();         // 输出: hello#
+print("Beijing"); // 输出: Beijing#
+```
+
+#strong[规则：] 有缺省值的函数参数必须是最后一个参数；多个缺省参数必须连续出现在参数列表末尾。
+
+==== 函数重载与缺省值的二义性（保留原有内容）
+
+*关键在于参数类型的不同。但是如果出现了参数的缺省，就会产生二义性。*
 #link("./20260303/argv.cpp")[举例： argv argc 等参数的运用]
 
 实际意义上的一个完整编译流程如下：
@@ -190,12 +233,51 @@ auto func(int x,int y) -> decltype(x+y) {
 }
 ```
 
-=== 七、内存申请和释放
+==== `auto` 的其他限制
+
++ `auto b4 = 10, b5 = 20.0, b6 = 'a';` // ✗ 错误！同一行多个变量必须推导为同一类型
++ `auto` 不是真正的类型，不能用于 `sizeof(auto)` 或 `typeid(auto)`
+
+==== 范围 for 循环（C++11）
+
+```cpp
+int arr[3] = {1, 3, 9};
+for (int e : arr)       // auto e : arr 也可以
+    cout << e << endl;  // 输出 1 3 9
+// 等价于遍历容器中的每个元素
+```
+
+=== 七、`NULL` vs `nullptr`
+
+==== NULL 的定义
+
+```cpp
+#ifdef __cplusplus
+#define NULL 0        // C++ 中 NULL 就是整数 0
+#else
+#define NULL ((void *)0)  // C 中是 void* 类型的 0
+#endif
+```
+
+==== NULL 的重载解析问题
+
+```cpp
+void f(int x, int y)     { cout << "int" << endl; }
+void f(int x, double *y) { cout << "pointer" << endl; }
+
+f(2, NULL);                          // 调用 f(int, int)！而非指针版本！
+f(2, static_cast<double *>(0));      // 强制调用指针版本（但写法丑陋）
+f(2, nullptr);                        // C++11: 正确调用指针版本！
+```
+
+#strong[教训：] `NULL` 本质是整数 0，在重载解析时会被当作 `int` 而非指针。应始终使用 `nullptr`。
+
+=== 八、内存申请和释放
 ```cpp
 int* p = new int(10); // 申请一个 int 类型的内存
 int *arr = new int[5]; // 申请一个 int 类型的数组
 delete p; // 释放单个 int 类型的内存
-delete[] arr; // 释放数组内存  
+delete[] arr; // 释放数组内存
 ```
 
 `nullptr` 是 C++11 引入的空指针常量，表示一个空指针。使用 `nullptr` 可以避免与整数 `0` 混淆，提高代码的可读性和安全性。
@@ -258,9 +340,43 @@ public:
 错综复杂的类外类内关系……阿弥诺斯，小白手套欸呦喂，我这不赖，已取餐。
 
 === 三、内联函数
+
+==== 函数调用的开销
+
+函数调用要进行一系列准备和后处理工作（压栈、跳转、退栈、返回等），所以函数调用是一个比较慢的过程。
+
+```cpp
+cout << max(a, b) << endl;         // 函数调用（慢）
+cout << (a > b ? a : b) << endl;   // 等价表达式（快得多！）
+```
+
+==== 内联的本质
+
+编译器自动将内联函数替换为等价的表达式。例如 `inline int max(int a, int b)` 定义后，`max(a,b)` 会直接被替换为 `(a > b ? a : b)`。
+
+==== 宏的常见陷阱
+
 由于和宏代码是直接拷贝复制代码到指定位置，会产生莫名其妙的边际效应，你永远无法想象到各种优先级问题，即使加了括号也不一定能完全解决。
 
-相比之下，*内联函数*可以执行类型检查，可调试。它的本质是生成和函数等价的表达式。并且*宏定义*无法调用私有成员函数，而内联函数可以。
+===== 陷阱1：运算符优先级
+
+```cpp
+#define MAX(a, b) (a) > (b) ? (a) : (b)
+cout << MAX(a, b) + 2 << endl;
+// 展开为: cout << (a) > (b) ? (a) : (b) + 2 << endl;  // 错误！
+// 正确写法: #define MAX(a, b) ((a) > (b) ? (a) : (b))
+```
+
+===== 陷阱2：副作用的双重求值
+
+```cpp
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
+cout << MAX(a++, b) << endl;
+// 展开为: cout << ((a++) > (b) ? (a++) : (b)) << endl;
+// a 被求值两次！结果不可预测！
+```
+
+相比之下，*内联函数*可以执行类型检查，可调试。它的本质是生成和函数等价的表达式。并且*宏定义*无法调用私有成员函数，而内联函数可以。宏使用的最常见场景：字符串定义、字符串拼接、标志粘贴。
 
 注意事项：
 - 避免大段代码的内联，因为会增加编译时间和可执行文件的大小。
@@ -358,10 +474,10 @@ class A{
     public:
         A()=default;
         A(int i){}
-        A(char cls)=delete;
-
+        A(char cls)=delete;  // 禁止从 char 构造！
 };
-A a('c');
+A a('c');  // 编译错误！
+// 为什么需要？因为 'c'→int→A(int)，隐式转换太危险！
 ```
 
 *一个实例生成的时候，会先调用成员的构造函数（如果成员没有就默认构造），再构造自己的。*
@@ -369,6 +485,8 @@ A a('c');
 *如果你已经定义了构造函数，编译器不会帮你默认构造了！！！*
 
 ==== 对象数组的初始化：
+
+#strong[重要：无参定义对象数组，必须要有默认构造函数！]因为 `A a[50];` 需要对每个元素调用默认构造。
 ```cpp
 A a[50];
 // 只有一个参数
@@ -496,6 +614,33 @@ int main() {
 - 作为类的成员变量，可以简化代码，提高可读性。
 - 相对指针，引用更安全，不会出现空指针的情况。
 
+==== 引用作为返回值：函数调用出现在等号左边
+
+```cpp
+int a[3] = {1, 3, 5};
+int& get(int i) { return a[i]; }  // 返回引用
+int main() {
+    get(1) += 1;       // get(1) 返回 a[1] 的引用，+= 直接修改 a[1]
+    cout << get(1);    // 输出 4
+    // 函数的返回值可以出现在等号左边！
+}
+```
+
+==== 为什么引入引用？——运算符重载的需要
+
+回到 `a += b` 这样的写法。如果没有引用，重载的运算符就需要写成 `a += &b`（传递指针），语法难看且不一致。引用让运算符重载可以保持自然的语法。
+
+==== swap 三种方式对比
+
+```cpp
+// 值传递：无效！（交换的是副本）
+void swap(int a, int b) { int tmp = a; a = b; b = tmp; }
+// 指针：可用但语法难看
+void swap(int *a, int *b) { int tmp = *a; *a = *b; *b = tmp; }
+// 引用：最优雅！（推荐）
+void swap(int& a, int& b) { int tmp = a; a = b; b = tmp; }
+```
+
 === 六、运算符重载
 
 举例：
@@ -545,6 +690,58 @@ int& operator[](int i){
 ```
 
 如果是引用，则可以修改原对象。否则只能读取。
+
+==== 为何 =、[]、()、-> 只能重载为成员函数？
+
+#strong[原因]：当用户没有定义 `operator=` 时，编译器会自动合成一个。如果允许全局的 `operator=`，就可能与编译器自动合成的版本产生冲突——编译器无法判断该合成还是使用全局版本。
+
+#strong[非整数下标的 `operator[]`]：下标不一定是整数！
+
+```cpp
+class AgentScores {
+    int score[5];
+public:
+    int& operator[](const char* name) {  // 字符串下标！
+        if (strcmp(name, "memory") == 0)  return score[0];
+        if (strcmp(name, "logic") == 0)   return score[1];
+        return error_score;  // 不匹配时返回默认值
+    }
+private:
+    int error_score = -1;
+};
+```
+
+==== 前缀与后缀 ++ 的语义
+
+```cpp
+int a = ++b;  // 前缀：先自增，再赋值
+int a = b++;  // 后缀：先赋值，再自增（返回旧值，需要哑元int区分）
+```
+
+==== 全局函数的 ++ 重载
+
+```cpp
+// 全局前缀++
+A operator++(A& a) { a.data++; return a; }
+// 全局后缀++（哑元int区分）
+A operator++(A& a, int) { A tmp(a); a.data++; return tmp; }
+```
+
+==== 流运算符的重载与调用链
+
+#strong[为什么形参和返回值都是引用？]
++ `ostream` 的拷贝构造函数被 `= delete` 禁用了——只能引用不能拷贝！
++ 返回 `ostream&` 是为了支持链式调用：
+
+```cpp
+cout << obj1 << obj2 << obj3;
+// 等价于：
+ostream& out  = operator<<(cout, obj1);   // cout << obj1
+ostream& out1 = operator<<(out, obj2);   //     << obj2
+ostream& out2 = operator<<(out1, obj3);  //         << obj3
+```
+
+#strong[为什么流运算符必须用全局函数？] 在不修改 `istream`/`ostream` 类的前提下，只能使用全局函数重载。
 
 注意：=，[]，()，-> 这几个运算符只能重载为成员函数。否则可能会对是否自动合成重载符产生影响。
 
@@ -663,11 +860,37 @@ class X{};
 
 == 肆 静态变量和静态函数 常量
 
-=== 一、静态变量，静态函数
+#rect(fill: rgb("#f0f8ff"), stroke: 0.5pt + blue, inset: 8pt, radius: 2pt, width: 100%)[幻灯片 L5 涵盖 static、const、new/delete 内存布局、全局/静态对象构造析构顺序等，以下为全面补充版本。]
+
+=== 〇、C 语言 static 复习
+
+==== 静态局部变量
+
+存储在静态存储区，生命周期持续到程序结束。只在第一次进入函数时初始化。
+
+==== 静态全局变量与函数（内部链接）
 
 内部可链接，只能初始化一次，而且作用域仅限其声明的文件。*比如*在其他文件被 `extern` 声明后*不*可以在其他文件中使用。
 
 前缀是 `static`。
+
+==== 多文件链接错误示例
+
+```cpp
+// a.cpp
+static int i = 1;          // 内部链接
+int j = 2;                 // 外部链接（默认）
+static int add_j(int k) { return j + k; }  // 内部链接
+
+// b.cpp
+extern int i;              // 链接错误！i是static的，不可见
+extern int add_j(int k);   // 链接错误！add_j是static的，不可见
+// g++ a.cpp b.cpp -o test
+// → undefined reference to 'i'
+// → undefined reference to 'add_j(int)'
+```
+
+=== 一、静态变量，静态函数
 
 ==== 静态数据成员 / 类变量
 
@@ -706,6 +929,21 @@ int main() {
 
 只能访问静态成员变量，不能访问非静态成员变量。因为非静态成员变量是每个对象独有的，而静态成员函数是所有对象共享的。
 
+#strong[深层原因]：静态成员函数属于整个类，在类实例化对象之前就已经分配了内存空间；而类的非静态成员必须在类实例化对象后才分配内存空间。相当于没有定义一个变量却要使用它。
+
+===== 编译错误示例
+
+```cpp
+class A {
+    int data;
+public:
+    static void output() {
+        cout << data << endl;  // 编译错误！
+    }
+};
+// [Error] invalid use of member 'A::data' in static member function
+```
+
 
 === 二、常量
 
@@ -721,26 +959,42 @@ int main() {
 
 不能修改非静态数据成员，即不能改变对象的状态。
 
+#strong[区分 `const` 的位置！]
++ `int func() const` —— 常量成员函数（不能修改成员变量）
++ `const int func()` —— 返回常量值的函数（函数本身可以修改成员变量）
++ 两者可以同时出现：`const int func() const`
+
 ==== 常量对象
 
 只能调用常量成员函数，不能调用非常量成员函数。
 
-错误举例：
 ```cpp
 class Student {
     int ID;
-    public:
-        Student(int id) : ID(id) {}
-        int who() const { return ID; } // 常量成员函数
-        int Who() {return ID;} // 编译错误，常量函数不能调用非常量成员
+public:
+    Student(int id) : ID(id) {}
+    int MyID() const { return ID; }  // 常量成员函数，✓
+    // int Next() const { ID++; return ID; }  // 错误！const函数不能修改成员
+    int Who() { return ID; }  // 非常量成员函数
 };
+int main() {
+    const Student obj(20160301);
+    cout << obj.MyID();  // ✓ 常量对象调用常量成员函数
+    // cout << obj.Who(); // ✗ 错误！
+    // [Error] passing 'const Student' as 'this' argument of
+    //         'int Student::Who()' discards qualifiers
+}
 ```
 
 ==== 常量静态变量
 
 需要在类外初始化。但是有两个例外：`int` 和 `enum` 可以就地初始化。
 
-*不存在*常量静态函数。静态函数是所有对象共享的，而常量函数只能在常量对象上调用。
+*不存在*常量静态函数。原因有四：
++ 静态函数隶属于类，可以不实例化而直接通过类名访问
++ 常量/非常量函数的访问权限需要通过实例化后的对象是否为常量对象来决定
++ 常量修饰函数必须绑定在对象上（通过 `this` 指针）
++ 静态函数没有 `this` 指针 → 静态函数和常量函数互相冲突
 
 ```cpp
 class Foo{
@@ -797,9 +1051,220 @@ class Foo{
 - 类静态对象：类 A 的 对象 a 作为类 B 的静态变量。
     - 在 `main()` 函数开始执行前初始化。
     - 在 `main()` 函数结束后析构。
-    - 和 B 的构造和析构时机无关。
+    - 和 B 的构造和析构时机无关（和 B 是否实例化无关！先于 B 的任何实例存在）。
+
+==== 综合示例：各种对象的构造析构顺序
+
+```cpp
+class A {
+    const char* s;
+public:
+    A(const char* str) : s(str) { cout << s << " A constructing" << endl; }
+    ~A() { cout << s << " A destructing" << endl; }
+};
+
+const A c_a("const c_a");              // ① 全局常量对象
+static A s_a("static s_a");            // ② 全局静态对象
+
+class B {
+public:
+    static A a1;                        // 静态成员声明
+    const A a2{"const B::a2"};
+    B(const char* s) : a2(s) {}
+};
+A B::a1("static B::a1");               // ③ 静态成员定义
+
+void fun(int i, int n) {
+    if (i >= n)
+        static A static_obj("static");  // ④ 函数内静态对象（条件内！）
+}
+
+int main() {
+    cout << "main starts" << endl;
+    static B main_b("static main_b");   // ⑤ main内静态对象
+    for (int i = 0; i < 3; i++)
+        fun(i, 2);
+    cout << "main ends" << endl;
+    return 0;
+}
+```
+
+输出顺序（构造 ↑ / 析构 ↓）：
+```text
+const c_a A constructing        ← ① 全局const最先
+static s_a A constructing       ← ② 全局static
+static B::a1 A constructing     ← ③ 类静态成员（在main之前！）
+main starts
+const B::a2 A constructing      ← B的const成员
+static main_b A constructing    ← ⑤ main内static
+static A constructing            ← ④ 第一次fun(2,2)时构造
+main ends
+static A destructing             ← ④ 最后构造的最先析构
+const B::a2 A destructing
+static main_b A destructing     ← ⑤
+static B::a1 A destructing      ← ③
+static s_a A destructing        ← ②
+const c_a A destructing         ← ① 最先构造的最后析构
+```
+
+#strong[关键观察：]
++ 全局对象在 `main()` 之前构造，在 `main()` 结束后析构
++ 函数内静态对象只在第一次执行到时构造，只构造一次
++ 析构顺序严格与构造顺序相反
 
 == 伍 参数对象的构造和析构
+
+#rect(fill: rgb("#f0f8ff"), stroke: 0.5pt + blue, inset: 8pt, radius: 2pt, width: 100%)[幻灯片 L6 涵盖了从拷贝构造到移动构造、类型转换的完整内容，以下为全面补充版本。]
+
+=== 〇、拷贝控制与位拷贝的真相
+
+#strong[位拷贝原本是C中的概念。]在C++中，只有基础类型（`int`、`double` 等）才会进行位拷贝；对于自定义类，编译器会*递归调用所有数据成员的拷贝构造函数或拷贝赋值运算符*。但一些教材中仍然把这种行为称为"位拷贝"，以区别用户自定义的拷贝方法。
+
+#rect(
+  fill: rgb("#f0f0ff"),
+  stroke: blue,
+  inset: 10pt,
+  radius: 2pt,
+  width: 100%
+)[
+  *理解要点：* 编译器隐式定义的拷贝构造不是简单的 `memcpy`！如果类中有子对象（如 `string`、`vector`），会递归调用子对象的拷贝构造。只有基础类型（`int`、`char*` 等指针）才是真正的位拷贝——这就是为什么指针成员会出现浅拷贝问题。
+]
+
+==== 参数传递：构造与析构顺序图解
+
+当函数按值传递和返回对象时，完整的执行顺序如下（以 `Myclass func(Myclass c)` 为例）：
+
+```cpp
+Myclass func(Myclass c) {  // ① 拷贝构造函数（以类的对象为形参）
+    Myclass tmp;            // ② 默认构造函数
+    return tmp;             // ③ 拷贝构造函数（返回类对象）
+}                           // ④ tmp 的析构函数
+                            // ⑤ c 的析构函数
+```
+
+==== 浅拷贝问题：最简示例
+
+在讨论 Pointer 类的复杂例子之前，先看一个最简版本：
+
+```cpp
+class Test {
+    int data;
+    char* buffer;
+public:
+    Test() { buffer = new char[100]; }
+    ~Test() { delete[] buffer; }
+};
+// Test a; Test b = a;
+// 位拷贝使得 a.buffer 和 b.buffer 指向同一地址！
+// 析构时同一块内存被释放两次 → 程序崩溃！
+```
+
+==== 拷贝构造函数的三种调用场景
+
+#table(
+  columns: (auto, 1fr, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [*场景*], [*代码示例*], [*说明*],
+  [1. 用对象初始化新对象], [`Test b(a);` 或 `Test c = a;`], [a已存在，b是新对象],
+  [2. 函数传参（值传递）], [`func(Test a)` 调用时], [实参拷贝给形参],
+  [3. 函数返回对象], [`return obj;`], [局部对象拷贝给返回值],
+)
+
+#strong[关键区分：] `Test a = b;` 是*拷贝构造*（a 是新对象），而 `a = b;` 是*拷贝赋值*（a 已存在）！
+
+==== 避免拷贝构造的方法：代码示例
+
+```cpp
+// 方法1：将拷贝构造函数声明为 private
+class MyClass {
+    MyClass(const MyClass&) {}  // private!
+public:
+    MyClass() = default;
+};
+
+// 方法2：用 =delete 显式删除（C++11，推荐！）
+class MyClass {
+public:
+    MyClass() = default;
+    MyClass(const MyClass&) = delete;
+};
+```
+
+=== 〇〇、左值与右值深入
+
+#strong[判断标准：]
+- *左值*：可以取地址、有名字的值。如变量 `a`。
+- *右值*：不能取地址、没有名字的值。如常量 `1`、函数返回值、表达式 `a+b`。
+
+==== 编译器错误示例
+
+当只定义了左值引用版本的函数，却传入右值时：
+
+```cpp
+void ref(int &x) { cout << "left " << x << endl; }
+// ref(2); // 编译错误！
+// [Error] invalid initialization of non-const reference of type 'int&'
+//         from an rvalue of type 'int'
+```
+
+==== 引用的绑定优先级
+
+#strong[引用的绑定存在优先级！]例如常量左值引用和右值引用均能绑定右值，当传入实参类型为右值时，*优先匹配形参类型为右值引用的函数*。这就是为什么移动构造/赋值在传入右值时会被优先调用。
+
+==== 拷贝构造 vs 移动构造：直观图解
+
+```
+拷贝构造：  临时对象 ──重新开辟内存──→ 新对象（数据拷贝，两倍内存）
+移动构造：  临时对象 ──直接"偷走"指针──→ 新对象（指针转移，零拷贝）
+                                    原对象指针 → nullptr
+```
+
+==== swap 的两种实现对比
+
+```cpp
+// 传统实现：3次拷贝（6次内存操作）
+template <class T>
+void swap(T& a, T& b) {
+    T tmp(a);     // 拷贝构造：开辟内存 + 拷贝
+    a = b;        // 拷贝赋值：拷贝
+    b = tmp;      // 拷贝赋值：拷贝
+}
+
+// 移动实现：3次移动（仅指针交换！）
+template <class T>
+void swap(T& a, T& b) {
+    T tmp(std::move(a));  // 移动构造：只转移指针
+    a = std::move(b);     // 移动赋值：只转移指针
+    b = std::move(tmp);   // 移动赋值：只转移指针
+}
+```
+
+=== 〇〇〇、编译器自动合成的函数（重要补充）
+
+#strong[关键规则：]如果你定义了任何构造函数，编译器就不会自动生成默认构造函数了！*但拷贝/移动构造函数和赋值运算符仍会自动生成*（除非显式删除）。
+
+#table(
+  columns: (auto, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [*自动合成的函数*], [*条件*],
+  [默认构造函数], [用户未定义任何构造函数时自动合成],
+  [拷贝构造函数], [用户未显式定义时自动合成（即使定义了其他构造）],
+  [移动构造函数], [用户未显式定义且未定义拷贝/析构/赋值时自动合成],
+  [拷贝赋值运算符], [用户未显式定义时自动合成],
+  [移动赋值运算符], [用户未显式定义且未定义拷贝/析构/移动构造时自动合成],
+  [析构函数], [用户未显式定义时自动合成],
+)
+
+=== 〇〇〇〇、参数传递：常量引用与最小特权原则
+
+#strong[最小特权原则]：给足够完成任务的权限，但是不要多余的修改、删除权限。
+
+```cpp
+void add(int& a, int& b)           // 给了写权限（危险！）
+void add(const int& a, const int& b) // 只给读权限（安全！推荐！）
+```
 
 如果传递的是形参
 
@@ -878,19 +1343,27 @@ a A destructing
 
 // 3. 内存释放安全性
 #rect(
-  fill: rgb("#fff0f0"), 
-  stroke: red, 
+  fill: rgb("#fff0f0"),
+  stroke: red,
   inset: 10pt,
   radius: 2pt,
   width: 100%
 )[
   *核心警告：* `new[]` 必须配对 `delete[]`。
-  
-  $ "Actual Start Address" = p A - 4 $
-  
+
+  #strong[new[] 的内存布局：]
+  `new A[3]` 实际会分配 $3 times "sizeof"(A) + 4$ 字节：
+  ```
+  地址:     pA-4    pA        pA+sizeof(A)  pA+2*sizeof(A)
+  内容:     [count=3][A0       ][A1          ][A2          ]
+  ```
+  前 4 字节存储数组元素个数，`pA` 指向第一个元素（不是真正的起始地址！）
+
   若误用 `delete pA`：
-  1. 仅调用第一个元素的析构函数，导致内存泄漏。
+  1. 仅调用第一个元素的析构函数，导致其余元素内存泄漏。
   2. 释放地址错误（应从 $p A - 4$ 处释放），直接导致程序崩溃。
+
+  `delete[] pA` 会读取 `pA - 4` 处的 count，对每个元素调用析构，然后从正确地址释放。
 ]
 
 === 一、参数中的常量和常量引用
@@ -1870,6 +2343,12 @@ int main() {
 == 陆 组合与继承 #datetime(day:7,month:4,year:2026).display()
 <陆-组合与继承-2026.4.7>
 
+#rect(fill: rgb("#f0f8ff"), stroke: 0.5pt + blue, inset: 8pt, radius: 2pt, width: 100%)[幻灯片 L7 涵盖组合、继承、访问权限、重写隐藏、多重继承的完整内容。]
+
+=== 〇、本讲概览
+
+本讲核心内容：*组合（has-a）→ 继承（is-a）→ 访问权限 → 重写隐藏与重载 → 多重继承*
+
 === 一、对象(类)之间的关系
 
 思考：这些是什么关系？
@@ -2730,6 +3209,16 @@ I am running
 == 柒 虚函数 #datetime(day:14,month:4,year:2026).display()
 <柒-虚函数-2026.4.14>
 
+#rect(fill: rgb("#f0f8ff"), stroke: 0.5pt + blue, inset: 8pt, radius: 2pt, width: 100%)[幻灯片 L8 涵盖向上类型转换、对象切片、虚函数表、重写覆盖、协变返回类型、OOP核心思想等完整内容。]
+
+=== 〇、OOP 三大核心思想
+
+在深入虚函数之前，先回顾 OOP 的三大支柱：
+
++ *数据抽象*：通过纯虚函数、模板等技术，隐藏实现细节，只暴露接口
++ *继承*：is-a（公有继承）和 is-implementing-in-terms-of（私有继承）
++ *动态绑定*：通过虚函数和类型转换，在运行时根据实际类型决定调用哪个函数
+
 === 一、向上类型转换
 
 派生类对象/引用/指针转换成基类对象/引用/指针，称为*向上类型转换*。只对public继承有效，对private、protected继承无效。
@@ -2780,6 +3269,48 @@ int main() {
 ```
 
 *对象切片两种情况：*函数传参（值传递）和赋值操作。都会丢失派生类新增的数据和方法。
+
+==== 对象切片：sizeof 证明
+
+使用 `#pragma pack(4)` 和 `sizeof` 可以直观证明对象切片：
+
+```cpp
+#pragma pack(4)
+class Pet { public: int att_i;
+    Pet(int x=0): att_i(x) {} };
+class Dog: public Pet { public: int att_j;
+    Dog(int x=0, int y=0): Pet(x), att_j(y) {} };
+void getSize(Pet p) {
+    cout << "Pet size:" << sizeof(p) << endl;  // 4
+}
+int main() {
+    Dog g;
+    cout << "sizeof(Pet)=" << sizeof(Pet) << endl;   // 4
+    cout << "sizeof(Dog)=" << sizeof(Dog) << endl;   // 8
+    getSize(g);  // 对象切片！p丢失了att_j → sizeof(p)=4
+}
+```
+
+==== 对象切片：方法也会丢失
+
+不仅数据成员会丢失，重写的方法也会因对象切片而丢失！
+
+```cpp
+class Pet { public:
+    void name() { cout << "Pet::name()" << endl; }
+};
+class Dog: public Pet { public:
+    void name() { cout << "Dog::name()" << endl; }
+};
+void getName(Pet p) { p.name(); }  // 值传递 → 对象切片！
+int main() {
+    Dog g;
+    g.name();       // Dog::name()  直接调用，没问题
+    getName(g);     // Pet::name()  对象切片，调用基类版本！
+    Pet p = g;
+    p.name();       // Pet::name()  切片后丢失派生类方法
+}
+```
 
 === 三、指针（引用）的向上转换
 
@@ -2855,6 +3386,13 @@ void tune(Instrument ins) { ins.play(); } // 值传递，对象切片，早绑�
 + 编译期间：建立VTABLE，记录每个类或其基类中所有已声明的虚函数入口地址。
 + 运行期间：建立VPTR，在构造函数中发生，指向相应的VTABLE。
 
+#strong[编译器在构造函数的开头秘密地插入能初始化VPTR的代码。]构造函数的初始化顺序为：
+1. 基类初始化
+2. 对象成员初始化（按声明顺序，与初始化列表顺序无关！）
+3. 构造函数体
+
+当通过基类指针做虚函数调用时，编译器静态地插入能取得这个VPTR并在VTABLE表中查找函数地址的代码，这样就能调用正确的函数并引起晚捆绑的发生。
+
 ```cpp
 class B{
     int i; float j;
@@ -2875,18 +3413,24 @@ int main() {
 }
 ```
 
-==== 存放类型信息
+==== VTABLE 内存布局：sizeof 验证
+
+使用 `#pragma pack(4)` 保证对齐一致，通过 sizeof 验证 VPTR 的存在：
 
 ```cpp
-class NoVirtual{ int a; public: void f1() const {} int f2() const {return 1;} };
-class OneVirtual{ int a; public: virtual void f1() const {} int f2() const {return 1;} };
-class TwoVirtual{ int a; public: virtual void f1() const {} virtual int f2() const {return 1;} };
-// 64位机器：
-// sizeof(int) = 4
-// sizeof(NoVirtual) = 4
-// sizeof(void*) = 8
-// sizeof(OneVirtual) = 12  (int 4 + VPTR 8)
-// sizeof(TwoVirtual) = 12  (多个虚函数共享同一个VTABLE)
+#pragma pack(4)
+class NoVirtual  { int a; public: void f1() const {} int f2() const {return 1;} };
+class OneVirtual { int a; public: virtual void f1() const {} int f2() const {return 1;} };
+class TwoVirtual { int a; public: virtual void f1() const {} virtual int f2() const {return 1;} };
+
+int main() {
+   cout << "int: " << sizeof(int) << endl;         // 4
+   cout << "NoVirtual: " << sizeof(NoVirtual) << endl;   // 4 (只有int)
+   cout << "void* : " << sizeof(void*) << endl;          // 8 (64位)
+   cout << "OneVirtual: " << sizeof(OneVirtual) << endl;  // 12 = int(4) + VPTR(8)
+   cout << "TwoVirtual: " << sizeof(TwoVirtual) << endl;  // 12 = int(4) + VPTR(8)
+   // 注意：多个虚函数共享同一个VTABLE，所以只有一个VPTR！
+}
 ```
 
 === 六、虚函数和构造函数、析构函数
@@ -3053,7 +3597,38 @@ public:
 };
 ```
 
-协变条件：都是指针（不能是多级指针）、都是左值引用或都是右值引用，且基类返回类型中被引用的类是派生类返回类型中被引用的类的祖先类。
+协变条件（严格）：
++ 都是指针（不能是多级指针）、都是左值引用或都是右值引用
++ 基类返回类型中被引用/指向的类是派生类返回类型中被引用/指向的类的*祖先类*
++ 基类返回类型相比派生类的返回类型同等或更加 cv-qualified（即基类 `const` 更多是可以的）
+
+==== 协变返回类型：综合示例
+
+```cpp
+class A{};
+class B : public A{};
+class C{};
+class D : public B, public C{};  // 菱形继承
+
+class Base {
+public:
+    virtual Base*  f1() { return nullptr; }
+    virtual Base** f2() { return nullptr; }
+    virtual Base&  f3() { static Base b; return b; }
+    virtual A&     f4() { static A a; return a; }
+};
+class Derive : public Base {
+public:
+    Derive*  f1() override { return nullptr; }  // ✓ 指针协变
+    // Derive** f2() override {}  // ✗ 多级指针，编译错误！
+    Base**   f2() override { return nullptr; }  // 同类型
+    Derive&  f3() override { static Derive d; return d; } // ✓ 引用协变
+    // Derive* f3() override {} // ✗ 指针vs引用，不是协变
+    D&       f4() override { static D d; return d; } // ✓ A是D的祖先
+};
+```
+
+#strong[思考：] 去掉引用（改为值返回）是否还能协变？不能！值返回会产生对象切片，不满足协变条件。
 
 === 十一、课后练习
 
@@ -3105,6 +3680,30 @@ int main(){
 
 == 捌 多态与模板 #datetime(day:21,month:4,year:2026).display()
 <捌-多态与模板-2026.4.21>
+
+#rect(fill: rgb("#f0f8ff"), stroke: 0.5pt + blue, inset: 8pt, radius: 2pt, width: 100%)[幻灯片 L9 涵盖纯虚函数、向下类型转换、多态、函数/类模板、静多态vs动多态等完整内容。]
+
+=== 〇、完整抽象类示例：谁还是抽象的？
+
+```cpp
+class Base {
+public:
+    virtual void func() = 0;  // 纯虚函数
+};
+class Derive1 : public Base {
+    // 没有重写 func() → Derive1 仍是抽象类！
+};
+class Derive2 : public Base {
+public:
+    void func() override { cout << "Derive2::func" << endl; } // 重写了
+};
+int main() {
+    // Base b;      // ✗ 抽象类不能实例化
+    // Derive1 d1;  // ✗ 仍是抽象类！
+    Derive2 d2;     // ✓ 可以实例化
+    d2.func();      // Derive2::func
+}
+```
 
 === 一、纯虚函数与抽象类
 
@@ -3190,14 +3789,27 @@ T2& refObj = dynamic_cast<T2&>(obj_r);  // 运行时失败抛出bad_cast异常
 
 T1必须是多态类型（声明或继承了至少一个虚函数的类）。
 
-==== static_cast
-
-编译时静态浏览类层次，只检查继承关系，*不安全*：
+==== static_cast：不安全示例（含垃圾值输出）
 
 ```cpp
-D* pd1 = static_cast<D*>(&b);  // 有继承关系就允许，但不安全
-D* pd2 = dynamic_cast<D*>(&b); // 运行时检查，安全
+class B { public: int i; };
+class D : public B { public: int j; };
+int main() {
+    B b;
+    D* pd1 = static_cast<D*>(&b);    // 编译通过，但不安全！
+    cout << "D::i=" << pd1->i << endl;  // 正常（继承来的）
+    cout << "D::j=" << pd1->j << endl;  // 垃圾值！如 D::j=124455624
+    D* pd2 = dynamic_cast<D*>(&b);   // 运行时检查，返回nullptr
+    if (pd2 == nullptr) cout << "FAILED" << endl; // FAILED
+}
+// 当基类指针实际指向派生类对象时，两种转换都安全：
+D d;
+B* pb = &d;
+D* pd3 = static_cast<D*>(pb);   // 安全
+D* pd4 = dynamic_cast<D*>(pb);  // 安全
 ```
+
+#strong[注意：] `dynamic_cast` 也能用于向上类型转换（但很少使用，因为向上转换支持隐式转换）。 `static_cast` 也能对不同对象类型进行转换。
 
 ==== dynamic_cast 与 static_cast 对比
 
@@ -3403,7 +4015,52 @@ public:
 
 对模板的处理是在*编译期*进行的。每当编译器发现对模板的一种参数的使用，就生成对应参数的一份代码。
 
-这也带来了问题：模板库*必须在头文件中实现*，不可以分开编译。因为分开编译时，`.cpp` 文件只看到模板声明，看不到定义，无法实例化，链接时会找不到定义。
+===== 为什么模板必须在头文件中实现？（编译链接流程详解）
+
+```text
+// x.h:     template<typename T> T sum(T a, T b);
+// x.cpp:   template<typename T> T sum(T a, T b) { return a + b; }
+// main.cpp: #include "x.h" → sum(3, 5);
+
+编译流程：
+① g++ -c main.cpp → main.o
+   编译器看到 sum(3,5)，在 x.h 中找到了声明，但找不到定义！
+   → 编译器假设其他编译单元提供了定义，不报错
+② g++ -c x.cpp → x.o
+   编译器看到模板定义，但没有被使用 → 不生成任何代码！
+③ g++ main.o x.o -o main
+   链接器在 x.o 中找不到 sum<int>(int,int) → undefined reference!
+```
+
+#strong[解决方案：] 将模板的定义和声明都放在头文件中（或使用 `.tpp` 文件 include 到头文件末尾）。
+
+===== 模板参数必须在编译期确定
+
+```cpp
+int n = 5;
+// array<char, n> array0;     // ✗ 编译错误！不能使用变量
+const int m = 5;
+array<char, m> array1;        // ✓ 可以使用常量
+array<char, 5> array2;        // ✓ 直接使用字面量
+```
+
+==== 函数模板编译错误实例
+
+模板编译错误通常产生大量报错信息（几百行），需要学会阅读。例如缺少 `operator>`：
+
+```cpp
+class MyInt {
+    int data;
+public:
+    MyInt(int val): data(val) {}
+    // 缺少 operator> 的定义！
+};
+// 当用 sort(arr, 5) 排序 MyInt 数组时：
+// error: no match for 'operator>' (operand types are 'MyInt' and 'MyInt')
+// ...几百行的模板展开错误...
+```
+
+#strong[经验：] 遇到模板错误时，从错误信息最底部开始读，找到第一个提到用户代码的行，通常就是问题所在。
 
 ==== 类模板
 
@@ -3583,7 +4240,24 @@ x = 3; A::y = 6;
 
 #strong[任何情况下，都不应出现命名冲突。]
 
-=== 二、STL简介
+=== 二、C++ 标准演进与 STL
+
+==== C++ 标准版本概览
+
+#table(
+  columns: (auto, 1fr),
+  align: left + horizon,
+  stroke: 0.5pt,
+  [*标准*], [*主要新增特性*],
+  [C++98], [STL、模板、异常、命名空间等基础特性],
+  [C++11], [移动语义、lambda、智能指针、`auto`/`decltype`、范围for、`tuple`、`array`、`unordered_map`],
+  [C++14], [`make_unique`、泛型 lambda、`decltype(auto)`],
+  [C++17], [`string_view`、`optional`、`variant`、`any`、结构化绑定、if constexpr],
+)
+
+推荐文档：http://www.cplusplus.com/ （多写多查多用！）
+
+=== 三、STL简介
 
 标准模板库（Standard Template Library，STL）是高效的C++软件库，包含4个组件：*算法、容器、函数、迭代器*。
 
@@ -3687,9 +4361,43 @@ x.erase(x.begin()+1);      // 中间删除（低速）
 
 除了 `size`，另保存 `capacity`（最大容量限制）。如果 `size` 达到了 `capacity`，则另申请一片 `capacity*2` 的空间，并整体迁移内容。
 
+#strong[容量扩展图解：]
+```
+原始: [1][2][3][1]   size=4, capacity=4
+             begin()→         ←end()
+push_back(2):
+① 申请新空间: [ ][ ][ ][ ][ ][ ][ ][ ]  capacity=8
+② 拷贝迁移:   [1][2][3][1][2][ ][ ][ ]
+③ 释放旧空间
+→ 所有迭代器失效！(因为指向的空间已被释放)
+```
+
 + `push_back` 等修改 vector 大小的方法可能会使*所有迭代器失效*（因为整体迁移）
 + `insert/erase` 后，所修改位置之后的所有迭代器失效
 + 时间复杂度为均摊 O(1)
+
+==== 迭代器失效：指针追踪示例
+
+```cpp
+vector<int> vec = {1, 2, 3, 4, 5};
+auto first = vec.begin();       // 指向 1
+auto second = vec.begin() + 1;  // 指向 2
+auto third = vec.begin() + 2;   // 指向 3
+auto ret = vec.erase(second);   // 删除 2
+// first 仍指向 1（删除位置之前的迭代器仍有效！）
+// second 和 third 失效！（删除位置及之后）
+// ret 指向 3（erase返回被删元素的下一个位置）
+```
+
+==== 遍历时修改容器的陷阱
+
+```cpp
+vector<int> vec = {1, 2, 3, 4, 5};
+for (auto it = vec.begin(); it != vec.end(); ++it)
+    vec.push_back(*it);  // 危险！push_back可能导致所有迭代器失效
+```
+
+#strong[安全准则：] 修改容器后，不使用之前的任何迭代器！迭代器是否会失效，与实现容器的数据结构有关，查阅文档中的 "Iterator validity" 部分。
 
 === 四、迭代器
 
@@ -3814,6 +4522,17 @@ set 和 map 底层数据结构都是红黑树（一种二叉平衡树），几�
 + 频繁在中间插入/删除 → `list`，否则 → `vector`
 + 需要按值快速查找 → `set`、`map`
 + 希望迭代器尽量不失效 → `list`、关联容器
+
+==== 容器选择四大准则
+
+#strong[1. 算法复杂度]：不同容器的插入、删除、查找复杂度不同
+#strong[2. 元素排序要求]：是否需要保持顺序（序列容器）还是按大小访问（关联容器）
+#strong[3. 查找速度]：是否需要常数值查找（`unordered_map`/`unordered_set`）
+#strong[4. 迭代器/指针/引用失效保证]：如 `vector` 扩容时所有迭代器失效，`list` 几乎不失效
+
+序列容器中的元素有顺序，可以按顺序访问。关联容器中的元素无顺序，可以按数值（大小）访问。`vector` 中插入删除操作会使操作位置之后全部的迭代器失效；其他容器中只有被删除元素的迭代器失效。
+
+#strong[推荐阅读：] 《Effective STL》（容器选择章节）、《STL源码剖析》、《C++编程思想》第16章。
 
 === 六、string字符串类
 
@@ -3997,6 +4716,57 @@ Sum<double, double> s2(1.5, 2.5);   // Sum general: 4
 + 类模板可以部分特化或全部特化，编译器根据类型参数自动选择
 + 函数模板只能全部特化，但可通过重载代替部分特化
 + 函数模板全特化匹配优先级可能低于重载的非特化基础模板，最好直接用重载
+
+===== 函数模板重载解析详解
+
+解析顺序（优先级从高到低）：
+1. 类型匹配的普通函数
+2. 基础函数模板（选择最匹配的）
+3. 该基础模板的全特化版本
+
+#strong[关键陷阱：] 全特化版本优先匹配的前提是——被特化的基础函数模板被匹配到！看下面的例子：
+
+```cpp
+// 基础模板 1
+template<class T> void f(T)   { cout << "func1" << endl; }
+// 基础模板 2（重载，更特化）
+template<class T> void f(T*)  { cout << "func2" << endl; }
+// 特化基础模板 2
+template<> void f(char*)      { cout << "func3" << endl; }
+
+int main() {
+    char* p;
+    f(p);  // 输出: func3
+    // 解析: f(T) vs f(T*), f(T*) 更特化 → 选基础模板2 → 查全特化 → f(char*)!
+}
+```
+
+```cpp
+// 但如果特化的是基础模板1：
+template<class T> void f(T)   { cout << "func1" << endl; }
+template<class T> void f(T*)  { cout << "func2" << endl; }
+template<> void f<char*>(char*) { cout << "func4" << endl; } // 特化f(T)!
+
+int main() {
+    char* p;
+    f(p);  // 输出: func2 (不是 func4!)
+    // 解析: f(T) vs f(T*), f(T*) 更特化 → 选基础模板2 → f(T*)无全特化 → func2
+}
+```
+
+#strong[教训：] 函数模板的全特化不参与重载解析！先选基础模板，再找特化。因此最好直接使用重载函数而非全特化。
+
+===== 函数模板两种特化语法
+
+```cpp
+// 方式1：显式指定类型
+template<> char* sum<char*>(char* a, char* b);
+
+// 方式2：编译器推导
+template<> char* sum(char* a, char* b);
+// 两种等价
+```
+
 == 拾 iostream与函数对象和智能指针 #datetime(day:12,month:5,year:2026).display()
 <拾-iostream与函数对象和智能指针-2026.5.12>
 
@@ -4267,6 +5037,72 @@ outtype convert(intype val) {
 
 === 二、函数对象
 <二函数对象>
+
+==== 引例：一个计算器的三种实现方式
+
+问题场景：一个计算器包含三个步骤——读取数据、处理数据、输出数据。每个步骤都有多种实现方式（从屏幕读取 vs 从文件读取，加法 vs 乘法，输出到屏幕 vs 输出到文件）。
+
+===== 方式一：OOP + 模板方法
+
+```cpp
+class CalculatorBase {
+public:
+    virtual string read() = 0;
+    virtual string calculate(string) = 0;
+    virtual void write(string) = 0;
+    void process() {  // 算法骨架
+        string data = read();
+        string output = calculate(data);
+        write(output);
+    }
+};
+// 问题：n种read × m种calculate × k种write → n*m*k个子类！
+```
+
+===== 方式二：函数指针
+
+```cpp
+void process(
+    string (*read)(),
+    string (*calculate)(string),
+    void (*write)(string))
+{
+    string data = read();
+    string output = calculate(data);
+    write(output);
+}
+process(readFromScreen, calculateAdd, writeToFile);
+// 问题：函数指针和函数对象是不同类型，不能混用！
+```
+
+===== 方式三：函数模板（静多态）
+
+```cpp
+template<class ReadFunc, class CalFunc, class WriteFunc>
+void process(ReadFunc read, CalFunc calculate, WriteFunc write) {
+    string data = read();
+    string output = calculate(data);
+    write(output);
+}
+// 函数指针和函数对象都能传入！
+process(readFromScreen, calculateAdd, writeToScreen);
+process(ReadFromFile(), calculateAdd, writeToScreen);
+```
+
+===== 方式四：std::function（统一接口）
+
+```cpp
+void process(
+    function<string()> read,
+    function<string(string)> calculate,
+    function<void(string)> write)
+{
+    string data = read();
+    string output = calculate(data);
+    write(output);
+}
+// 最灵活！函数指针和函数对象都能赋值给function
+```
 
 ==== 函数指针
 
@@ -4670,7 +5506,26 @@ delete p;
 + *搜索*：找出符合正则表达式的子串
 + *替换*：按规则替换字符串的子串
 
-===== 字符簇
+===== 引例：用户名验证
+
+先看一个不使用正则表达式的实现（繁琐！）：
+
+```cpp
+bool valid_username(string s) {
+    if (s.size() < 3 || s.size() > 15) return false;
+    for (char c : s)
+        if (!islower(c) && !isdigit(c) && c != '_')
+            return false;
+    return true;
+}
+// 等价的正则表达式：^[a-z0-9_]{3,15}$
+```
+
+在线测试工具：http://tool.chinaz.com/regex/
+
+===== 字符簇（使用 "The car parked in the garage." 演示）
+
+以例句 #strong["The car parked in the garage."] 演示各模式匹配结果：
 
 + `[a-z]` 匹配所有单个小写字母
 + `[0-9]` 匹配所有单个数字
@@ -4680,6 +5535,14 @@ delete p;
 + `.` 匹配除换行以外任意字符
 + `[^a-z]` 匹配所有非小写字母的单个字符
 
+具体匹配演示：
++ `[Tt]he` → 匹配 "The"（句子开头）
++ `\.` → 匹配 "."（句号）
++ `.ar` → 匹配 "car"、"par"（"car parked" 中匹配 "car"、"par"）
++ `[^c]ar` → 匹配 "par"（"parked" 中匹配 "par"，排除 "car"）
++ `(c|g|p)ar` → 匹配 "car"、"gar"、"par"
++ `(T|t)he|car` → 匹配 "The" 或 "car"
+
 ===== 重复模式
 
 + `x{n,m}` 前面内容出现 $n$ 到 $m$ 次
@@ -4687,6 +5550,13 @@ delete p;
 + `*` 至少出现0次（等价 `{0,}`）
 + `?` 出现0次或1次（等价 `{0,1}`）
 + `^` 代表字符串开头，`$` 代表字符串结尾
+
+以 "The car parked in the garage." 演示：
++ `a\w+` → 匹配 "ar"（"car"后面）、"arked"（"parked"后面）、"age"（"garage"后面）
++ `a\w*` → 匹配更多（包括单独的 "a"）
++ `c.+e` → 匹配 "car parked in the garage"（贪婪！从 "c" 到最后的 "e"）
++ `[a-z]*` → 匹配 "he"、"car"、"parked"、"in"、"the"、"garage"
++ `.{5}` → 匹配任意5个字符的子串
 
 ===== 或连接符
 
@@ -4832,6 +5702,8 @@ void extract(string input) {
 == 拾壹 行为型模式 #datetime(day:19,month:5,year:2026).display()
 <拾壹-行为型模式-2026.5.19>
 
+#rect(fill: rgb("#f0f8ff"), stroke: 0.5pt + blue, inset: 8pt, radius: 2pt, width: 100%)[幻灯片 L12 涵盖设计模式概述、模板方法、策略模式、迭代器模式的完整内容。课后参考：https://www.liaoxuefeng.com/wiki/1252599548343744/1281319453589538]
+
 === 一、设计模式概述
 <一设计模式概述>
 
@@ -4891,6 +5763,12 @@ void Monitor::getLoad() {
 
 === 三、模板方法（Template Method）模式
 <三模板方法模板方法模式>
+
+==== 生活类比：写作文
+
+小学学写作文时，老师先教你经典结构——"起承转合"（开头→承接→转折→结尾）。这个*结构（算法骨架）*是固定的。但面对不同题目（"我的妈妈"、"难忘的一天"），你填入的*具体内容（步骤实现）*可以完全不同。
+
+模板方法模式就是：*骨架在基类中定义，具体内容在子类中实现。*
 
 #image("images/figL12_p10.png", width: 70%)
 
@@ -4952,7 +5830,7 @@ int main() {
 
 ==== 模板方法的局限
 
-若 `getLoad()` 有 $n$ 种实现、`getNetworkLatency()` 有 $m$ 种实现、`getTotalMemory()` 与 `getUsedMemory()` 有 $k$ 种实现，则需要 $n times k$ 个子类。大量冗余！
+若 `getLoad()` 有 $n$ 种实现、`getNetworkLatency()` 有 $m$ 种实现、`getTotalMemory()` 与 `getUsedMemory()` 有 $k$ 种实现，则需要 $n times m times k$ 个子类。大量冗余！
 
 === 四、策略（Strategy）模式
 <四策略策略模式>
@@ -5057,7 +5935,56 @@ int main() {
 + 与对象内部数据结构形式无关（数组还是链表）
 + 分离"变"（存储方式）与"不变"（访问方式）
 
-==== 引例：遍历学生成绩
+==== 引例：遍历学生成绩（逐步演进）
+
+===== 起点：原始数组实现
+
+```cpp
+int main() {
+    float scores[] = {90, 20, 40, 40, 30, 60, 70, 30, 90, 100};
+    int passed = 0;
+    for (int i = 0; i < 10; i++)
+        if (scores[i] >= 60) passed++;
+    cout << "passing rate = " << (float)passed / 10 << endl;
+}
+```
+
+===== 提取为函数
+
+```cpp
+void analyze(float *scores, int student_count) {
+    int passed = 0;
+    for (int i = 0; i < student_count; i++)
+        if (scores[i] >= 60) passed++;
+    cout << "passing rate = " << (float)passed / student_count << endl;
+}
+```
+
+===== 需求变化：改用链表存储
+
+```cpp
+struct Student {
+    float score;
+    Student* next;
+};
+void analyze(Student *head) {
+    int passed = 0, count = 0;
+    for (Student *p = head; p != NULL; p = p->next) {
+        if (p->score >= 60) passed++;
+        count++;
+    }
+    cout << "passing rate = " << (float)passed / count << endl;
+}
+```
+
+*核心问题：* 算法逻辑相同，但数据结构一变就要重写函数！$m$ 种算法 $times$ $n$ 种存储 $=$ $m times n$ 份代码。
+
+===== "变"与"不变"
+
++ *不变*：算法（遍历元素、计数、计算通过率）
++ *变*：数据存储方式（数组、链表、树、图...）
+
+关键在于：将"访问数据"这个操作抽象为统一接口——这就是*迭代器模式*的动机！
 
 ```cpp
 // 数组遍历
@@ -5286,6 +6213,10 @@ public:
 === 二、适配器（Adapter）模式
 <二适配器adapter模式>
 
+==== 现实类比：手机充电
+
+手机需要 5V 直流电充电，但插座提供的是 220V 交流电。充电头（适配器）将 220V 交流电*转换*为 5V 直流电。手机不需要知道插座的具体电压——它只和充电头的接口打交道。
+
 #image("images/figL13_p14.png", width: 70%)
 
 将一个类的接口转换成客户希望的另一个接口，使得原本由于接口不兼容而不能一起工作的类可以在统一接口环境下工作。
@@ -5294,7 +6225,13 @@ public:
 + *被适配类（Adaptee）*：需要适配的类
 + *适配器（Adapter）*：包装被适配类，把原接口转换成目标接口
 
-==== 实现一：组合方式（对象适配器）
+==== 适用场景
+
++ 系统需要复用已有的类，但这些类的接口不符合系统的接口
++ 接入第三方组件，但组件接口定义与自身定义不同
++ 旧系统开发的类已经实现了一些功能，但是客户端只能以新接口的形式访问，且不希望手动更改原有类
+
+==== 实现一：组合方式（对象适配器模式）
 
 #image("images/figL13_p15.png", width: 70%)
 
@@ -5319,7 +6256,7 @@ public:
 };
 ```
 
-==== 实现二：继承方式（类适配器）
+==== 实现二：继承方式（类适配器模式）
 
 #image("images/figL13_p20.png", width: 70%)
 
@@ -5351,14 +6288,40 @@ public:
 === 三、代理/委托（Proxy）模式
 <三代理委托proxy模式>
 
+==== 从适配器到代理：为什么需要新模式？
+
+C++ 中指针使用需要格外小心，尤其是类中有指针成员时，析构与释放是一个棘手的问题。我们想实现智能指针——能够包裹原始指针，具有指针的各项功能，并能在引用计数归零时自动释放。
+
+使用*适配器模式*可以进行指针的封装，对外提供指针各项功能的接口。但是适配器模式*仅仅是接口的转换*，无法在提供接口的同时进行*引用计数控制*这样的额外功能。我们如何在提供功能的同时进行计数控制呢？→ 代理/委托模式！
+
 #image("images/figL13_p32.png", width: 70%)
 
 在一些应用中直接访问对象会带来问题（远程访问、创建开销大、安全控制），可以在被访问对象上加上一个*访问层*，将复杂操作包裹在内部，仅对外暴露功能接口——这就是代理/委托模式。
 
 ==== 场景
 
-+ *远程代理*：从其他进程或远程地址获取资源
++ *远程代理*：要访问的对象在远程机器上
 + *资源安全*：多进程编程中检查访问权限
++ *创建开销大*：被访问对象创建开销很大，需要延迟初始化
++ *复杂处理*：被访问对象需要根据访问者的行为做出诸多复杂处理
+
+==== 权限检查示例
+
+```cpp
+void Proxy::request() {
+    if (checkAuthority(nowProcess, nowResource)) {
+        // do something...
+    }
+}
+```
+
+==== 代理 vs 适配器：相似与不同
+
+#strong[相似之处：]
++ 均是在被访问对象之上进行封装
++ 均提供被封装对象的功能接口供外部使用
+
+#strong[不同之处：]代理的核心要素是*分割访问对象与被访问对象以减少耦合*，接口不变；适配器的核心要素是*变换接口*。代理可能会增加控制功能（引用计数、权限检查等），适配器不会。
 
 ==== 例子：智能指针引用计数
 
@@ -5510,13 +6473,33 @@ b_hs_vs_TextView.draw();
 // 输出：Bordered HScrolled VScrolled TextView.
 ```
 
-==== 调用链
+==== 调用链（逐层展开）
 
 #image("images/figL13_p49.png", width: 70%)
 
 每个对象无需了解整个链的全貌。每一次都是将之前的版本完全包裹住再增加新功能——有多少个新功能就包裹几次。
 
+调用 `b_hs_vs_TextView.draw()` 时的执行过程：
+```text
+b_hs_vs_TextView.draw()
+  → Border::addon()             输出: "Bordered "
+  → hs_vs_TextView.draw()
+      → HScroll::addon()        输出: "HScrolled "
+      → vs_TextView.draw()
+          → VScroll::addon()    输出: "VScrolled "
+          → textView.draw()     输出: "TextView."
+// 最终输出: Bordered HScrolled VScrolled TextView.
+```
+
+===== 装饰器的核心内涵
+
+用装饰器类整体包裹改动之前的类，以保留原来的全部接口。在原来接口保留的基础上进行新功能扩充。装饰器类和被包装类继承同一基类，因此装饰后的类可以*再次被包装*——这就是递归嵌套的基础。
+
 ==== 装饰 vs 策略 vs 代理
+
+#strong[装饰 vs 策略]：装饰侧重于*功能组装*（以组合替代继承），策略侧重于*功能选择*（算法可替换）。策略修改功能的内核（行为），装饰修改功能的外壳（结构）。
+
+#strong[装饰 vs 代理]：都把"改变对象行为"作为目标，可以粗略地把"装饰"看成是一连串的"代理"。区别在于：装饰不创建被装饰对象，只是将新功能添加到已有对象上；代理被代理对象不存在时常创建被代理对象。装饰经常多重嵌套，代理少见多重嵌套。
 
 #table(
   columns: (auto, 1fr, 1fr, 1fr),
@@ -6041,6 +7024,12 @@ public:
 
 抽象工厂模式即，将同类的具体产品包装为一个具体工厂，以抽象工厂的形式呈现给上层代码；上层代码只需要关心抽象工厂和抽象产品，而不需要知道具体的工厂和产品是哪些。
 
+===== 框架设计理念
+
+编译器前端框架如此设计有其合理性：
++ *分阶段进行可以解耦合，方便测试*：语法分析、语义分析、代码生成各自独立，可以分别测试每个阶段
++ *延迟初始化可以缩短 Compiler 类的构造时间*：具体工厂在需要时才传入，Compiler 类构造时无需等待所有工厂就绪
+
 #image("images/figL14_p40.png", width: 80%)
 
 === 四、设计模式总结
@@ -6080,12 +7069,12 @@ public:
   stroke: 0.5pt,
   [*原则*], [*说明*],
   [开闭原则], [一个软件实体（类、模块、函数）应该对扩展开放，对修改关闭。最基础的设计原则],
-  [单一职责原则], [每个类应该只有一个职责，只有一个原因可以引起它的改变。例如：迭代器模式使得数据结构与算法分离],
+  [单一职责原则], [每个类应该只有一个职责，只有一个原因可以引起它的改变。例如：迭代器模式使得数据结构与算法分离；可视化程序设计中页面与逻辑分离],
   [里氏代换原则], [只要父类出现的地方子类就可以出现，即子类尽量不修改父类的数据与方法，实现基类代码的充分复用],
-  [依赖倒转原则], [要依赖于抽象，不要依赖于具体。针对接口编程，而不是针对实现编程。上层模块不应该依赖底层模块],
-  [接口隔离原则], [不要建立臃肿庞大的接口。接口尽量细化的同时接口中的方法尽量少],
+  [依赖倒转原则], [要依赖于抽象，不要依赖于具体。针对接口编程，而不是针对实现编程。具体而言就是上层模块不应该依赖底层模块。例如：策略模式/模板方法模式不依赖于具体的策略实现，只依赖于抽象],
+  [接口隔离原则], [不要建立臃肿庞大的接口。接口尽量细化的同时接口中的方法尽量少。功能拆分粒度太小，将使得类、接口的数量过多；功能拆分粒度太大，将使得类之间耦合度高，程序不灵活],
   [迪米特原则], [最少知道原则，一个对象应该对其他对象有最少的了解，使得功能模块相对独立],
-  [合成复用原则], [在新对象里通过关联关系来使用已有的对象，使之成为新对象的一部分；优先考虑使用组合而不是继承],
+  [合成复用原则], [在新对象里通过关联关系（委派调用）来使用已有的对象，使之成为新对象的一部分；优先考虑使用组合而不是继承。如需要使用继承，则遵守里氏代换原则],
 )
 
 #rect(
