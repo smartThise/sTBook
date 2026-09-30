@@ -9,9 +9,9 @@ jobs:
   dispatch:
     runs-on: ubuntu-latest
     steps:
-      - name: Notify ciallo-src deploy
+      - name: Notify site repo deploy
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.SITE_DISPATCH_TOKEN }}
-          repository: smartThise/ciallo-src
+          repository: guojl06/guojl06.github.io
           event-type: sync-notes
