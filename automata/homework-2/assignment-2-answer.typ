@@ -1,5 +1,5 @@
 // Homework 2 — Formal Languages and Automata（完整作答版，原稿见 assignment-2.typ）
-#import "@preview/cetz:0.3.4": canvas, draw
+#import "@preview/fletcher:0.5.8": diagram, node, edge
 
 #set page(
   paper: "us-letter",
@@ -94,39 +94,22 @@
 
 接受状态是 $A, B, C$（即子集含 $r$ 者）。这个 DFA 与原 $epsilon$-NFA 语言相同，可以验证它正好接受第 1(a) 题所列的 $37$ 个串。
 
-#align(center)[#canvas(length: 1cm, {
-  import draw: *
-  set-style(stroke: 0.8pt, mark: (end: "stealth", fill: black))
-  // 状态圆：接受态画双圈，死状态画单圈
-  let st(name, pos, label, acc: false) = {
-    circle(pos, radius: 0.55, name: name, fill: white)
-    if acc { circle(pos, radius: 0.43, fill: none) }
-    content(pos, label)
-  }
-  st("A", (0, 0), $A$, acc: true)
-  st("B", (4, 0), $B$, acc: true)
-  st("C", (8, 0), $C$, acc: true)
-  st("D", (12, 0), $D$)
-  // 起始箭头
-  line((-2.0, 0), "A.west", mark: (end: "stealth"))
-  content((-2.6, 0), [起始])
-  // A -b-> B，B -b-> C，C -a,b,c-> D
-  line("A.east", "B.west")
-  content((2, 0.45), $b$)
-  line("B.east", "C.west")
-  content((6, 0.45), $b$)
-  line("C.east", "D.west")
-  content((10, 0.45), $a,b,c$)
-  // A 读 a,c：回到自身（上方环）
-  arc("A.north-east", start: 45deg, stop: 135deg, anchor: "center")
-  content((0, 1.25), $a,c$)
-  // B 读 a,c 回到 A（下方弧线）
-  arc("B.south-west", start: -135deg, stop: -45deg, anchor: "center")
-  content((2, -1.65), $a,c$)
-  // D 读 a,b,c：自环
-  arc("D.north-east", start: 45deg, stop: 135deg, anchor: "center")
-  content((12, 1.25), $a,b,c$)
-})]
+#align(center)[#diagram(
+  node-stroke: 0.8pt,
+  edge-stroke: 0.8pt,
+  spacing: (22mm, 24mm),
+  node((0, 0), $A$, shape: circle, extrude: (-2.5, 0), name: <A>),
+  node((1, 0), $B$, shape: circle, extrude: (-2.5, 0), name: <B>),
+  node((2, 0), $C$, shape: circle, extrude: (-2.5, 0), name: <C>),
+  node((3, 0), $D$, shape: circle, name: <D>),
+  edge((-1, 0), <A>, "-|>", label: [起始], label-side: left),
+  edge(<A>, <B>, "-|>", $b$, label-side: left),
+  edge(<B>, <C>, "-|>", $b$, label-side: left),
+  edge(<C>, <D>, "-|>", $a, b, c$, label-side: left),
+  edge(<A>, <A>, "-|>", loop-angle: -90deg, label: $a, c$, label-side: left),
+  edge(<B>, <A>, "-|>", bend: 35deg, label: $a, c$, label-side: right),
+  edge(<D>, <D>, "-|>", loop-angle: -90deg, label: $a, b, c$, label-side: left),
+)]
 
 // ============================================================
 = Problem 2
