@@ -1,0 +1,125 @@
+\documentclass[10pt]{homework}
+
+\name{Student Name} % Replace (Student Name) with your name.
+\id{2025000000}
+\term{2026 Autumn}
+\course{Formal Languages and Automata}
+\hwnum{2}
+
+%\hwname{(Name)}          % Uncomment and replace (Name) with the type of the
+                          % homework (e.g, Assignment, Problem Set, etc.) if you
+                          % don't want the document to be labeled as "Homework."
+%\problemname{(Name)}     % Uncomment and replace (Name) with the desired label
+                          % for problems created with the problem environment.
+%\solutionname{(Name)}    % Uncomment and replace (Name) with the desired label
+                          % for solutions created with the solution environment.
+
+% Load any other packages you need here.
+
+\begin{document}
+
+\begin{problem} (Exercise 2.5.2) Consider the following $\epsilon$-NFA\@.
+
+  \begin{table}[h]
+    \centering
+    \begin{tabular}{r||c|c|c|c} % chktex 44
+      & $\epsilon$ & $a$ & $b$ & $c$\\\hline\hline % chktex 44
+      $\rightarrow p$ & $\{q, r\}$ & $\emptyset$ & $\{q\}$ & $\{r\}$\\
+      $q$ & $\emptyset$ & $\{p\}$ & $\{r\}$ & $\{p,q\}$\\
+      $*r$ & $\emptyset$ & $\emptyset$ & $\emptyset$ & $\emptyset$\\
+    \end{tabular}
+  \end{table}
+
+  \begin{parts}
+    \part\ Give all the strings of length three or less accepted by the automaton.
+
+    \part\ Convert the automaton to a DFA\@.
+  \end{parts}
+\end{problem}
+
+\begin{solution}
+
+\end{solution}
+
+\begin{problem} (Exercise 2.5.3) Design $\epsilon$-NFA's for the following
+  languages.
+  Try to use $\epsilon$-transitions to simplify your design.
+
+  \begin{parts}
+    \part\ The set of strings consisting of zero or more $a$'s followed by zero or
+    more $b$'s, followed by zero or more $c$'s.
+    \part\ The set of strings that consist of either $01$ repeated one or more
+    times or $010$ repeated one or more times.
+    \part\ The set of strings of $0$'s and $1$'s such that at least one of the
+    last ten positions is a $1$.
+  \end{parts}
+\end{problem}
+
+\begin{solution}
+
+\end{solution}
+
+\begin{problem}
+  Write regular expressions for the following languages:
+  \begin{parts}
+    \part\ (Exercise 3.1.1 (b)) The set of strings of 0's and 1's whose tenth
+    symbol from the right end is 1.
+    \part\ (Exercise 3.1.1 (c)) The set of strings of 0's and 1's with at most
+    one pair of consecutive 1's.
+    \part\ (Exercise 3.1.2 (b)) The set of strings of 0's and 1's whose number
+    of 0's is divisible by five.
+    \part\ (Exercise 3.1.3 (a)) The set of all strings of 0's and 1's not
+    containing 101 as a substring.
+    \part\ (Exercise 3.1.3 (b)) The set of all strings with an equal number of
+    0's and 1's, such that no prefix has two more 0's than 1's, nor two more
+    1's than 0's.
+  \end{parts}
+
+\end{problem}
+
+\begin{solution}
+
+\end{solution}
+
+% \begin{problem}
+%   In Example 3.1 we pointed out that $\emptyset$ is one of two languages whose
+%   closure is finite.
+%   What is the other?
+% \end{problem}
+
+% \begin{solution}
+
+% \end{solution}
+
+\begin{problem}
+  Here is a transition table for a DFA:\@
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{r||c|c} % chktex 44
+      & $0$ & $1$\\\hline\hline % chktex 44
+      $\rightarrow q_{1}$ & $q_{2}$ & $q_{1}$\\
+      $q_{2}$ & $q_{3}$ & $q_{1}$\\
+      $*q_{3}$ & $q_{3}$ & $q_{2}$
+    \end{tabular}
+  \end{table}
+  \begin{parts}
+    \part\ Give all the regular expressions $R^{(2)}_{ij}$.
+    Try to simplify the expressions as much as possible.
+    \part\ Give a regular expression for the language of the automaton.
+  \end{parts}
+\end{problem}
+
+\begin{solution}
+
+\end{solution}
+
+\begin{problem} (Optional) Suppose $L_{1}$ and $L_{2}$ are two languages accepted
+  by finite automata $M_{1}$ and $M_{2}$.
+  Prove that $L_{1} \cap L_{2}$ is also accepted by a finite automaton.
+\end{problem}
+
+\begin{solution}
+
+\end{solution}
+
+\end{document}
