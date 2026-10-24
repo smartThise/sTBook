@@ -7,13 +7,13 @@ subtitle: 课程笔记 / 代码 / 资料库
 
 courses:
   # ---- 在修课程 ----
-  - { slug: 数据结构,         name: 数据结构,         group: 课程, desc: Lab、编程作业与指引 }
+  - { slug: 数据结构,         name: 数据结构,         group: 课程, desc: 教材式笔记、184题导航、PA与课件 }
   - { slug: 面向对象程序设计基础, name: 面向对象程序设计基础, group: 课程, desc: HW、final 项目、雷霆笔记与课件 }
   - { slug: 高等线性代数选讲, name: 高等线性代数选讲, group: 课程, desc: 作业与复习 }
   - { slug: 离散数学(2),      name: 离散数学(2),      group: 课程, desc: 笔记、OJ、slides 与复习 }
   - { slug: 形式语言与自动机, name: 形式语言与自动机, group: 课程, desc: 作业 }
-  - { slug: 计算机系统概论,   name: 计算机系统概论,   group: 课程, desc: 课程笔记、课件与作业 }
-  - { slug: 大学物理B(2),     name: 大学物理B(2),     group: 课程, desc: 课件、作业与公告 }
+  - { slug: 计算机系统概论,   name: 计算机系统概论,   group: 课程, desc: 系统教材式笔记、汇编例题与资料 }
+  - { slug: 大学物理B(2),     name: 大学物理B(2),     group: 课程, desc: 电磁学、光学与量子教材式笔记 }
   - { slug: 复变函数引论,     name: 复变函数引论,     group: 课程, desc: 作业安排与课程资料 }
   - { slug: 马克思主义基本原理, name: 马克思主义基本原理, group: 课程, desc: 课件与课程公告 }
   - { slug: 脑与智能,         name: 脑与智能,         group: 课程, desc: 课程安排与学习资料 }

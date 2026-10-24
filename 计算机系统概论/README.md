@@ -4,6 +4,10 @@
 
 [返回课程索引](../%E8%AF%BE%E7%A8%8B%E7%B4%A2%E5%BC%95.md)
 
+## 教材式笔记
+
+[从第一步讲起 · Wiki章节、Typst与整册PDF](资料/超级纲要/README.md)
+
 ## 资料分类
 
 - [slides](slides/README.md)
