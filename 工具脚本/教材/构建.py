@@ -35,7 +35,16 @@ def main():
             # Pandoc 的图片相对路径与 Markdown 位置一致；Math 使用原生 Typst 数学。
         main_typ = '#import "../../../module/教材.typ": textbook\n'
         main_typ += f'#show: textbook.with(title: [{course}], subtitle: [概念 · 推导 · 原图 · 例题 · 自测])\n\n'
-        main_typ += "\n".join(f'#include "{p.with_suffix(".typ").name}"' for p in chapters) + "\n"
+        for chapter in chapters:
+            number = int(chapter.name[:2])
+            include = f'include "{chapter.with_suffix(".typ").name}"'
+            if number in (0, 95):
+                main_typ += '#{ set heading(numbering: none); ' + include + ' }\n'
+            else:
+                # Keep printed chapter numbers equal to the canonical filenames
+                # used by cross-references in both Wiki and PDF. The reader's
+                # introduction and source appendix don't consume a chapter.
+                main_typ += f'#counter(heading).update({number - 1})\n#{include}\n'
         (folder / "main.typ").write_text(main_typ, encoding="utf-8")
         if not args.no_pdf:
             subprocess.run(["typst", "compile", "--root", str(ROOT), *font_args, "main.typ", f"{course}·超级纲要.pdf"], cwd=folder, check=True)
