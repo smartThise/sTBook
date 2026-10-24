@@ -11,5 +11,8 @@
 
 ## 网站同步
 
-把笔记 push 到本仓库后，网站仓库的 GitHub Action 会自动拉取本仓库并重建
-[guojl06.github.io/notes](https://guojl06.github.io/notes/)，无需手动同步。
+把笔记 push 到 GitHub 本仓库的 `main` 分支后，
+[guojl06.github.io/notes](https://guojl06.github.io/notes/) 会直接读取最新目录和资源。
+刷新网页即可读取最新提交；已打开的页面每 15 秒检查更新，切回页面时也会检查，无需等待 Actions 构建。
+
+后台 GitHub Action 继续生成静态快照和 Typst PDF 预览。Typst 源文即时可读；PDF 需等后台编译完成，且版本与当前提交一致时才作为默认预览。
