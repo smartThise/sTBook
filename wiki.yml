@@ -13,6 +13,13 @@ courses:
   - { slug: 离散数学(2),      name: 离散数学(2),      group: 课程, desc: 笔记、OJ、slides 与复习 }
   - { slug: 形式语言与自动机, name: 形式语言与自动机, group: 课程, desc: 作业 }
   - { slug: 计算机系统概论,   name: 计算机系统概论,   group: 课程, desc: 课程笔记、课件与作业 }
+  - { slug: 大学物理B(2),     name: 大学物理B(2),     group: 课程, desc: 课件、作业与公告 }
+  - { slug: 复变函数引论,     name: 复变函数引论,     group: 课程, desc: 作业安排与课程资料 }
+  - { slug: 马克思主义基本原理, name: 马克思主义基本原理, group: 课程, desc: 课件与课程公告 }
+  - { slug: 脑与智能,         name: 脑与智能,         group: 课程, desc: 课程安排与学习资料 }
+  - { slug: 二年级男生游泳,   name: 二年级男生游泳,   group: 课程, desc: 游泳课件与视频 }
+  - { slug: 电影音乐赏析,     name: 电影音乐赏析,     group: 课程, desc: 课程公告与作业要求 }
+  - { slug: 实验室科研探究（1）, name: 实验室科研探究（1）, group: 课程, desc: 分单元课件、配套材料与作业 }
   - { slug: 大学物理(1)(英),  name: 大学物理(1)(英),  group: 课程, desc: 作业、考试与引擎模板 }
   - { slug: 微积分A(2)(英),   name: 微积分A(2)(英),   group: 课程, desc: 作业与笔记 }
   - { slug: 计算机程序设计基础(C++), name: 计算机程序设计基础(C++), group: 课程, desc: OJ、HW 与 cheatsheet }

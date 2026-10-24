@@ -1,0 +1,20 @@
+# slides · 课件
+
+[返回课程首页](../README.md)
+
+- [光的偏振.ppt](%E5%85%89%E7%9A%84%E5%81%8F%E6%8C%AF.ppt)
+- [光的干涉.ppt](%E5%85%89%E7%9A%84%E5%B9%B2%E6%B6%89.ppt)
+- [光的衍射.ppt](%E5%85%89%E7%9A%84%E8%A1%8D%E5%B0%84.ppt)
+- [原子中的电子.ppt](%E5%8E%9F%E5%AD%90%E4%B8%AD%E7%9A%84%E7%94%B5%E5%AD%90.ppt)
+- [固体中的能带结构.ppt](%E5%9B%BA%E4%BD%93%E4%B8%AD%E7%9A%84%E8%83%BD%E5%B8%A6%E7%BB%93%E6%9E%84.ppt)
+- [恒定电流.pptx](%E6%81%92%E5%AE%9A%E7%94%B5%E6%B5%81.pptx)
+- [波粒二象性.ppt](%E6%B3%A2%E7%B2%92%E4%BA%8C%E8%B1%A1%E6%80%A7.ppt)
+- [电势.ppt](%E7%94%B5%E5%8A%BF.ppt)
+- [电磁场.ppt](%E7%94%B5%E7%A3%81%E5%9C%BA.ppt)
+- [电磁感应.ppt](%E7%94%B5%E7%A3%81%E6%84%9F%E5%BA%94.ppt)
+- [磁介质.ppt](%E7%A3%81%E4%BB%8B%E8%B4%A8.ppt)
+- [磁力和磁场.ppt](%E7%A3%81%E5%8A%9B%E5%92%8C%E7%A3%81%E5%9C%BA.ppt)
+- [薛定谔方程.ppt](%E8%96%9B%E5%AE%9A%E8%B0%94%E6%96%B9%E7%A8%8B.ppt)
+- [静电场中的导体.ppt](%E9%9D%99%E7%94%B5%E5%9C%BA%E4%B8%AD%E7%9A%84%E5%AF%BC%E4%BD%93.ppt)
+- [静电场中的电介质.ppt](%E9%9D%99%E7%94%B5%E5%9C%BA%E4%B8%AD%E7%9A%84%E7%94%B5%E4%BB%8B%E8%B4%A8.ppt)
+- [静电场的场强.ppt](%E9%9D%99%E7%94%B5%E5%9C%BA%E7%9A%84%E5%9C%BA%E5%BC%BA.ppt)
