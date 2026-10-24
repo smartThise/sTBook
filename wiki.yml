@@ -12,6 +12,7 @@ courses:
   - { slug: 高等线性代数,     name: 高等线性代数,     group: 课程, desc: 作业与复习 }
   - { slug: 离散数学（二）,   name: 离散数学（二）,   group: 课程, desc: 笔记、OJ、slides 与复习 }
   - { slug: 自动机,           name: 自动机,           group: 课程, desc: 作业 }
+  - { slug: 计算机系统概论,   name: 计算机系统概论,   group: 课程, desc: 课程笔记、课件与作业 }
   - { slug: 大学物理,         name: 大学物理,         group: 课程, desc: 作业、考试与引擎模板 }
   - { slug: 微积分A（二）,    name: 微积分A（二）,    group: 课程, desc: 作业与笔记 }
   - { slug: C++程序设计,      name: C++程序设计,      group: 课程, desc: OJ、HW 与 cheatsheet }

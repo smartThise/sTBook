@@ -1,0 +1,108 @@
+\documentclass[10pt]{homework}
+
+\name{Student Name} % Replace (Student Name) with your name.
+\id{2025000000}
+\term{2026 Autumn}
+\course{Formal Languages and Automata}
+\hwnum{3}
+
+%\hwname{(Name)}          % Uncomment and replace (Name) with the type of the
+                          % homework (e.g, Assignment, Problem Set, etc.) if you
+                          % don't want the document to be labeled as "Homework."
+%\problemname{(Name)}     % Uncomment and replace (Name) with the desired label
+                          % for problems created with the problem environment.
+%\solutionname{(Name)}    % Uncomment and replace (Name) with the desired label
+                          % for solutions created with the solution environment.
+
+% Load any other packages you need here.
+
+\begin{document}
+
+\begin{problem} (Exercise 2.3.4 (c)) Convert regular expression $00{(0+1)}^{*}$
+  to an NFA with \(\epsilon\)-transitions using Thompson's method.
+\end{problem}
+
+\begin{solution}
+
+\end{solution}
+
+\begin{problem} (Exercise 2.3.6)
+  Let $A = (Q, \Sigma, \delta, q_{0}, \{q_{f}\})$ be an $\epsilon$-NFA such that
+  there are no transitions into $q_{0}$ and no transitions out of $q_{f}$.
+  Describe the language accepted by each of the following modifications of $A$,
+  in terms of $L = L(A)$:
+  \begin{parts}
+    \part\label{2.a} The automaton constructed from $A$ by adding an
+    $\epsilon$-transition from $q_{f}$ to $q_{0}$.
+    \part\label{2.b} The automaton constructed from $A$ by adding an $\epsilon$-transition
+    from $q_{0}$ to every state reachable from $q_{0}$ (along a path whose
+    labels may include symbols of $\Sigma$ as well as $\epsilon$).
+    \part\label{2.c} The automaton constructed from $A$ by adding an $\epsilon$-transition
+    to $q_{f}$ from every state that can reach $q_{f}$ along some path.
+    \part\label{2.d} The automaton constructed from $A$ by doing both (b) and (c).
+  \end{parts}
+\end{problem}
+
+\begin{solution}
+
+\end{solution}
+
+\begin{problem} (Exercise 3.2.3)
+  Convert the following DFA to a regular expression, using the state-elimination
+  technique of Section 3.2.2.
+  \begin{table}[h]
+    \centering
+    \begin{tabular}{r||c|c} % chktex 44
+      & $0$ & $1$\\\hline\hline % chktex 44
+      $\rightarrow * p$ & $s$ & $p$\\
+      $q$ & $p$ & $s$\\
+      $r$ & $r$ & $q$\\
+      $s$ & $q$ & $r$
+    \end{tabular}
+  \end{table}
+\end{problem}
+
+\begin{solution}
+
+\end{solution}
+
+\begin{problem}
+  Prove or disprove each of the following statements about regular expressions.
+  \begin{parts}
+    \part\ (Exercise 3.4.1 (g)) ${(\epsilon + R)}^{*} = R^{*}$.
+    \part\ (Exercise 3.4.2 (b)) ${(RS + R)}^{*}R = R{(SR + R)}^{*}$.
+    \part\ (Exercise 3.4.2 (d)) ${(R + S)}^{*}S = {(R^{*}S)}^{*}$.
+  \end{parts}
+\end{problem}
+
+\begin{solution}
+
+\end{solution}
+
+\begin{problem}
+  Construct a DFA for each of the regular languages below:
+  \begin{parts}
+    \part\ All strings over $\{a, b\}$ that have and only have odd number of
+    substrings $ab$.
+    \part\ All strings over $\{a, b\}$ that contain $ab$ but not $bb$ as substring.
+  \end{parts}
+\end{problem}
+
+\begin{solution}
+
+\end{solution}
+
+\begin{problem}
+  Give a regular expression for each of the regular language below:
+  \begin{parts}
+    \part\ $\{xwx^{R} \mid x, w \in {(a+b)}^{+}\}$.
+    \part\ $\bigl\{w \mid w \in {\{0,1\}}^{*}, w \text{ has at least three 1's and
+      the third from the last}\linebreak \text{position is a 1} \bigr\}$.
+  \end{parts}
+\end{problem}
+
+\begin{solution}
+
+\end{solution}
+
+\end{document}

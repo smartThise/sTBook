@@ -1,0 +1,807 @@
+2026秋季
+
+计算机系统概论
+Introduction to Computer Systems
+
+
+
+
+80X86汇编语言与C语言-1
+    Zhang, Youhui（张悠慧）
+    zyh02@tsinghua.edu.cn
+计算机体系结构
+
+           main.c                                 C程序在硬件层面的表示
+                     编
+                     译
+                                                    数据
+                                                    ……
+
+                                                    代码
+                                汇编指令                基本概念/基本指令/寻
+                                                    址方式 / 程序控制流与
+              链接                                    相关指令（第三讲）
+                               main.o               ……
+
+
+                                   CPU              地址/Addresses
+                         运行
+                              P Registers           数据/Data
+                              C Condition Codes     指令/Instructions
+
+         仅给出部分内容
+  内存地址              程序/数据在硬件层面的表示与运行
+
+                                                                      2
+     01
+     需要掌握的要点
+
+
+目录   02
+     汇编程序员眼中的计算
+     机体系结构
+
+
+     03
+     汇编语言基本指令寻址方式等
+     （C语言的角度）
+需要掌握的要点
+
+程序的语义等价转换： C语言     汇编语言
+                               int array[4] = {1,2,3,4};
+                               static int brray[4] = {1,2,3,4};
+ 包括但不限于：基本计算、控制流、循环、函数调用与      static int intra_sum (int x[4],int y)
+ 返回、数组/结构等复合数据类型访问等            {
+                                 return x[y-1];
+                               }
+                                                                  main.c
+（部分）指令/函数/数据的“定位”              int main()
+                               {
+ 局部变量        （条件/无条件）跳转指令的目的      int val = intra_sum(array, 3) +
+                                          inter_sum(brray,3);
+ 静态函数入口地址    函数返回地址
+ 函数的参数、返回值                         if (val>=0)             cmpl $0, -20(%rbp)
+                                      return val;          js   .L4
+                                                           movl -20(%rbp), %eax
+                                   else                    jmp .L5
+                                      return -1;
+代码优化……
+                                                    .L4:
+                                                           movl   $-1, %eax
+                               }                    .L5:
+                                                           ……
+
+                                                                                  4
+汇编程序员眼中的体系结构 冯诺依曼架构，又称为控制流（control flow）架构
+
+       处理器（CPU)                地址/Addresses
+                                                 内存（main memory）
+                                                 用户程序代码 / 数据
+        程       寄存器堆           数据/Data
+        序                                        操作系统代码 / 数据
+        计
+        数       条件码            指令/Instructions
+        器                                        栈（Stack） 堆（Heap）
+
+
+
+ 程序计数器 （PC）                条件码（condition codes） 内存（main memory）
+  存储下一条指令的地址                用于存储最近执行指令的          以字节编码的连续存储空间
+  x86-64 架构下的名字为RIP         结果状态信息
+                                                 存放程序代码、数据/栈/堆，以及操作
+ 寄存器/寄存器堆（register file）
+                            用于条件指令的判断执行          系统代码与数据(OS data)
+  在处理器内部的以名字来访问
+  的快速存储单元
+                                                                      5
+寄存器与内存的比较
+
+
+项   目    寄存器      内       存   回顾下“机器字在内存中的组织”
+
+位   置   CPU内部     CPU外部                               0000
+                                Addr                  0001
+                               = 0000                 0002
+访问速度     快            慢                  Addr         0003
+                                        = 0000        0004
+                                Addr                  0005
+容   量    小            大        = 0004                 0006
+                                                      0007
+                                                      0008
+                                Addr
+成   本    高            低                               0009
+                                                      0010
+                               = 0008    Addr         0011
+                                        = 0008        0012
+表示方式    用名字表示     用地址表示         Addr                  0013
+                               = 0012                 0014
+                                                      0015
+                可用多种方式形成
+地   址    没有                    32位字编址   64位字编址   字节编址 地址.
+                （多种内存寻址方式）
+
+
+                                                             6
+存储层次结构 (补充)
+                                        内存DRAM ~100 cycles
+
+                                                    代表处理        L1延迟 (      L2延迟 (      L3延迟 (
+                                          架构          器          周期)         周期)         周期)
+
+                                        Intel
+                                       Nehale
+                                         m          Core i7        4           10         ~40
+                                       （2008）
+
+
+
+                                                                  ……
+
+
+                                         Apple
+                                                    M4 / M4
+                                          M4                      3~4        18~28     90~120*
+                                        （2024）
+                                                     Pro
+
+
+                                       AMD Zen       Ryzen
+                                                                   4           14        46~50
+                                       5 (2024)      9000
+
+
+                                       Intel Lion    Core
+                                                                L0 : 4 /
+                                          Cove       Ultra                     17        ~80+
+                                         (2024)
+                                                                L1 : 9**
+                                                     200
+
+
+              • 没有传统意义上的 L3，而是采用 System Level Cache (SLC)；上表中的 "L3" 列对 Apple 芯片对应的是 SLC 或跨集群访问的延迟
+              ** Intel 在 Lion Cove（Arrow Lake / Lunar Lake）中引入 L0 + L1 的分层设计
+汇编语言基本指令/寻址方式等
+  （C语言的角度）
+
+
+
+
+                 8
+如何从C代码生成汇编代码
+
+
+C代码                                         对应的X86-64汇编（AT&T格式）
+
+long plus(long x, long y);                  sumstore:
+                                              pushq %rbx
+void sumstore(long x, long y, long *dest)     movq %rdx, %rbx
+{                                             call  plus
+  long t = plus(x, y);                        movq %rax, (%rbx)
+  *dest = t;                                  popq %rbx
+}                                             ret
+
+
+
+ 生成汇编代码的命令行: gcc –Og –S sum.c                    #-fno-PIC #-masm=att
+ 参数‘-S’生成文件sum.s （-c的话生成sum.o，即目标文件，内含机器指令）
+
+                                                                        9
+汇编语言的基本特点 - 数据类型
+
+
+ 整型数据                  浮点数据            无复杂数据类型
+ 数据宽度为                 数据宽度为4, 8, or   结构或者数组之类的
+ 1, 2, 4, or 8 bytes   10 bytes
+
+
+   表示数值                                 就是在内存中连续分
+                                        配的字节，由编译器
+   或者内存地址                               解释
+
+
+
+
+                                                    10
+汇编语言的基本特点 - 操作类型
+
+
+      对寄存器数据或者内存数据进行算术/逻辑操作
+
+
+      内存与寄存器之间、或者寄存器/寄存器之间传递数据
+      将数据从内存中读入寄存器
+      将寄存器数据写入内存
+
+
+       程序执行顺序的转移（transfer control）
+       无条件跳转 / 函数调用及返回
+       条件跳转
+
+
+
+                                     11
+汇编语言数据格式
+
+
+后缀              类型            数据大小
+B               BYTE           1byte ( 8bits )
+W               WORD           2byte ( 16bits )
+L               LONG           4byte ( 32bits )
+Q               QUADWORD       8byte ( 64bits )
+
+
+
+
+    在x86中，使用“字（word）”      AT&T汇编语言指令所处理的数据
+    来表示16位整数类型，“双字”        类型一般是采用汇编指令的后缀
+    表示32位，“四字”表示64位        来进行区分的
+
+
+                                                  12
+第一条汇编指令实例
+
+                     C语言
+   *dest = t;
+                     在dest指定的内存地址里存储t
+
+
+
+                     汇编                        操作数
+
+movq %rax, (%rbx)    将8字节宽度的值存储到到指定       t:      寄存器 %rax
+                     的内存地址中               dest:   寄存器 %rbx
+                                          *dest: 内存   M[%rbx]
+
+
+
+                     目标代码
+0x40059e: 48 89 03
+                     三字节指令（指令自身的地址为0x40059e）
+
+                                                                13
+反汇编命令
+
+
+        0000000000400595 <sumstore>:
+          400595:   53               push    %rbx
+
+          400596:   48 89 d3         mov     %rdx,%rbx
+
+          400599:   e8 f2 ff ff ff   callq   400590 <plus>
+
+          40059e:   48 89 03         mov     %rax,(%rbx)
+                                     pop     %rbx
+          4005a1:   5b
+                                     retq
+          4005a2:   c3
+
+
+          反汇编程序 : objdump –d sum.o
+
+                                                             14
+另一种反汇编方式
+
+
+0x0400595:   Dump of assembler code for function sumstore:
+0x53         0x0000000000400595 <+0>: push %rbx
+0x48
+             0x0000000000400596 <+1>: mov %rdx,%rbx
+0x89
+0xd3         0x0000000000400599 <+4>: callq 0x400590 <plus>
+0xe8         0x000000000040059e <+9>: mov %rax,(%rbx)
+0xf2         0x00000000004005a1 <+12>:pop %rbx
+0xff         0x00000000004005a2 <+13>:retq
+0xff
+0xff
+0x48         gdb命令反汇编
+0x89
+0x03           gdb sum                           x/14xb sumstore   x /nfu <addr>
+0x5b           disassemble sumstore              显示从“sumstore”开始的14个字节
+0xc3           反汇编某个函数
+
+                   安排有专门的课时来讲解gdb等的使用
+
+                                                                                   15
+x86-64的通用寄存器
+
+   %rax    %eax   %r8    %r8d
+
+   %rdx    %edx   %r9    %r9d
+
+   %rcx    %ecx   %r10   %r10d
+
+   %rbx    %ebx   %r11   %r11d
+
+   %rsi    %esi   %r12   %r12d
+
+   %rdi    %edi   %r13   %r13d
+
+   %rsp    %esp   %r14   %r14d
+
+   %rbp    %ebp   %r15   %r15d
+
+                                 16
+x86-32的通用寄存器
+
+                                      原始用途(基本已过时)
+
+        %eax    %eax %ah
+               %ax          %a1
+                            %al    accumulate
+        %ecx     %ecx %ch
+               %cx          %c1
+                            %cl    counter
+
+
+
+通用寄存器
+        %edx    %edx %dh
+               %dx          %d1
+                            %dl    data
+        %ebx    %ebx %bh
+               %bx          %b1
+                            %bl    base
+        %esi   %si%esi             source index
+        %edi   %di%edi             destination index
+        %esp    %esp
+               %sp                 stack pointer
+        %ebp    %ebp
+               %bp                 base pointer
+
+               16位的虚拟寄存器（后向兼容需要）
+                                                       17
+数据传送指令（mov）
+
+数据传输                                     %rax
+
+ movq Source, Dest                       %rcx
+
+                                         %rdx
+
+操作数类型                                    %rbx
+                                         %rsi
+立即数: 整型常数              寄存器: 16个通用寄存器之一
+ 示例: $0x400, $-533      示例: %rax, %r13
+                                         %rdi
+ 类似于C代码里的常数，            不过%rsp具有特殊用途     %rsp
+ 注意前缀‘$’                其它某些寄存器在某些特定指令
+ 位宽可以是1, 2, 4, 8字节      中有特定用途
+                                         %rbp
+
+内存: 8 个连续字节，起始地址由地址表达式指定                 %rN
+ 一种简单的内存地址示例: (%rax)                      …
+ 有多种不同的地址表达式
+
+                                                18
+mov指令支持的不同操作数类型组合
+
+
+       源操作数   目的操作数        源（左侧），目的（右侧） 类似的C语言表示
+
+              Reg          movq $0x4,%rax      temp = 0x4;
+       Imm
+              Mem          movq $-147,(%rax)   *p = -147;
+
+              Reg          movq %rax,%rdx      temp2 = temp1;
+movl   Reg
+              Mem          movq %rax,(%rdx)    *p = temp;
+
+
+       Mem    Reg          movq (%rax),%rdx    temp = *p;
+
+
+                    但是不能两个操作数都为内存数据
+
+                                                                19
+简单的寻址模式
+
+
+间接寻址     格式：(R)      内存地址：Mem[Reg[R]]
+
+ 寄存器R指定内存地址                   movq (%rcx),%rax
+
+
+
+“基址+偏移量”寻址       格式： D(R) 内存地址：Mem[Reg[R]+D]
+
+ 寄存器R指定内存起始地址                  常数D给出偏移量
+ movq 8(%rbp),%rdx
+
+
+
+                                                 20
+变址模式
+
+
+常见形式：D(Rb,Ri,S)      内存地址：Mem[Reg[Rb]+S*Reg[Ri]+D]
+
+  D : 常量（地址偏移量）              Rb : 基址寄存器，16个通用寄存器之一
+  S : 比例因子 1, 2, 4, or 8     Ri : 索引寄存器，%rsp不作为索引寄存器
+
+
+其他变形
+
+  (Rb,Ri)     Mem[Reg[Rb]+Reg[Ri]]
+  D(Rb,Ri)    Mem[Reg[Rb]+Reg[Ri]+D]
+  (Rb,Ri,S)   Mem[Reg[Rb]+S*Reg[Ri]]
+
+
+                                                       21
+寻址模式实例
+
+
+    %rdx         0xf000
+
+    %rcx         0x0100
+
+
+
+地址表达式                 地址计算               结果
+
+ 0x8(%rdx)            0xf000 + 0x8       0xf008
+
+ (%rdx,%rcx)          0xf000 + 0x100     0xf100
+
+ (%rdx,%rcx,4)        0xf000 + 4*0x100   0xf400
+
+ 0x80(,%rdx,2)        2*0xf000 + 0x80    0x1e080
+
+
+                                                   22
+X86-64下的简单寻址示例
+
+
+ void swap(long *xp, long *yp)     swap:
+ {                                  movq      (%rdi), %rax
+   long t0 = *xp;                   movq      (%rsi), %rdx
+   long t1 = *yp;                   movq      %rdx, (%rdi)
+   *xp = t1;                        movq      %rax, (%rsi)
+   *yp = t0;                        ret
+ }
+
+参数通过寄存器来传递                          注意
+%rdi：第一个参数(xp) ；%rsi: 第二个        当参数少于7个时， 参数从左到右放入寄存器: rdi,
+(yp)；参数类型为64位宽的指针                rsi, rdx, rcx, r8, r9。当参数为7个及以上时， 前6个
+                                 传送方式不变， 但后面的依次从 "右向左" 放入栈中
+
+
+                                                                         23
+Swap函数执行过程分解-1
+
+                                           寄存器               内存
+ void swap(long *xp, long *yp)
+ {                                        %rdi
+   long t0 = *xp;
+   long t1 = *yp;                         %rsi
+
+   *xp = t1;                              %rax
+   *yp = t0;
+ }                                        %rdx
+
+                                 swap:
+  Register   Value
+                                   movq   (%rdi), %rax # t0 = *xp
+  %rdi       xp
+                                   movq   (%rsi), %rdx # t1 = *yp
+  %rsi       yp
+                                   movq   %rdx, (%rdi) # *xp = t1
+  %rax       t0
+                                   movq   %rax, (%rsi) # *yp = t0
+  %rdx       t1
+                                   ret
+
+                                                                    24
+Swap函数执行过程分解-2
+
+
+          寄存器                       内存         地址
+
+ %rdi                  0x120             123   0x120
+
+ %rsi                                          0x118
+                       0x100
+                                               0x110
+ %rax
+                                               0x108
+ %rdx                                    456   0x100
+
+ swap:
+   movq   (%rdi), %rax # t0 = *xp
+   movq   (%rsi), %rdx # t1 = *yp
+   movq   %rdx, (%rdi) # *xp = t1
+   movq   %rax, (%rsi) # *yp = t0
+   ret
+
+                                                       25
+Swap函数执行过程分解-3
+
+
+          寄存器                       内存         地址
+
+ %rdi                  0x120             123   0x120
+
+ %rsi                                          0x118
+                       0x100
+                                               0x110
+ %rax                    123
+                                               0x108
+ %rdx                                    456   0x100
+
+ swap:
+   movq   (%rdi), %rax # t0 = *xp
+   movq   (%rsi), %rdx # t1 = *yp
+   movq   %rdx, (%rdi) # *xp = t1
+   movq   %rax, (%rsi) # *yp = t0
+   ret
+
+                                                       26
+Swap函数执行过程分解-4
+
+
+          寄存器                       内存         地址
+
+ %rdi                  0x120             123   0x120
+
+ %rsi                                          0x118
+                       0x100
+                                               0x110
+ %rax                    123
+                                               0x108
+ %rdx                    456             456   0x100
+
+ swap:
+   movq   (%rdi), %rax # t0 = *xp
+   movq   (%rsi), %rdx # t1 = *yp
+   movq   %rdx, (%rdi) # *xp = t1
+   movq   %rax, (%rsi) # *yp = t0
+   ret
+
+                                                       27
+Swap函数执行过程分解-5
+
+
+          寄存器                       内存         地址
+
+ %rdi                  0x120             456   0x120
+
+ %rsi                                          0x118
+                       0x100
+                                               0x110
+ %rax                    123
+                                               0x108
+ %rdx                    456             456   0x100
+
+ swap:
+   movq   (%rdi), %rax # t0 = *xp
+   movq   (%rsi), %rdx # t1 = *yp
+   movq   %rdx, (%rdi) # *xp = t1
+   movq   %rax, (%rsi) # *yp = t0
+   ret
+
+                                                       28
+Swap函数执行过程分解-6
+
+
+          寄存器                       内存         地址
+
+ %rdi                  0x120             456   0x120
+
+ %rsi                                          0x118
+                       0x100
+                                               0x110
+ %rax                    123
+                                               0x108
+ %rdx                    456             123   0x100
+
+ swap:
+   movq   (%rdi), %rax # t0 = *xp
+   movq   (%rsi), %rdx # t1 = *yp
+   movq   %rdx, (%rdi) # *xp = t1
+   movq   %rax, (%rsi) # *yp = t0
+   ret
+
+                                                       29
+X86-64下另一个swap
+
+
+ void swap(int *xp, int *yp)      swap:
+ {                                   movl    (%rdi), %edx
+   int t0 = *xp;                     movl    (%rsi), %eax
+   int t1 = *yp;                     movl    %eax, (%rdi)
+   *xp = t1;                         movl    %edx, (%rsi)
+   *yp = t0;                         retq
+ }
+
+参数通过寄存器来传递                       但，被操作的数据是32位
+
+%rdi：第一个参数(xp) ；%rsi: 第二个(yp)；   所以使用寄存器 %eax、%edx
+参数类型为64位宽的指针                     以及movl 指令
+
+
+                                                            30
+变址模式
+
+
+常见形式：D(Rb,Ri,S)      内存地址：Mem[Reg[Rb]+S*Reg[Ri]+D]
+
+  D : 常量（地址偏移量）              Rb : 基址寄存器，16个通用寄存器之一
+  S : 比例因子 1, 2, 4, or 8     Ri : 索引寄存器，%rsp不作为索引寄存器
+
+
+其他变形
+
+  (Rb,Ri)     Mem[Reg[Rb]+Reg[Ri]]
+  D(Rb,Ri)    Mem[Reg[Rb]+Reg[Ri]+D]
+  (Rb,Ri,S)   Mem[Reg[Rb]+S*Reg[Ri]]
+
+
+                                                       32
+地址计算指令
+
+    leaq Src,Dest
+
+ Src 是地址计算表达式，计算出来的值（地址）赋给 Dest
+
+
+    使用实例
+ 地址计算（无需访存）         示例：p = &x[i];
+
+ 进行x + k*y这一类型的整数计算，k = 1, 2, 4, or 8.
+
+ long m12(long x)
+ {                  leaq (%rdi,%rdi,2), %rax # t ← x+x*2
+   return x*12;
+ }                  salq $2, %rax           # return t<<2
+
+
+                                                            33
+整数计算指令
+
+  指令格式              指令执行的操作
+双操作数指令
+addq     Src,Dest   Dest = Dest + Src
+subq     Src,Dest   Dest = Dest – Src
+imulq    Src,Dest   Dest = Dest * Src    Multiply （取低64位）
+salq     Src,Dest   Dest = Dest << Src   与shlq等价
+sarq     Src,Dest   Dest = Dest >> Src   算术右移
+shrq     Src,Dest   Dest = Dest >> Src   逻辑右移
+xorq     Src,Dest   Dest = Dest ^ Src
+andq     Src,Dest   Dest = Dest & Src
+orq      Src,Dest   Dest = Dest | Src
+
+                                                            34
+整数计算指令
+
+
+
+
+         格式             具体操作
+
+         单操作数指令          Dest = Dest + 1
+         incq Dest
+                     DestDest
+                          = Dest  - -11
+                              = Dest
+         decq Dest
+                         Dest = - Dest
+         negq Dest
+
+         notq Dest       Dest = ~ Dest
+
+
+
+
+                                           35
+将leal指令用于计算
+
+
+                            arith:
+ long arith                  leaq    (%rdi,%rsi), %rax
+ (long x, long y, long z)    addq     %rdx, %rax
+ {                           leaq    (%rsi,%rsi,2), %rdx
+   long t1 = x+y;            salq    $4, %rdx
+   long t2 = z+t1;           leaq    4(%rdi,%rdx), %rcx
+   long t3 = x+4;            imulq    %rcx, %rax
+   long t4 = y * 48;         ret
+   long t5 = t3 + t4;
+   long rval = t2 * t5;     关键指令
+   return rval;
+ }                           leaq: 地址计算          imulq: 乘法 但只用了一次
+                             salq: 移位操作
+                                                              36
+将leal指令用于计算
+                                                   t3去哪了？
+
+
+ long arith                 arith:
+                             leaq (%rdi,%rsi), %rax          # t1
+ (long x, long y, long z)    addq %rdx, %rax
+                                                             # t2
+ {                           leaq (%rsi,%rsi,2), %rdx
+                             salq $4, %rdx                   # t4
+   long t1 = x+y;
+                             leaq 4(%rdi,%rdx), %rcx         # t4+x+4
+   long t2 = z+t1;           imulq %rcx, %rax
+                                                             # rval
+   long t3 = x+4;            ret
+   long t4 = y * 48;
+   long t5 = t3 + t4;       寄存器               用途
+                                              参数 x
+   long rval = t2 * t5;     %rdi
+                            %rsi              参数 y
+   return rval;             %rdx              参数 z
+ }                          %rax              t1, t2, rval
+                            %rdx              t4
+                            %rcx              t5
+
+                                                                        37
+填空题        3分
+
+
+
+long arith2(long x, long y, long z)       arith2:
+{                                              leaq   (%rdi,%rdx), %rax
+    long t1 = x+z+y;        %rdi   参数 x        addq [填空1] , %rax
+    long t3 = x+4;          %rsi   参数 y
+                                               leaq   (%rsi,%rsi, [填空2] ), %rdx
+                            %rdx   参数 z
+    long t4 = y * 48;                          salq   $4, %rdx
+    long t5 = t3 + t4;                         leaq   4(%rdi,%rdx), [填空3]
+    long rval = t1 * t5;                       imulq %rdx, %rax
+    return rval;                               ret
+}
+                                                                 作答
+将leal指令用于计算
+
+
+int logical(int x, int y)                  logical:
+{                                            movl %edi, %eax
+    int t1 = x^y;                            xorl     %esi, %eax
+    int t2 = t1 >> 17;                       sarl     $17, %eax
+    int mask = (1<<13) - 7;                  andl     $8185, %eax
+    int rval = t2 & mask;                    ret
+    return rval;
+                                    寄存器      用途
+}
+                                    %edi     参数 x
+                                    %esi     参数 y
+       213 = 8192, 213 – 7 = 8185   %eax     t1, t2, rval
+
+                                                                    39
+目前为止要掌握的“定位”问题
+
+                 （部分）指令/函数/数据的“定位”
+
+
+                   局部变量的定位*
+                  （条件/无条件）跳转指令的目的寻址
+                   静态函数入口地址
+                   函数返回地址
+                   函数的参数、返回值
+                                %eax / %rax
+
+
+                  *注意
+                 这并不意味着局部变量只能如此“定位”。学过
+                 运行栈之后还会有补充
+
+                                              40
+一些归纳
+
+
+X86-64指令的特点
+
+ 支持多种类型的指令操作数               算逻指令可以以内存数据为操作数
+ 立即数, 寄存器, 内存数据
+
+
+
+ 支持多种内存地址计算模式               变长指令
+ Rb + S*Ri + D              1 ~ 15字节长度
+ 也可用于整数计算(如leal / leaq指令)
+
+
+
+
+                                              41
+

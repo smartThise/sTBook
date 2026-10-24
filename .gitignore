@@ -14,6 +14,9 @@ package.json
 ~$*
 **/~$*
 
+# 本地检查日志、验证截图和导出中间文件；正式作业放入对应课程目录
+/outputs/
+
 # 独立 git 仓库（不在笔记库中发布）
 小学期AI4S/pi-release-exp/
 小学期AI4S/Unable-to-Forget-paper/

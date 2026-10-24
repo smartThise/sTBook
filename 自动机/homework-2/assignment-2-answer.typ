@@ -89,7 +89,7 @@
     [$A = \{p,q,r\}$（起始，接受）], [$A$], [$B$], [$A$],
     [$B = \{q,r\}$（接受）], [$A$], [$C$], [$A$],
     [$C = \{r\}$（接受）], [$D$], [$D$], [$D$],
-    [$D = emptyset$（死状态）], [$D$], [$D$], [$D$],
+    [$D = emptyset$], [$D$], [$D$], [$D$],
   )))
 
 接受状态是 $A, B, C$（即子集含 $r$ 者）。这个 DFA 与原 $epsilon$-NFA 语言相同，可以验证它正好接受第 1(a) 题所列的 $37$ 个串。
@@ -110,6 +110,9 @@
   edge(<B>, <A>, "-|>", bend: 35deg, label: $a, c$, label-side: right),
   edge(<D>, <D>, "-|>", loop-angle: -90deg, label: $a, b, c$, label-side: left),
 )]
+
+这里
+图实在是太难画了……
 
 // ============================================================
 = Problem 2
@@ -282,6 +285,4 @@ $ hat(delta)((p,q), w a) = union.big_((p', q') in hat(delta)((p,q), w)) delta((p
 $ = (union.big_(p' in hat(delta)_1(p,w)) delta_1(p', a)) times (union.big_(q' in hat(delta)_2(q,w)) delta_2(q', a)) = hat(delta)_1(p, w a) times hat(delta)_2(q, w a). $
 得证。
 
-*结论*：$w in L(M)$ 当且仅当 $hat(delta)((s_1, s_2), w)$ 含有某个 $(p, q) in F_1 times F_2$，即 $hat(delta)_1(s_1, w)$ 含 $p in F_1$ 且 $hat(delta)_2(s_2, w)$ 含 $q in F_2$，即 $w in L_1$ 且 $w in L_2$。故 $L(M) = L_1 inter L_2$，于是 $L_1 inter L_2$ 被有限自动机 $M$ 接受。$qed$
-
-（若 $M_1, M_2$ 是 DFA，上式中的集合都是单元素集，证明同样成立，且 $M$ 也是 DFA。）
+*结论*：$w in L(M)$ 当且仅当 $hat(delta)((s_1, s_2), w)$ 含有某个 $(p, q) in F_1 times F_2$，即 $hat(delta)_1(s_1, w)$ 含 $p in F_1$ 且 $hat(delta)_2(s_2, w)$ 含 $q in F_2$，即 $w in L_1$ 且 $w in L_2$。故 $L(M) = L_1 inter L_2$，于是 $L_1 inter L_2$ 被有限自动机 $M$ 接受。
