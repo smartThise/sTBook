@@ -21,7 +21,6 @@ courses:
   - { slug: AI4S 交叉实践课程, name: AI4S 交叉实践课程, group: 课程, desc: 论文、slides 与项目 }
   - { slug: STEAM技术方法体验, name: STEAM技术方法体验, group: 课程, desc: 课程设计素材 }
   - { slug: 紫荆院课(1)(2),   name: 紫荆院课(1)(2),   group: 课程, desc: 作业与报告 }
-  - { slug: 转系面试,         name: 转系面试,         group: 存档, desc: 面试材料与照片 }
 
   # ---- 复习资料 ----
   - { slug: 复习资料,         name: 复习资料,         group: 复习, desc: 物理/离散期末复习、题库 }

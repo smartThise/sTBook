@@ -17,7 +17,153 @@ package.json
 # 本地检查日志、验证截图和导出中间文件；正式作业放入对应课程目录
 /outputs/
 
+# 私密原件保留本地原位置，仅排除 Git 提交和公开发布
+/转系面试/
+/私密资料/
+/.private/
+**/*二维码*
+**/*微信群*
+**/*群聊*
+**/*账号和密码*
+**/*服务器账号*/
+**/*请假条*
+**/*已签名*
+**/我的提交/
+**/批改反馈/
+**/.~*
+.env
+.env.*
+!.env.example
+
 # 独立 git 仓库（不在笔记库中发布）
 /AI4S 交叉实践课程/pi-release-exp/
 /AI4S 交叉实践课程/Unable-to-Forget-paper/
 /AI4S 交叉实践课程/psyst-lab/
+
+# 已核实含个人身份信息的原件（仅本地保留）
+/AI4S 交叉实践课程/working_memory/PRE/.~pre_merged.pptx
+/AI4S 交叉实践课程/最终实验报告-*-*.pdf
+/写作与沟通/文章.docx
+/复变函数引论/公告/2026-09-28-复变函数引论（*-1）.md
+/复变函数引论/公告/附件/2026-09-28-复变函数引论（*-1）/公告配图.png
+/复变函数引论/网络学堂/2026-2027-1/资料/下载
+/大学物理(1)(英)/hw.pdf
+/大学物理B(2)/HW/HW1/我的提交/提交稿.pdf
+/大学物理B(2)/HW/HW2/我的提交/提交稿.pdf
+/大学物理B(2)/公告/2026-09-11-班级微信群.md
+/大学物理B(2)/公告/附件/2026-09-11-班级微信群/课程微信群配图.jpg
+/大学物理B(2)/网络学堂/2026-2027-1/资料/20a5be974f6b*df4c5740f085.jpg
+/大学物理B(2)/网络学堂/2026-2027-1/资料/第一次作业-提交.pdf
+/大学物理B(2)/网络学堂/2026-2027-1/资料/第二次作业-提交.pdf
+/实验室科研探究（1）/HW/概论课/我的提交/提交稿.jpg
+/实验室科研探究（1）/公告/2026-09-08-课程微信群.md
+/实验室科研探究（1）/公告/附件/2026-09-08-课程微信群/课程微信群配图.jpg
+/实验室科研探究（1）/网络学堂/2026-2027-1/资料/JPEG_*_194348_*.jpg
+/实验室科研探究（1）/网络学堂/2026-2027-1/资料/下载-218ac0deca60
+/形式语言与自动机/HW/HW1/solution-1.pdf
+/形式语言与自动机/HW/HW2/answer-key-2.pdf
+/形式语言与自动机/HW/HW2/assignment-2-answer.pdf
+/形式语言与自动机/HW/HW2/assignment-2.pdf
+/形式语言与自动机/HW/HW2/solution-2.pdf
+/形式语言与自动机/HW/HW3/draft.pdf
+/形式语言与自动机/homework-1/solution-1.pdf
+/形式语言与自动机/homework-2/answer-key-2.pdf
+/形式语言与自动机/homework-2/assignment-2-answer.pdf
+/形式语言与自动机/homework-2/assignment-2.pdf
+/形式语言与自动机/homework-2/solution-2.pdf
+/形式语言与自动机/homework-3/draft.pdf
+/形式语言与自动机/公告/2026-09-16-课程微信群.md
+/形式语言与自动机/公告/附件/2026-09-16-课程微信群/课程微信群配图.png
+/形式语言与自动机/网络学堂/2026-2027-1/资料/assignment-2-answer.pdf
+/形式语言与自动机/网络学堂/2026-2027-1/资料/downloadFiles
+/形式语言与自动机/网络学堂/2026-2027-1/资料/draft.pdf
+/形式语言与自动机/网络学堂/2026-2027-1/资料/solution-1.pdf
+/清洁生产导论/公告/2026-09-16-请大家加入课程微信群.md
+/清洁生产导论/公告/2026-10-04-Ecoinvent数据库账号和密码（用于LCA的排放因子检索）.md
+/清洁生产导论/公告/附件/2026-09-16-请大家加入课程微信群/课程微信群配图.jpg
+/清洁生产导论/公告/附件/2026-10-04-Ecoinvent数据库账号和密码（用于LCA的排放因子检索）/公告配图.png
+/清洁生产导论/网络学堂/2026-2027-1/资料/1536185a7a3360c348d97e158f286dea.jpg
+/清洁生产导论/网络学堂/2026-2027-1/资料/image.png
+/离散数学(2)/HW/*-*.pdf
+/离散数学(2)/HW/整体作业.pdf
+/离散数学(2)/HW/整体作业_sections.pdf
+/紫荆院课(1)(2)/LLMs in Academic Work — Survey Report.pdf
+/紫荆院课(1)(2)/LLMs in Academic Work — Survey Report.zip
+/计算机程序设计基础(C++)/rhythm_game/.~玩设备丶device.pptx
+/计算机程序设计基础(C++)/rhythm_game/submission.zip
+/计算机程序设计基础(C++)/rhythm_game/submission/.~er_Manual.docx
+/计算机程序设计基础(C++)/rhythm_game/submission/.~mmary_Report.docx
+/计算机程序设计基础(C++)/rhythm_game/submission/.~oject_Final_Report.docx
+/计算机程序设计基础(C++)/rhythm_game/submission/Project_Final_Report.docx
+/计算机程序设计基础(C++)/rhythm_game/submission/Source_Code.zip
+/计算机程序设计基础(C++)/rhythm_game/submission/Summary_Report.docx
+/计算机程序设计基础(C++)/rhythm_game/请假条_*_已签名.pdf
+/计算机系统概论/HW/HW1/sol.pdf
+/计算机系统概论/HW/HW1/批改反馈/批改后的提交稿.pdf
+/计算机系统概论/HW/HW2/hw2-sol.pdf
+/计算机系统概论/HW/hw2-sol.pdf
+/计算机系统概论/HW/sol.pdf
+/计算机系统概论/HW/实验准备-服务器账号/README.md
+/计算机系统概论/公告/2026-09-16-课程微信群.md
+/计算机系统概论/公告/附件/2026-09-16-课程微信群/课程微信群配图.jpg
+/计算机系统概论/网络学堂/2026-2027-1/资料/hw2-sol.pdf
+/计算机系统概论/网络学堂/2026-2027-1/资料/sol-3e412c1ed76f.pdf
+/计算机系统概论/网络学堂/2026-2027-1/资料/sol.pdf
+/计算机系统概论/网络学堂/2026-2027-1/资料/下载
+/转系面试/照片.jpg
+/转系面试/照片照片照片.jpg
+/转系面试/面试.pdf
+/转系面试/面试.typ
+/马克思主义基本原理/公告/2026-09-10-课程微信群二维码.md
+/马克思主义基本原理/公告/附件/2026-09-10-课程微信群二维码/课程微信群配图.jpg
+/马克思主义基本原理/网络学堂/2026-2027-1/资料/下载
+/高等线性代数选讲/homework.pdf
+/高等线性代数选讲/homework_1.pdf
+
+# 仅含课程访问二维码的海报
+/实验室科研探究（1）/slides/第097单元-医学影像探秘/医学影像探秘.png
+
+# 本地个人记录
+**/个人记录.md
+**/个人作业记录.md
+**/本地公告索引.md
+
+# 已核实的本地隐私文件
+/AI4S 交叉实践课程/working_memory/PRE/pre_merged.pptx
+/AI4S 交叉实践课程/实验报告_LLM前涉干扰与释放.typ
+/写作与沟通/文章.md
+/大学物理(1)(英)/hw.typ
+/形式语言与自动机/HW/HW1/solution-1.typ
+/形式语言与自动机/HW/HW2/answer-key-2.typ
+/形式语言与自动机/HW/HW2/assignment-2-answer.typ
+/形式语言与自动机/HW/HW2/assignment-2.typ
+/形式语言与自动机/HW/HW2/assignment.typ
+/形式语言与自动机/HW/HW2/solution-2.typ
+/形式语言与自动机/HW/HW3/draft.typ
+/微积分A(2)(英)/VA2_homework.typ
+/离散数学(2)/HW/整体作业.typ
+/紫荆院课(1)(2)/HW/report.html
+/计算机程序设计基础(C++)/HW/4.21/1/作业 - 题目 - TUOJ.html
+/计算机程序设计基础(C++)/HW/4.21/2/作业 - 题目 - TUOJ.html
+/计算机程序设计基础(C++)/HW/4.21/3/作业 - 题目 - TUOJ.html
+/计算机程序设计基础(C++)/HW/4.21/4/作业 - 题目 - TUOJ.html
+/计算机程序设计基础(C++)/rhythm_game/README.md
+/计算机程序设计基础(C++)/rhythm_game/generate_final_report.py
+/计算机程序设计基础(C++)/rhythm_game/generate_summary_report.py
+/计算机程序设计基础(C++)/rhythm_game/submission/Source_Code/README.md
+/计算机程序设计基础(C++)/rhythm_game/submission/User_Manual.docx
+/计算机程序设计基础(C++)/rhythm_game/technical_qa.pdf
+/计算机程序设计基础(C++)/rhythm_game/technical_qa.typ
+/计算机系统概论/HW/HW1/sol.typ
+/计算机系统概论/HW/HW2/hw2答案草稿.typ
+/面向对象程序设计基础/final/2.html
+/面向对象程序设计基础/final/3.html
+/面向对象程序设计基础/final/4.html
+/面向对象程序设计基础/final/5.html
+/面向对象程序设计基础/final/6.html
+/面向对象程序设计基础/final/7.html
+/面向对象程序设计基础/final/8.html
+/面向对象程序设计基础/final/9.html
+/面向对象程序设计基础/final/作业 - 题目 - TUOJ.html
+/高等线性代数选讲/HW/homework.typ
+/高等线性代数选讲/homework_1.typ
