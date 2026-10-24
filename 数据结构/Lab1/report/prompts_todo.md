@@ -7,7 +7,7 @@
 
 ## ① 3B / 3C / 3D / 3E（建议一次对话问完四问，只需一条链接）
 
-**需上传文件**：`DSA/Lab1/code/rand_input.cpp`、`DSA/Lab1/code/battle.cpp`
+**需上传文件**：`数据结构/Lab1/code/rand_input.cpp`、`数据结构/Lab1/code/battle.cpp`
 
 ```text
 我在做数据结构课程的一道调试练习，附件是两个 C++ 文件（rand_input.cpp、battle.cpp）。
@@ -27,7 +27,7 @@
 
 ## ② 4B（可选，题目注了"可向 LLM 询问"）
 
-**需上传文件**：`DSA/Lab1/code/solution_1_fixed.cpp`、`DSA/Lab1/code/solution_2_fixed.cpp`、`DSA/Lab1/code/t1.cpp`
+**需上传文件**：`数据结构/Lab1/code/solution_1_fixed.cpp`、`数据结构/Lab1/code/solution_2_fixed.cpp`、`数据结构/Lab1/code/t1.cpp`
 
 ```text
 附件是同一道题的三个 C++ 实现：solution_1 是暴力四重循环，solution_2 是行前缀和优化，
@@ -44,7 +44,7 @@ solution_3（即 t1.cpp）是二维前缀和。题目的输入规模为 n×m 矩
 
 ## ③ 5A（必做）
 
-**需上传文件**：`DSA/Lab1/code/t1.cpp`（即 solution_3）
+**需上传文件**：`数据结构/Lab1/code/t1.cpp`（即 solution_3）
 
 ```text
 这是我用二维前缀和实现的程序（n×m 矩阵、q 次询问求子矩阵和）。
@@ -64,7 +64,7 @@ solution_3（即 t1.cpp）是二维前缀和。题目的输入规模为 n×m 矩
 
 ## ④ 5B（最后做！必须等报告定稿）
 
-**需上传文件**：`DSA/Lab1/report/lab1_report.pdf`（定稿版报告）
+**需上传文件**：`数据结构/Lab1/report/lab1_report.pdf`（定稿版报告）
 
 ```text
 你是一名经验丰富的数据结构课程助教。下面是我数据结构课程 Lab1（Embrace DSA）的实验报告全文。

@@ -1,6 +1,6 @@
 # Lab1 例题（二维子矩阵求和）调试报告
 
-> 任务：对 `DSA/Lab1/code/solution_1.cpp`、`solution_2.cpp` 做**静态检查 → 黑盒测试 → 输出调试 → 调试器 → 对拍 → 归纳 → 修复 → 验证**的全流程留痕。
+> 任务：对 `数据结构/Lab1/code/solution_1.cpp`、`solution_2.cpp` 做**静态检查 → 黑盒测试 → 输出调试 → 调试器 → 对拍 → 归纳 → 修复 → 验证**的全流程留痕。
 > 原始附件（题面、两份 solution、battle/rand/check）**全程未改动**，md5 见 §9。
 
 ---
@@ -14,7 +14,7 @@
 | 调试器 | lldb（本机无 gdb） |
 | shell | zsh / bash（Bash 兼容脚本）；本机无 `timeout`，限时统一用 `cmd & PID=$!; …; kill` |
 | 工作目录 | `/Volumes/PortableSSD/Documents/mynotebook` |
-| 调试产物目录 | `DSA/Lab1/code/debug/`（原附件目录只读使用） |
+| 调试产物目录 | `数据结构/Lab1/code/debug/`（原附件目录只读使用） |
 
 测试点规模（实测首行）：
 
@@ -441,8 +441,8 @@ $ ./battle                              # 限时 60s
 
 新增两个文件（**未改动** `solution_1.cpp` / `solution_2.cpp` / 题面 / battle 等原始附件）：
 
-- `DSA/Lab1/code/solution_1_fixed.cpp`：`FIX-1` 数组 `[2001][2001]`；`FIX-2` `sum` 移入询问循环；`FIX-3` `long long` + `%lld`。
-- `DSA/Lab1/code/solution_2_fixed.cpp`：`FIX-1` 数组 `[2001][2001]`；`FIX-2` 窗口下标 `[y+b-1] − [y-1]`；`FIX-3` `sum` 移入循环；`FIX-4` `long long` + `%lld`。
+- `数据结构/Lab1/code/solution_1_fixed.cpp`：`FIX-1` 数组 `[2001][2001]`；`FIX-2` `sum` 移入询问循环；`FIX-3` `long long` + `%lld`。
+- `数据结构/Lab1/code/solution_2_fixed.cpp`：`FIX-1` 数组 `[2001][2001]`；`FIX-2` 窗口下标 `[y+b-1] − [y-1]`；`FIX-3` `sum` 移入循环；`FIX-4` `long long` + `%lld`。
 
 按要求**只修正确性/运行时错误，未做任何性能优化**：solution_1 保持 O(n·m + q·a·b) 朴素双重循环，solution_2 保持 O(n·m + q·a) 行内前缀和。
 
@@ -532,7 +532,7 @@ $ ./s2_fixed < big/ovf1999.in     # 399600100000   ✅（原版 -199900000）
 ## 9. 原始附件完整性
 
 ```
-$ md5 DSA/Lab1/code/{solution_1.cpp,solution_2.cpp,battle.cpp,check_input.cpp,rand_input.cpp}
+$ md5 数据结构/Lab1/code/{solution_1.cpp,solution_2.cpp,battle.cpp,check_input.cpp,rand_input.cpp}
 MD5 (solution_1.cpp) = c1bb94b194d8994d3726c6fd4a87c23b
 MD5 (solution_2.cpp) = 54d6f126291a8c3cff76762cdc30e8f3
 MD5 (battle.cpp)     = 04c76c7258424f24282a964345b39fb1
@@ -540,8 +540,8 @@ MD5 (check_input.cpp)= d44512433db37cf344d8f4e43e5a06e6
 MD5 (rand_input.cpp) = 661cec66fcc117b92f9e0d885898b885
 ```
 题面（`1.in/1.ans/2.in/2.ans/3.in/3.ans`、`Tsinghua Online Judge.html`）与上述源码均**只读使用，未做任何改动**；
-新增文件全部位于 `DSA/Lab1/code/solution_1_fixed.cpp`、`DSA/Lab1/code/solution_2_fixed.cpp`、
-`DSA/Lab1/code/debug/`（调试副本、测试点、日志）、`DSA/Lab1/report/task3_debugging.md`。
+新增文件全部位于 `数据结构/Lab1/code/solution_1_fixed.cpp`、`数据结构/Lab1/code/solution_2_fixed.cpp`、
+`数据结构/Lab1/code/debug/`（调试副本、测试点、日志）、`数据结构/Lab1/report/task3_debugging.md`。
 
 ---
 

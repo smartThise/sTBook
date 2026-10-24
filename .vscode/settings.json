@@ -2,5 +2,5 @@
     "Codegeex.RepoIndex": true,
     "Codegeex.CompletionDelay": 0.2,
     "reasonix.model": "deepseek-flash/deepseek-v4-flash",
-    "cmake.sourceDirectory": "/Volumes/PortableSSD/Documents/mynotebook/OOP/LibraryMS"
+    "cmake.sourceDirectory": "${workspaceFolder}/面向对象程序设计/LibraryMS"
 }
