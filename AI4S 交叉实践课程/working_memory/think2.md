@@ -6,7 +6,7 @@
 
 ## 一、本轮做了什么
 
-1. 在 [小学期AI4S/pi-release-exp/](../pi-release-exp/) 搭起完整实验框架(独立 git 仓库 → github.com/smartThise/pi-release-exp,私有):
+1. 在 [AI4S 交叉实践课程/pi-release-exp/](../pi-release-exp/) 搭起完整实验框架(独立 git 仓库 → github.com/smartThise/pi-release-exp,私有):
    - 9 组干预(G0-G7 + S3/S5)、PI 流生成器、OpenAI 兼容 client、runner、metrics(RE/CP/Robustness)、浅色中文 dashboard
 2. 用论文原版词表替换了我们手写的 8 类小词表(论文仓库 `zhuangziGiantfish/Unable-to-Forget` 的 `dict_category_double-word_46-400_v1-1.json`,46 类 × 400 词)
 3. **修了一个致命的方法论 bug**(详见第三节)

@@ -8,19 +8,19 @@ subtitle: 课程笔记 / 代码 / 资料库
 courses:
   # ---- 在修课程 ----
   - { slug: 数据结构,         name: 数据结构,         group: 课程, desc: Lab、编程作业与指引 }
-  - { slug: 面向对象程序设计, name: 面向对象程序设计, group: 课程, desc: HW、final 项目、雷霆笔记与课件 }
-  - { slug: 高等线性代数,     name: 高等线性代数,     group: 课程, desc: 作业与复习 }
-  - { slug: 离散数学（二）,   name: 离散数学（二）,   group: 课程, desc: 笔记、OJ、slides 与复习 }
-  - { slug: 自动机,           name: 自动机,           group: 课程, desc: 作业 }
+  - { slug: 面向对象程序设计基础, name: 面向对象程序设计基础, group: 课程, desc: HW、final 项目、雷霆笔记与课件 }
+  - { slug: 高等线性代数选讲, name: 高等线性代数选讲, group: 课程, desc: 作业与复习 }
+  - { slug: 离散数学(2),      name: 离散数学(2),      group: 课程, desc: 笔记、OJ、slides 与复习 }
+  - { slug: 形式语言与自动机, name: 形式语言与自动机, group: 课程, desc: 作业 }
   - { slug: 计算机系统概论,   name: 计算机系统概论,   group: 课程, desc: 课程笔记、课件与作业 }
-  - { slug: 大学物理,         name: 大学物理,         group: 课程, desc: 作业、考试与引擎模板 }
-  - { slug: 微积分A（二）,    name: 微积分A（二）,    group: 课程, desc: 作业与笔记 }
-  - { slug: C++程序设计,      name: C++程序设计,      group: 课程, desc: OJ、HW 与 cheatsheet }
+  - { slug: 大学物理(1)(英),  name: 大学物理(1)(英),  group: 课程, desc: 作业、考试与引擎模板 }
+  - { slug: 微积分A(2)(英),   name: 微积分A(2)(英),   group: 课程, desc: 作业与笔记 }
+  - { slug: 计算机程序设计基础(C++), name: 计算机程序设计基础(C++), group: 课程, desc: OJ、HW 与 cheatsheet }
   - { slug: 写作与沟通,       name: 写作与沟通,       group: 课程, desc: 文章与作业 }
   - { slug: 清洁生产导论,     name: 清洁生产导论,     group: 课程, desc: 讲义与作业 }
-  - { slug: 小学期AI4S,       name: 小学期AI4S,       group: 课程, desc: 论文、slides 与项目 }
-  - { slug: STEAM设计技术,    name: STEAM设计技术,    group: 课程, desc: 课程设计素材 }
-  - { slug: 紫荆院课,         name: 紫荆院课,         group: 课程, desc: 作业与报告 }
+  - { slug: AI4S 交叉实践课程, name: AI4S 交叉实践课程, group: 课程, desc: 论文、slides 与项目 }
+  - { slug: STEAM技术方法体验, name: STEAM技术方法体验, group: 课程, desc: 课程设计素材 }
+  - { slug: 紫荆院课(1)(2),   name: 紫荆院课(1)(2),   group: 课程, desc: 作业与报告 }
   - { slug: 转系面试,         name: 转系面试,         group: 存档, desc: 面试材料与照片 }
 
   # ---- 复习资料 ----

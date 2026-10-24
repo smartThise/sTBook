@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 """合并 PPT: 同学A SD(原) + 我的 PI Release(加厚+图) + 同学B Slot-PI(加厚+图)."""
+from pathlib import Path
 from pptx import Presentation
 from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN
 
-SRC = "/Users/st/Documents/mynotebook/小学期AI4S/working_memory/PRE/pre.pptx"
-OUT = "/Users/st/Documents/mynotebook/小学期AI4S/working_memory/PRE/pre_merged.pptx"
-DIR = "/Users/st/Documents/mynotebook/小学期AI4S/working_memory/PRE/"
+PRE_DIR = Path(__file__).resolve().parent
+SRC = str(PRE_DIR / "pre.pptx")
+OUT = str(PRE_DIR / "pre_merged.pptx")
+DIR = str(PRE_DIR) + "/"
 
 RED = RGBColor(0xC0, 0x00, 0x00); DARK = RGBColor(0x33, 0x33, 0x33)
 GREEN = RGBColor(0x1B, 0x7A, 0x3A); LOWC = RGBColor(0xC0, 0x39, 0x2B)

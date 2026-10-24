@@ -18,6 +18,6 @@ package.json
 /outputs/
 
 # 独立 git 仓库（不在笔记库中发布）
-小学期AI4S/pi-release-exp/
-小学期AI4S/Unable-to-Forget-paper/
-小学期AI4S/psyst-lab/
+/AI4S 交叉实践课程/pi-release-exp/
+/AI4S 交叉实践课程/Unable-to-Forget-paper/
+/AI4S 交叉实践课程/psyst-lab/
