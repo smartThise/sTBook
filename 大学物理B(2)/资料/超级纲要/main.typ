@@ -26,4 +26,5 @@
 #include "22-费米气体能带与半导体.typ"
 #include "23-综合例题逐步算.typ"
 #include "24-公式使用条件速查.typ"
+#include "25-教材勘误与读图核对.typ"
 #include "95-资料覆盖与图源.typ"
