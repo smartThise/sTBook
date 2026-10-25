@@ -2040,5 +2040,146 @@ DEMOS.update({
     "cs09-fork": demo_cs_fork,
 })
 
+
+
+# ---------- CS批3 + 物理批2 ----------
+
+def demo_cc():
+    """cmp与条件码：ZF/SF/OF。"""
+    frames = []
+    W, H = 740, 210
+
+    def scene(zf, sf, of, note):
+        sc = Scene(W, H)
+        sc.label(40, 30, "cmp %rax, %rbx：做减法rbx−rax，只写条件码不改寄存器", size=15, fill=SUB)
+        for i, (nm, v) in enumerate([("ZF", zf), ("SF", sf), ("OF", of)]):
+            sc.add("rect", x=40 + i * 130, y=80, width=118, height=50, rx=8,
+                   fill=(WRITE if v else CELL), stroke=CELL_STROKE, stroke_width=1.5)
+            sc.label(40 + i * 130 + 59, 100, nm, size=14, fill=FAINT, anchor="middle")
+            sc.label(40 + i * 130 + 59, 120, str(v), size=18, mono=True, anchor="middle")
+        zf_name = {0: "不相等(jne)", 1: "相等(je)"}[zf]
+        sc.label(40, 182, note + f"　跳转判断：ZF=1 → je（相等）。", size=15)
+        return sc
+
+    frames.append(frame("cmp后ZF=1：相等", "rbx == rax：减法结果为0，ZF（零标志）置1。", "je/jne只看ZF：相等走je分支。", "",
+                        scene(1, 0, 0, "结果为0。")))
+    frames.append(frame("cmp后ZF=0：不等", "rbx != rax：结果非0，ZF=0。", "此时jne成立。", "",
+                        scene(0, 1, 0, "结果非0（SF=1示意差值为负）。")))
+    frames.append(frame("OF：溢出才置1", "OF只在带符号溢出时置1：如127+1=−128。", "无符号比较看CF，带符号比较看SF⊕OF——两条jump系列因此分开。",
+                        "", scene(0, 0, 1, "示意溢出情形。")))
+    return write_demo("cs05-cc", "条件码：cmp之后ZF/SF/OF", frames, outdir=CS_IMG)
+
+
+def demo_malloc():
+    """malloc(32)在空闲块中切割，free后合并。"""
+    frames = []
+    W, H = 760, 210
+    X, Y, CW = 40, 96, 108
+
+    def scene(blocks, note):
+        sc = Scene(W, H)
+        sc.label(40, 30, "隐式空闲链表：头部记录块大小与分配位；分配即切割、释放即合并", size=15, fill=SUB)
+        x = X
+        for (sz, allocated) in blocks:
+            w = CW * sz // 16
+            sc.add("rect", x=x, y=Y, width=w - 4, height=54, rx=6,
+                   fill=(WRITE if allocated else PALE), stroke=(WRITE_STROKE if allocated else FAINT), stroke_width=1.5)
+            sc.label(x + (w - 4) / 2, Y + 24, str(sz * 8), size=15, mono=True, anchor="middle")
+            sc.label(x + (w - 4) / 2, Y + 42, "已分配" if allocated else "空闲", size=11, anchor="middle",
+                     fill=(WRITE_STROKE if allocated else FAINT))
+            x += w
+        sc.label(40, 188, note, size=15)
+        return sc
+
+    blocks = [(8, True), (4, False), (6, True), (8, False), (6, True)]
+    frames.append(frame("堆的当前布局", "已有三块分配、两块空闲（各4、8个double字）。", "malloc(32字节)需要4字块：首个放得下的是末尾8字空闲块。", "",
+                        scene(blocks, "查找第一个足够大的空闲块。")))
+    blocks = [(8, True), (4, False), (6, True), (4, True), (4, False), (6, True)]
+    frames.append(frame("切割：前4字分配", "8字空闲块切出4字给malloc，剩下4字仍是空闲块。", "切割让空闲块越来越碎——碎片化由此而来。",
+                        "", scene(blocks, "malloc(32)完成。")))
+    blocks = [(8, True), (14, False), (6, True)]
+    frames.append(frame("free后合并", "释放中间4字块：与两侧空闲块合并成14字大块。", "合并对抗碎片：free不只标记，还要看邻居是否空闲。",
+                        "", scene([(8, True), (14, False), (6, True)], "free(中块)并合并。")))
+    return write_demo("cs12-malloc", "malloc/free：切割与合并", frames, outdir=CS_IMG)
+
+
+def demo_ph_capacitor():
+    """电容器充电：Q上升、V=Q/C。"""
+    frames = []
+    W, H = 720, 230
+    X, Y = 60, 100
+
+    def scene(q_frac, note, stage):
+        sc = Scene(W, H)
+        sc.label(40, 30, f"RC充电：Q(t)=CE(1−e^(−t/RC))，阶段：{stage}", size=15, fill=SUB)
+        # battery
+        sc.add("line", x1=X, y1=Y + 20, x2=X, y2=Y + 60, stroke=INK, stroke_width=2)
+        sc.add("line", x1=X - 14, y1=Y + 60, x2=X + 14, y2=Y + 60, stroke=INK, stroke_width=3)
+        sc.add("line", x1=X - 7, y1=Y + 72, x2=X + 7, y2=Y + 72, stroke=INK, stroke_width=3)
+        sc.add("line", x1=X, y1=Y + 72, x2=X, y2=Y + 110, stroke=INK, stroke_width=2)
+        # wires
+        sc.add("line", x1=X, y1=Y + 20, x2=X + 220, y2=Y + 20, stroke=INK, stroke_width=2)
+        sc.add("line", x1=X, y1=Y + 110, x2=X + 220, y2=Y + 110, stroke=INK, stroke_width=2)
+        # capacitor plates: charge markers
+        plate = X + 220
+        sc.add("line", x1=plate, y1=Y + 20, x2=plate, y2=Y + 52, stroke=INK, stroke_width=2)
+        sc.add("line", x1=plate, y1=Y + 78, x2=plate, y2=Y + 110, stroke=INK, stroke_width=2)
+        sc.add("line", x1=plate - 12, y1=Y + 52, x2=plate + 12, y2=Y + 52, stroke=INK, stroke_width=3)
+        sc.add("line", x1=plate - 12, y1=Y + 78, x2=plate + 12, y2=Y + 78, stroke=INK, stroke_width=3)
+        for i in range(q_frac):
+            sc.label(plate - 5, Y + 48 - 0, "+", size=14, mono=True, fill=WRITE_STROKE) if False else None
+        for i in range(min(q_frac, 6)):
+            sc.add("circle", cx=plate - 6, cy=Y + 40 - i * 8, r=3, fill=WRITE_STROKE)
+        for i in range(min(q_frac, 6)):
+            sc.add("circle", cx=plate + 6, cy=Y + 92 - i * 8, r=3, fill=BAD_STROKE)
+        sc.label(plate + 40, Y + 64, f"Q = {q_frac}/6 · CE", size=15, mono=True)
+        sc.label(40, 200, note, size=15)
+        return sc
+
+    frames.append(frame("接通瞬间 t=0", "Q=0：电容器还没囤电荷，相当于短路，电流最大。", "充电快慢由时间常数τ=RC决定。",
+                        "", scene(0, "初始：两板无电荷。", "t=0")))
+    frames.append(frame("充电中 t=τ", "Q达0.63CE：板上电荷渐多，排斥同号电荷继续涌入，电流按指数衰减。", "每过一个τ，Q上涨剩余缺口的63%。",
+                        "", scene(4, "充电中，电流减小。", "t=τ")))
+    frames.append(frame("充满 t→∞", "Q=CE：两板电压等于电源电动势，电流归零。", "电容器隔直流：充满后稳态无电流。",
+                        "", scene(6, "充满：Q=CE。", "t→∞")))
+    return write_demo("ph08-rc", "RC充电：Q怎样逼近CE", frames, outdir=PH_IMG)
+
+
+def demo_ph_diffraction():
+    """单缝衍射：a·sinθ=mλ暗纹。"""
+    frames = []
+    W, H = 740, 250
+
+    def scene(theta_px, m, note):
+        sc = Scene(W, H)
+        sc.label(40, 30, f"单缝衍射：半波带法，暗纹条件 a·sinθ = mλ（图中m={m}）", size=15, fill=SUB)
+        sc.add("rect", x=90, y=100, width=14, height=50, rx=2, fill=INK)
+        sc.add("line", x1=106, y1=125, x2=430, y2=125 + theta_px, stroke=WRITE_STROKE, stroke_width=1.8)
+        sc.add("line", x1=430, y1=125 + theta_px, x2=470, y2=125 + theta_px, stroke=HOT_STROKE, stroke_width=2.5)
+        for i in range(1, m + 1):
+            yy = 125 + theta_px * i // (m + 1) if m else 125
+            sc.add("line", x1=106, y1=125, x2=300, y2=125, stroke=LINE, stroke_width=1) if False else None
+        sc.add("line", x1=470, y1=60, x2=470, y2=200, stroke=CELL_STROKE, stroke_width=3)
+        sc.label(476, 130 + theta_px, f"m={m}暗纹" if m else "中央明纹", size=14, mono=True, fill=(BAD_STROKE if m else HOT_STROKE))
+        sc.label(96, 168, "缝宽a", size=12, fill=SUB)
+        sc.label(40, 226, note, size=15)
+        return sc
+
+    frames.append(frame("中央明纹 m=0", "θ=0方向：缝内所有半波带的光程差为零，全部同相叠加，中央最亮最宽。", "宽度约2λ/a的亮带。",
+                        "", scene(0, 0, "中央：全同相。")))
+    frames.append(frame("一级暗纹 m=1", "偏转使缝顶与缝底光程差恰为λ：缝分成2个半波带，逐带相消——该方向全暗。", "a·sinθ=λ定出第一暗纹偏角。",
+                        "", scene(46, 1, "半波带两两相消。")))
+    frames.append(frame("二级暗纹 m=2", "光程差2λ：3个半波带?不——分成4个半波带，两两相消，再次全暗。", "m越大偏角越大；缝越窄（a小）衍射越显著。",
+                        "", scene(88, 2, "暗纹间距Δ=sinθ₂−sinθ₁=λ/a。")))
+    return write_demo("ph16-diffraction", "单缝衍射：半波带定暗纹", frames, outdir=PH_IMG)
+
+
+DEMOS.update({
+    "cs05-cc": demo_cc,
+    "cs12-malloc": demo_malloc,
+    "ph08-rc": demo_ph_capacitor,
+    "ph16-diffraction": demo_ph_diffraction,
+})
+
 if __name__ == "__main__":
     main(sys.argv[1:])
