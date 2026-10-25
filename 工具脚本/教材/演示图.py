@@ -5,6 +5,7 @@
 输出：数据结构/资料/超级纲要/图片/演示-<id>-NN.svg；首个SVG内嵌 notes-demos.js 的trace JSON。
 """
 import json
+import math
 import re
 import sys
 from pathlib import Path
@@ -2179,6 +2180,143 @@ DEMOS.update({
     "cs12-malloc": demo_malloc,
     "ph08-rc": demo_ph_capacitor,
     "ph16-diffraction": demo_ph_diffraction,
+})
+
+
+
+# ---------- CS批4 + 物理批3 ----------
+
+def demo_cs_signal():
+    """信号到达打断控制流；不可重入的信号安全。"""
+    frames = []
+    W, H = 740, 220
+
+    def scene(sig_at, note):
+        sc = Scene(W, H)
+        sc.label(40, 30, "信号：异步事件打断控制流，执行handler后回到断点", size=15, fill=SUB)
+        sc.add("line", x1=60, y1=120, x2=660, y2=120, stroke=INK, stroke_width=2.5)
+        sc.label(48, 142, "main()顺序执行", size=13, fill=SUB)
+        if sig_at is not None:
+            sc.add("circle", cx=sig_at, cy=120, r=7, fill=HOT_STROKE)
+            sc.label(sig_at - 14, 96, "SIGINT到达", size=13, fill=HOT_STROKE)
+            sc.add("line", x1=sig_at, y1=127, x2=sig_at, y2=160, stroke=HOT_STROKE, stroke_width=1.8)
+            sc.add("line", x1=sig_at, y1=160, x2=sig_at + 90, y2=160, stroke=HOT_STROKE, stroke_width=1.8)
+            sc.label(sig_at + 18, 180, "handler()执行", size=13, fill=HOT_STROKE)
+            sc.add("line", x1=sig_at + 90, y1=160, x2=sig_at + 90, y2=127, stroke=HOT_STROKE, stroke_width=1.8)
+        sc.label(40, 206, note, size=15)
+        return sc
+
+    frames.append(frame("正常顺序流", "程序按指令顺序推进。", "信号是异步的：任意两条指令之间都可能到达。", "",
+                        scene(None, "尚无信号。")))
+    frames.append(frame("SIGINT到达：跳handler", "内核在断点保存现场，转去执行信号处理函数。", "处理函数与主流程并发访问同一数据——时序竞态由此而来。",
+                        "", scene(400, "处理函数执行中。")))
+    frames.append(frame("返回断点", "handler结束，回到断点继续，如同无事发生。", "不可重入的函数（如malloc）不能在handler里安全调用。",
+                        "", scene(400, "回到断点。")))
+    return write_demo("cs10-signal", "信号：断点、handler与返回", frames, outdir=CS_IMG)
+
+
+def demo_cs_io_redirect():
+    """shell重定向 ls > out.txt：stdout指向文件。"""
+    frames = []
+    W, H = 740, 220
+
+    def scene(mode, note):
+        sc = Scene(W, H)
+        sc.label(40, 30, "重定向：同一程序，stdout指向终端还是文件由fd表决定", size=15, fill=SUB)
+        sc.add("rect", x=60, y=90, width=150, height=56, rx=10, fill=CELL, stroke=CELL_STROKE, stroke_width=1.5)
+        sc.label(135, 118, "ls 进程", size=16, mono=True, anchor="middle")
+        sc.add("rect", x=60, y=152, width=150, height=40, rx=8, fill=PALE, stroke=LINE, stroke_width=1.2)
+        sc.label(135, 177, "fd 1 = stdout", size=13, mono=True, anchor="middle")
+        if mode == "tty":
+            sc.add("line", x1=210, y1=172, x2=430, y2=110, stroke=WRITE_STROKE, stroke_width=2)
+            sc.add("rect", x=432, y=84, width=200, height=52, rx=10, fill=CELL, stroke=CELL_STROKE, stroke_width=1.5)
+            sc.label(532, 116, "终端", size=16, mono=True, anchor="middle")
+        else:
+            sc.add("line", x1=210, y1=172, x2=430, y2=110, stroke=WRITE_STROKE, stroke_width=2)
+            sc.add("rect", x=432, y=84, width=200, height=52, rx=10, fill=WRITE, stroke=WRITE_STROKE, stroke_width=1.5)
+            sc.label(532, 108, "out.txt", size=15, mono=True, anchor="middle")
+            sc.label(532, 126, "（文件）", size=12, fill=FAINT, anchor="middle")
+        sc.label(40, 208, note, size=15)
+        return sc
+
+    frames.append(frame("默认：stdout接终端", "进程启动时fd 0/1/2默认指向终端。", "printf写fd 1，屏幕上看得见。",
+                        "", scene("tty", "输出上屏。")))
+    frames.append(frame("shell执行 ls > out.txt", "fork后、exec前，子进程把fd 1重新open到out.txt。", "ls本身不关心fd 1指向什么——重定向对程序透明。",
+                        "", scene("file", "输出进文件。")))
+    return write_demo("cs13-redirect", "重定向：fd 1指终端还是文件", frames, outdir=CS_IMG)
+
+
+def demo_ph_potential():
+    """等势面与电场线处处垂直；沿等势面移动不做功。"""
+    frames = []
+    W, H = 720, 240
+    CX, CY = 220, 130
+
+    def scene(r, note):
+        sc = Scene(W, H)
+        sc.label(40, 30, "点电荷的等势面是同心球面；电场线沿半径，与等势面处处垂直", size=15, fill=SUB)
+        for rr in (46, 84, 122):
+            sc.add("circle", cx=CX, cy=CY, r=rr, fill="none", stroke=WRITE_STROKE, stroke_width=1.6)
+            sc.label(CX + rr * 0.72, CY - rr * 0.72, f"{rr}V", size=12, mono=True, fill=WRITE_STROKE) if rr == 46 else None
+        for ang in (0, 60, 120, 180, 240, 300):
+            rad = ang * 3.14159 / 180
+            sc.add("line", x1=CX + 12 * math.cos(rad), y1=CY + 12 * math.sin(rad),
+                   x2=CX + 130 * math.cos(rad), y2=CY + 130 * math.sin(rad),
+                   stroke=HOT_STROKE, stroke_width=1.4)
+        sc.add("circle", cx=CX, cy=CY, r=4, fill=HOT_STROKE)
+        # charge moving along equipotential
+        sc.add("circle", cx=CX + 84, cy=CY - 84, r=5, fill=BAD_STROKE)
+        sc.add("circle", cx=CX + 84 + 24, cy=CY - 84 - 10, r=5, fill=BAD_STROKE)
+        sc.label(CX + 100, CY - 100, "沿等势面移动：W=0", size=13, fill=BAD_STROKE)
+        sc.label(40, 216, note, size=15)
+        return sc
+
+    frames.append(frame("场线与等势面垂直", "电场线沿半径向外；等势面是同心球面，两者处处正交。", "若不垂直，场强就有沿等势面的分量，电荷会自发移动——矛盾。",
+                        "", scene(84, "三圈等势线：内高外低。")))
+    frames.append(frame("沿等势面移动不做功", "W = qU = q(V₁−V₂) = 0：电势差为零。", "做功只看起止电势差，与路径无关——静电场是保守场。",
+                        "", scene(84, "试探电荷沿等势面滑动：W=0。")))
+    return write_demo("ph04-potential", "等势面：电场线处处垂直于它", frames, outdir=PH_IMG)
+
+
+def demo_ph_amperian():
+    """安培环路定理：载流直导线 B∝1/r，环路积分=μ0 I。"""
+    frames = []
+    W, H = 720, 240
+    CX, CY = 200, 130
+
+    def scene(r, note):
+        sc = Scene(W, H)
+        sc.label(40, 30, "安培环路定理：∮B·dl = μ₀·I(环路包围的电流)", size=15, fill=SUB)
+        sc.add("circle", cx=CX, cy=CY, r=5, fill=HOT_STROKE)
+        sc.label(CX + 12, CY - 8, "I（流出纸面）", size=13, fill=SUB)
+        for rr in (50, 100):
+            sc.add("circle", cx=CX, cy=CY, r=rr, fill="none", stroke=(WRITE_STROKE if rr == r else CELL_STROKE), stroke_width=(2 if rr == r else 1.4))
+            sc.label(CX + rr * 0.7, CY - rr * 0.7, f"B = μ₀I/2πr" if rr == r else "", size=13, mono=True, fill=WRITE_STROKE)
+        # direction arrows on chosen loop
+        for ang in (30, 150, 270):
+            rad = ang * 3.14159 / 180
+            x = CX + r * math.cos(rad); y = CY + r * math.sin(rad)
+            sc.add("circle", cx=x, cy=y, r=3, fill=WRITE_STROKE)
+        sc.label(420, 110, "对称性：B沿圆周切向", size=15, mono=True)
+        sc.label(420, 138, "大小处处相等 ⇒ ∮B·dl = B·2πr", size=15, mono=True)
+        sc.label(420, 166, "⇒ B = μ₀I/2πr", size=15, mono=True, fill=INK)
+        sc.label(40, 216, note, size=15)
+        return sc
+
+    frames.append(frame("对称性先行", "无限长直导线的磁场绕电流成同心圆，方向由右手定则给出。", "先定方向，再谈大小——安培环路的用法。",
+                        "", scene(100, "磁感应线是同心圆。")))
+    frames.append(frame("取圆形环路", "B沿切向且大小处处相等：环路积分化为B×2πr。", "∮B·dl = μ₀I 解出 B = μ₀I/2πr。",
+                        "", scene(100, "环路包围电流I。")))
+    frames.append(frame("与半径的关系", "r加倍则B减半；环路不包围电流时积分为零。", "与静电高斯定理对偶：通量/环流只看包围的源。",
+                        "", scene(100, "B∝1/r。")))
+    return write_demo("ph10-amperian", "安培环路：B·2πr=μ₀I", frames, outdir=PH_IMG)
+
+
+DEMOS.update({
+    "cs10-signal": demo_cs_signal,
+    "cs13-redirect": demo_cs_io_redirect,
+    "ph04-potential": demo_ph_potential,
+    "ph10-amperian": demo_ph_amperian,
 })
 
 if __name__ == "__main__":
