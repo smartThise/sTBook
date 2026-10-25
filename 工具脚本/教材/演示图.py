@@ -1018,5 +1018,193 @@ DEMOS.update({
     "ds07-remove": demo_list_remove,
 })
 
+
+
+# ---------- 演示：ch08 进制转换 ----------
+
+def demo_convert():
+    frames = []
+    W, H = 700, 280
+    X, Y, CW = 60, 120, 66
+
+    def scene(stack, popped, note, phase):
+        sc = Scene(W, H)
+        sc.label(X, 30, "convert(2026, 8)：反复模余入栈、除商更新；再整体弹出", size=15, fill=SUB)
+        sc.label(X, 58, "2026 ÷ 8 = 253 … 2；253 ÷ 8 = 31 … 5；31 ÷ 8 = 3 … 7；3 ÷ 8 = 0 … 3", size=14, mono=True, fill=SUB)
+        for i, c in enumerate(stack):
+            sc.add("rect", x=X + 380, y=Y + i * 56, width=CW, height=48, rx=8,
+                   fill=(HOT if i == len(stack) - 1 and phase == "push" else (WRITE if phase == "pop" and i == len(stack) - 1 else CELL)),
+                   stroke=CELL_STROKE, stroke_width=1.5)
+            sc.label(X + 380 + CW / 2, Y + i * 56 + 30, c, size=18, mono=True, anchor="middle")
+        if stack:
+            sc.label(X + 380 + CW + 12, Y + (len(stack) - 1) * 56 + 30, "← 栈顶", size=13, fill=FAINT, mono=True)
+        sc.label(X, 96, "输出（自高到低）：" + (popped or "（尚无）"), size=16, mono=True)
+        sc.label(X, 250, note, size=15)
+        return sc
+
+    stack = []
+    frames.append(frame("准备", "目标：把十进制2026转成八进制。", "短除法自低向高产生数位：先得到低位，后得到高位——输出顺序恰好相反，正是栈的用武之地。",
+                        "第一个入栈的是高位还是低位？", scene([], "", "等待模余。", "push")))
+    for d, q, note in [("2", 253, "2026 % 8 = 2，入栈；商253继续。"),
+                       ("5", 31, "253 % 8 = 5，入栈；商31继续。"),
+                       ("7", 3, "31 % 8 = 7，入栈；商3继续。"),
+                       ("3", 0, "3 % 8 = 3，入栈；商0，模余结束。")]:
+        stack.append(d)
+        frames.append(frame(f"push '{d}'", note, "低位先产生、后输出：入栈暂存。", "",
+                            scene(list(stack), "", note, "push")))
+    out = []
+    for d in ["3", "7", "5", "2"]:
+        stack.pop()
+        out.append(d)
+        frames.append(frame(f"pop '{d}'", f"弹出栈顶'{d}'，作为当前最高位输出。", "栈的LIFO恰好把低位次序反转为高位次序。",
+                            "", scene(list(stack), " ".join(out), f"已输出 {' '.join(out)}。", "pop")))
+    frames.append(frame("完成", "栈空，输出3752：2026(10) = 3752(8)。", "时间、空间均为O(log n)；相比递归版，手工栈省去了调用栈的常系数。",
+                        "", scene([], "3 7 5 2", "转换完成。", "pop")))
+    return write_demo("ds08-convert", "进制转换：2026怎样变成3752(8)", frames)
+
+
+# ---------- 演示：ch08 括号匹配 ----------
+
+def demo_paren():
+    expr = "{[()]}"
+    frames = []
+    W, H = 700, 250
+    X, Y, CW = 56, 120, 66
+
+    def scene(i, stack, note, ok=None):
+        sc = Scene(W, H)
+        sc.label(X, 30, "paren()：左括号一律进栈；右括号必须与栈顶同类", size=15, fill=SUB)
+        for k, c in enumerate(expr):
+            hot = (k == i)
+            sc.add("rect", x=X + k * (CW + 4), y=Y, width=CW, height=46, rx=8,
+                   fill=(HOT if hot else (DONE if k < i else CELL)),
+                   stroke=(HOT_STROKE if hot else (DONE_STROKE if k < i else CELL_STROKE)), stroke_width=1.5)
+            sc.label(X + k * (CW + 4) + CW / 2, Y + 29, c, size=19, mono=True, anchor="middle")
+        sc.label(X, 64, "栈（自底向顶）：" + (" ".join(stack) if stack else "（空）"), size=16, mono=True)
+        verdict = ""
+        if ok is True:
+            verdict = "匹配！"
+        sc.label(X, 216, note + ("　" + verdict if verdict else ""), size=15)
+        return sc
+
+    stack = []
+    acts = [("push '{'", "字符0：'{'是左括号，进栈。", "栈里记录的是已扫到、尚未匹配的左括号。"),
+            ("push '['", "字符1：'['进栈。", "新左括号只会与最近未被匹配的左括号配对。"),
+            ("push '('", "字符2：'('进栈。", '栈顶永远是"最急需配对"的左括号。'),
+            ("')'弹出'('", "字符3：')'与栈顶'('同类，弹出。", '消去一对紧邻的成对括号，原表达式匹配与否不受影响。'),
+            ("']'弹出'['", "字符4：']'与栈顶'['同类，弹出。", "若类型不同即失配。"),
+            ("'}'弹出'{'", "字符5：'}'与栈顶'{'同类，弹出。", "三层嵌套逐层脱壳。"),
+            ("扫描结束", "全部扫完且栈空：匹配！若栈非空，则有左括号悬空。", "一趟顺序扫描，绝不回头。")]
+    for i, (act, note, why) in enumerate(acts):
+        if act.startswith("push"):
+            stack.append(expr[i])
+        elif act.startswith(("')'", "']'", "'}'")):
+            stack.pop()
+        frames.append(frame(act, note, why, "", scene(i, stack, note, ok=(i == len(acts) - 1))))
+    return write_demo("ds08-paren", '括号匹配：{[()]}怎样通过一个栈', frames)
+
+
+# ---------- 演示：ch08 表达式求值 ----------
+
+def demo_eval():
+    expr = ["1", "+", "2", "*", "3"]
+    frames = []
+    W, H = 720, 260
+    X, Y = 50, 120
+
+    def scene(opnd, optr, i, act, why, rule=''):
+        sc = Scene(W, H)
+        sc.label(X, 30, "evaluate('1 + 2 * 3')：数栈opnd、符栈optr；读入字符i=" + str(i), size=15, fill=SUB)
+        for k, c in enumerate(expr):
+            hot = (k == i)
+            sc.add("rect", x=X + k * 96, y=Y, width=88, height=42, rx=8,
+                   fill=(HOT if hot else (DONE if k < i else CELL)),
+                   stroke=(HOT_STROKE if hot else (DONE_STROKE if k < i else CELL_STROKE)), stroke_width=1.5)
+            sc.label(X + k * 96 + 44, Y + 27, c, size=18, mono=True, anchor="middle")
+        sc.label(X, 82, f"opnd（数栈，自底向顶）：{opnd or '（空）'}", size=15, mono=True)
+        sc.label(X, 106, f"optr（符栈，自底向顶）：{' '.join(optr) or '（空）'}", size=15, mono=True)
+        sc.chip(X + 440, 208, 210, 24, f"规则：{rule}", WRITE, WRITE_STROKE, size=13, mono=False)
+        sc.label(X, 216, act, size=15)
+        sc.label(X, 242, "为什么：" + why, size=14, fill=SUB)
+        return sc
+
+    opnd, optr = [], []
+    frames.append(frame("压入哨兵", "optr压入哨兵'\\0'，充当表达式起止的虚拟运算符。", "括号与哨兵统一处理：开始与结束都是一次优先级比较。",
+                        "", scene([], ["\\0"], 0, "optr=[\\0]。", "哨兵让主循环只认一种终止方式。", "初始化")))
+    opnd.append("1")
+    frames.append(frame("读入1", "操作数直接进数栈。", "数、符分居两栈，互不干扰。", "",
+                        scene(["1"], ["\\0"], 0, "opnd=[1]。", "操作数无需比较。")))
+    optr.append("+")
+    frames.append(frame("读入+：推迟", "prio(\\0, +)=<：栈顶优先级低，+进符栈。", "时机未到，静待右操作数。",
+                        "", scene(["1"], ["\\0", "+"], 1, "optr=[$ +]。"[:14] + "+。", "'<'推迟计算。")))
+    opnd.append("2")
+    frames.append(frame("读入2", "操作数2进数栈。", "继续等待比较时机。", "",
+                        scene(["1", "2"], ["\\0", "+"], 2, "opnd=[1 2]。", "'<'之后读入右操作数。")))
+    optr.append("*")
+    frames.append(frame("读入*：仍推迟", "prio(+, *)=<：乘号优先级更高，进符栈。", "栈内运算符优先级自底向顶递增，正是这一性质使栈顶随时可算。",
+                        "", scene(["1", "2"], ["\\0", "+", "*"], 3, "optr=[$ + *]。", "'<'再推迟。")))
+    opnd.append("3")
+    frames.append(frame("读入3", "操作数3进数栈。", "至此2、3相拥于栈顶，乘法时机成熟。", "",
+                        scene(["1", "2", "3"], ["\\0", "+", "*"], 4, "opnd=[1 2 3]。", "等待结束符触发回溯。")))
+    opnd = ["1", "6"]; optr = ["\\0", "+"]
+    frames.append(frame("遇\\0：执行*", "prio(*, \\0)=>：弹出*与2、3，算得6压回数栈。", "栈顶可算的判定只取决于局部相对优先级。",
+                        "", scene(["1", "6"], ["\\0", "+"], 5, "opnd=[1 6]。", "'>'执行计算。")))
+    opnd = ["7"]; optr = ["\\0"]
+    frames.append(frame("执行+", "prio(+, \\0)=>：弹出+与1、6，算得7压回。", "逐层回溯至哨兵。", "",
+                        scene(["7"], ["\\0"], 5, "opnd=[7]。", "'>'再执行。")))
+    frames.append(frame("终止", "prio(\\0, \\0)=~：双哨兵相会，符栈弹空，opnd唯一剩值7即结果。", "从创世纪到世界末日：哨兵对标志求值的起与终。",
+                        "", scene(["7"], [], 5, "返回7。", "'~'终须了断。")))
+    return write_demo("ds08-eval", "表达式求值：1+2*3的两栈协作", frames)
+
+
+# ---------- 演示：ch08 栈混洗甄别 ----------
+
+def demo_stack_perm():
+    B = [3, 1, 2]
+    frames = []
+    W, H = 700, 250
+    X, Y = 56, 120
+
+    def scene(a_next, stack, r, note, ok=None):
+        sc = Scene(W, H)
+        sc.label(X, 30, "spCheck([3,1,2])：A输入栈只记栈顶；S为中转栈；逐项尝试B操作", size=15, fill=SUB)
+        sc.label(X, 58, f"A输入栈顶：{a_next if a_next <= 3 else '已空'}　　目标序列B：3 1 2　　已核对到第{r}项", size=15, mono=True)
+        for i, v in enumerate(stack):
+            sc.add("rect", x=X + 300, y=Y + i * 56, width=110, height=48, rx=8,
+                   fill=(HOT if i == len(stack) - 1 else CELL), stroke=CELL_STROKE, stroke_width=1.5)
+            sc.label(X + 355, Y + i * 56 + 30, str(v), size=18, mono=True, anchor="middle")
+        if stack:
+            sc.label(X + 420, Y + (len(stack) - 1) * 56 + 30, "← 栈顶", size=13, fill=FAINT, mono=True)
+        verdict = ""
+        if ok is False:
+            verdict = "　判定：不是栈混洗（含禁形3 1 2）。"
+        if ok is True:
+            verdict = "　判定：是栈混洗。"
+        sc.label(X, 216, note + verdict, size=15)
+        return sc
+
+    stack, A = [], 1
+    frames.append(frame("初始", "A输入栈=[1,2,3]（只需记录栈顶1）；S空；目标B=[3,1,2]。", "逐项尝试B操作：目标元素若能腾挪至S顶部就弹出，否则卡住。",
+                        "要弹出3，得先把几项压入S？", scene(A, [], 0, "等待核对B[0]=3。")))
+    for v in (1, 2, 3):
+        stack.append(v); A += 1
+    A = 4
+    frames.append(frame("连续A操作：push 1,2,3", "栈顶恰为3，随即可B操作。", "目标3之前必须先把1、2压入S暂存。", "",
+                        scene(A, [1, 2, 3], 0, "3已到栈顶。")))
+    stack.pop()
+    frames.append(frame("B操作：弹出3", "S弹出3，与B[0]核对成功；r=1。", "3是最后压入的，最先弹出——符合LIFO。", "",
+                        scene(A, [1, 2], 1, "已核对3。")))
+    frames.append(frame("核对B[1]=1：卡住", "S顶=2 ≠ 1；A已空（1已在S底），无法把1腾挪到顶部。", "序列3 1 2含禁形：k=3在i=1的前缀中，j=2本应也在其中。",
+                        "", scene(4, [1, 2], 1, "卡在r=1。", ok=False)))
+    return write_demo("ds08-stackperm", "栈混洗甄别：[3,1,2]为什么卡住", frames)
+
+
+DEMOS.update({
+    "ds08-convert": demo_convert,
+    "ds08-paren": demo_paren,
+    "ds08-eval": demo_eval,
+    "ds08-stackperm": demo_stack_perm,
+})
+
 if __name__ == "__main__":
     main(sys.argv[1:])
