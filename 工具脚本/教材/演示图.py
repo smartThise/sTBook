@@ -1521,5 +1521,42 @@ def demo_btree_insert():
 
 DEMOS.update({"ds13-btree": demo_btree_insert})
 
+
+
+# ---------- 演示：ch14 kd树平面划分 ----------
+
+def demo_kdtree():
+    # points: A(90,150) B(200,90) C(150,220) D(260,200)
+    pts = {"A": (90, 150), "B": (200, 90), "C": (150, 220), "D": (260, 200)}
+    frames = []
+    W, H = 740, 300
+
+    def scene(splits, node, note, rect=None):
+        sc = Scene(W, H)
+        sc.label(40, 30, "kd树：交替按x、y轴二分平面（左闭右开）", size=15, fill=SUB)
+        for (x1, y1, x2, y2, col) in splits:
+            sc.add("line", x1=x1, y1=y1, x2=x2, y2=y2, stroke=col, stroke_width=2)
+        for nm, (x, y) in pts.items():
+            hot = (nm == node)
+            sc.add("circle", cx=x, cy=y, r=8, fill=(HOT if hot else WRITE), stroke=(HOT_STROKE if hot else WRITE_STROKE), stroke_width=1.5)
+            sc.label(x + 14, y - 8, nm, size=15, mono=True)
+        sc.label(40, 272, note, size=15)
+        return sc
+
+    xs = sorted(p[0] for p in pts.values())
+    medx = xs[1]
+    frames.append(frame("第1层：按x轴中位点划分", "四个点的x中位数取C.x=150，画竖直分割线；C归右侧（左闭右开）。", "偶数层取VERTICAL，奇数层取HORIZONTAL。",
+                        "", scene([(150, 60, 150, 250, WRITE_STROKE)], "C", "竖线x=150把平面分成两半。")))
+    frames.append(frame("第2层：左半按y轴划分", "左半{A, B}：y中位数为A.y=150，画横线。", "每层换一个维度：x→y→x→y……",
+                        "", scene([(150, 60, 150, 250, WRITE_STROKE), (60, 150, 148, 150, DONE_STROKE)], "A", "横线y=150分割左半区。")))
+    frames.append(frame("第3层：右半按y轴划分", "右半{C, D}：y中位数为D.y=200，画横线。", "递归直至每区至多1点，成为叶子。",
+                        "", scene([(150, 60, 150, 250, WRITE_STROKE), (60, 150, 148, 150, DONE_STROKE), (152, 200, 290, 200, DONE_STROKE)], "D", "递归完成：四点四叶。")))
+    frames.append(frame("区域查询示意", "查询矩形R：区域region(v)⊆R则整棵子树输出；region(v)∩R=∅则整枝剪除。", "正交范围查询的复杂度O(n^(1-1/d)+r)。",
+                        "", scene([(150, 60, 150, 250, WRITE_STROKE), (60, 150, 148, 150, DONE_STROKE), (152, 200, 290, 200, DONE_STROKE)], None, "剪枝依据：区域不相交即排除。")))
+    return write_demo("ds14-kdtree", "kd树：平面交替二分", frames)
+
+
+DEMOS.update({"ds14-kdtree": demo_kdtree})
+
 if __name__ == "__main__":
     main(sys.argv[1:])
