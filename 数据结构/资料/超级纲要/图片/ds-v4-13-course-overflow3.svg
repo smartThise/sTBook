@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="500" viewBox="0 0 1100 500">
+<rect width="1100" height="500" fill="#fff"/>
+<style>text{font-family:Arial, 'PingFang SC', 'Noto Sans CJK SC', sans-serif;fill:#172334}.title{font-size:25px;font-weight:600}.note{font-size:16px;fill:#68778b}</style>
+<text x="28" y="35" class="title">9升为新根：两次分裂完成</text>
+<text x="28" y="65" class="note">教师事后修复版：(a,b)=(2,4)，非根页1–3键；4键或0键是待修复暂态</text>
+<line x1="550" y1="150" x2="340" y2="210" stroke="#8090a3" stroke-width="2.2"/>
+<line x1="550" y1="150" x2="840" y2="210" stroke="#8090a3" stroke-width="2.2"/>
+<line x1="340" y1="260" x2="110" y2="340" stroke="#8090a3" stroke-width="2.2"/>
+<line x1="340" y1="260" x2="340" y2="340" stroke="#8090a3" stroke-width="2.2"/>
+<line x1="340" y1="260" x2="570" y2="340" stroke="#8090a3" stroke-width="2.2"/>
+<line x1="840" y1="260" x2="780" y2="340" stroke="#8090a3" stroke-width="2.2"/>
+<line x1="840" y1="260" x2="1000" y2="340" stroke="#8090a3" stroke-width="2.2"/>
+<rect x="515.0" y="100" width="70" height="50" rx="8" fill="#f4f8ff" stroke="#0f766e" stroke-width="2.5"/><text x="550" y="133" text-anchor="middle" style="font-size:23px;fill:#0f766e">9</text>
+<rect x="291.0" y="210" width="98" height="50" rx="8" fill="#f4f8ff" stroke="#2563eb" stroke-width="2.5"/><text x="340" y="243" text-anchor="middle" style="font-size:23px;fill:#2563eb">3 | 6</text>
+<rect x="805.0" y="210" width="70" height="50" rx="8" fill="#f4f8ff" stroke="#2563eb" stroke-width="2.5"/><text x="840" y="243" text-anchor="middle" style="font-size:23px;fill:#2563eb">12</text>
+<rect x="61.0" y="340" width="98" height="50" rx="8" fill="#f4f8ff" stroke="#2563eb" stroke-width="2.5"/><text x="110" y="373" text-anchor="middle" style="font-size:23px;fill:#2563eb">1 | 2</text>
+<rect x="291.0" y="340" width="98" height="50" rx="8" fill="#f4f8ff" stroke="#2563eb" stroke-width="2.5"/><text x="340" y="373" text-anchor="middle" style="font-size:23px;fill:#2563eb">4 | 5</text>
+<rect x="521.0" y="340" width="98" height="50" rx="8" fill="#f4f8ff" stroke="#2563eb" stroke-width="2.5"/><text x="570" y="373" text-anchor="middle" style="font-size:23px;fill:#2563eb">7 | 8</text>
+<rect x="717.0" y="340" width="126" height="50" rx="8" fill="#f4f8ff" stroke="#2563eb" stroke-width="2.5"/><text x="780" y="373" text-anchor="middle" style="font-size:23px;fill:#2563eb">10 | 11</text>
+<rect x="965.0" y="340" width="70" height="50" rx="8" fill="#f4f8ff" stroke="#2563eb" stroke-width="2.5"/><text x="1000" y="373" text-anchor="middle" style="font-size:23px;fill:#2563eb">13</text>
+<text x="175" y="450" class="note">所有叶同深；每个内部页的孩子数等于键数加1；中序仍为1…13</text>
+</svg>

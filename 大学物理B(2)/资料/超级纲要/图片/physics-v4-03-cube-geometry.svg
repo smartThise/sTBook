@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="525" viewBox="0 0 880 525"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<text x="440" y="29" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="22" fill="#192c40">同一匀强电场穿过立方体：外法向由各面指向外部</text>
+<polygon points="325,125 525,125 455,190 255,190" fill="#e2efdf" stroke="#7b8c9b" stroke-width="2"/>
+<polygon points="525,285 525,125 455,190 455,350" fill="#f0e8d5" stroke="#7b8c9b" stroke-width="2"/>
+<polygon points="255,350 455,350 455,190 255,190" fill="#e5eff8" stroke="#7b8c9b" stroke-width="2"/>
+<line x1="325" y1="285" x2="525" y2="285" stroke="#6b8095" stroke-width="2" stroke-dasharray="5 4"/>
+<line x1="325" y1="285" x2="325" y2="125" stroke="#6b8095" stroke-width="2" stroke-dasharray="5 4"/>
+<line x1="325" y1="285" x2="255" y2="350" stroke="#6b8095" stroke-width="2" stroke-dasharray="5 4"/>
+<line x1="55" y1="230" x2="200" y2="230" stroke="#287da2" stroke-width="2"/>
+<polygon points="200,230 191.0,226.0 191.0,234.0" fill="#287da2"/>
+<line x1="595" y1="230" x2="810" y2="230" stroke="#287da2" stroke-width="2"/>
+<polygon points="810,230 801.0,226.0 801.0,234.0" fill="#287da2"/>
+<line x1="55" y1="285" x2="200" y2="285" stroke="#287da2" stroke-width="2"/>
+<polygon points="200,285 191.0,281.0 191.0,289.0" fill="#287da2"/>
+<line x1="595" y1="285" x2="810" y2="285" stroke="#287da2" stroke-width="2"/>
+<polygon points="810,285 801.0,281.0 801.0,289.0" fill="#287da2"/>
+<line x1="55" y1="340" x2="200" y2="340" stroke="#287da2" stroke-width="2"/>
+<polygon points="200,340 191.0,336.0 191.0,344.0" fill="#287da2"/>
+<line x1="595" y1="340" x2="810" y2="340" stroke="#287da2" stroke-width="2"/>
+<polygon points="810,340 801.0,336.0 801.0,344.0" fill="#287da2"/>
+<text x="126" y="195" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#287da2">E沿+x</text>
+<text x="717" y="384" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#287da2">E=200N/C</text>
+<line x1="490" y1="240" x2="595" y2="240" stroke="#a46d44" stroke-width="2"/>
+<polygon points="595,240 586.0,236.0 586.0,244.0" fill="#a46d44"/>
+<text x="670" y="219" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#8b5936">右面 n=+x</text>
+<line x1="290" y1="237" x2="180" y2="237" stroke="#a46d44" stroke-width="2" stroke-dasharray="5 4"/>
+<polygon points="180,237 189.0,241.0 189.0,233.0" fill="#a46d44"/>
+<text x="140" y="269" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#8b5936">左面 n=−x</text>
+<line x1="390" y1="157" x2="390" y2="62" stroke="#5a8a5e" stroke-width="2"/>
+<polygon points="390,62 386.0,71.0 394.0,71.0" fill="#5a8a5e"/>
+<text x="475" y="70" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#507956">上面 n=+y</text>
+<line x1="355" y1="270" x2="298" y2="326" stroke="#536d9e" stroke-width="2"/>
+<polygon points="298,326 307.2233149127437,322.54594991056007 301.6167408545223,316.83925845844186" fill="#536d9e"/>
+<text x="304" y="395" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#536d9e">前面 n=+z</text>
+<line x1="620" y1="453" x2="700" y2="453" stroke="#6b8095" stroke-width="2"/>
+<polygon points="700,453 691.0,449.0 691.0,457.0" fill="#6b8095"/>
+<line x1="620" y1="453" x2="620" y2="397" stroke="#6b8095" stroke-width="2"/>
+<polygon points="620,397 616.0,406.0 624.0,406.0" fill="#6b8095"/>
+<line x1="620" y1="453" x2="578" y2="491" stroke="#6b8095" stroke-width="2"/>
+<polygon points="578,491 587.3574753079905,487.9279232007729 581.9901687162375,481.9956369677828" fill="#6b8095"/>
+<text x="717" y="460" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">+x</text>
+<text x="620" y="388" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">+y</text>
+<text x="554" y="509" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">+z</text>
+<text x="330" y="448" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">被遮挡的后面法向−z，下面法向−y</text>
+<text x="330" y="482" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">只有左右两面法向与E平行或反平行；其余四面与E垂直</text></svg>

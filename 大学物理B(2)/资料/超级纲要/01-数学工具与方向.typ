@@ -1,22 +1,24 @@
 = 先把箭头、微元和单位读明白
 <先把箭头微元和单位读明白>
-一颗电子飞进磁场后向哪边转？一块倾斜的面到底穿过多少电场？一根带电细棒为什么非要积分？这些题常卡在物理开始以前：箭头没画对，角度认错了，或者不知道积分在加什么。本章把这些工具拆开用。后文每次出现一个新积分，都可以回来对照。
+一颗电子飞进磁场后向哪边转？一块倾斜的面到底穿过多少电场？一根带电细棒为什么非要积分？这些题常卡在物理开始以前：箭头没画对，角度认错了，或者不知道积分在加什么。本章用具体计算说明这些工具。它也供后文回查，不要求在进入物理主题前记住所有表达式。
 
 == 数字旁边的单位也参加运算
 <数字旁边的单位也参加运算>
+=== 从一块正方形算面积换算
+<从一块正方形算面积换算>
+一块1cm×1cm的正方形，每条边分成10个1mm小段，共有10×10=100个1mm²小格。若改用米，每条边都是0.01m，面积应把两条边相乘：$1 thin upright(c m^2) =\(0.01 thin upright(m)\)^2= 0.0001 thin upright(m^2)$。因此3cm²等于$3 times 10^(- 4) thin upright(m^2)$。不能只换一条边的单位，让面积仍保留另一条边的厘米。
+
+#figure(image("图片/physics-v4-01-area.svg", alt: "方格计数与两边同时换算得到同一面积"),
+  caption: [
+    方格计数与两边同时换算得到同一面积
+  ]
+)
+
 长度用米 m，时间用秒 s，质量用千克 kg，电荷用库仑 C。电流是单位时间通过某个截面的电荷量，所以安培 A 就是 C/s。电势差的单位伏特 V 是 J/C；场强 N/C 与 V/m 是同一个量纲。写 $E = 300$ 无法判断答案；写 $E = 300 thin upright(N\/C)$ 才说明了物理量。
 
 换算时，把单位写进乘法比默念可靠。例如 $2 thin upright(m m) = 2 times 10^(- 3) thin upright(m)$，$3 thin upright(c m^2) = 3 times\(10^(- 2) thin upright(m)\)^2= 3 times 10^(- 4) thin upright(m^2)$。平方针对整个单位换算因子。把平方厘米直接换成 $10^(- 2) thin upright(m^2)$，面积会错一百倍。体积立方厘米的因子则是 $10^(- 6)$。
 
 本书常用 $k = 1\/\(4 pi epsilon.alt_0\)approx 8.99 times 10^9 thin upright(N thin m^2\/C^2)$，$epsilon.alt_0 approx 8.85 times 10^(- 12) thin upright(F\/m)$，基本电荷大小 $e approx 1.60 times 10^(- 19) thin upright(C)$。电子电荷是 $- e$，这里的 $e$ 本身是正数。常数取几位有效数字，就不要在答案末尾保留十几位小数。
-
-=== 算例：先看单位就能抓出的错误
-<算例先看单位就能抓出的错误>
-题目给电容 $C = 2 thin mu upright(F)$，电压 $U = 10 thin upright(V)$，求储能。电容的符号也是 C，电荷的单位也是 C，阅读时靠上下文区分。使用 $W = C U^2\/2$，先换成 $C = 2 times 10^(- 6) thin upright(F)$，再得
-
-$ W = 1 / 2\(2 times 10^(- 6)\)\(10\)^2thin upright(F thin V^2) = 10^(- 4) thin upright(J) . $
-
-为什么最后是焦耳？因为 $upright(F) = upright(C\/V)$，所以 $upright(F thin V^2) = upright(C thin V) = upright(J)$。若误写成 $C U\/2$，单位是库仑，就算数值看着顺眼，它也不是能量。量纲检查不能证明公式正确，却能否决许多错误公式。
 
 #figure(image("图片/physics-v3-01-vectors.svg", alt: "向量分量、面积法向和磁力叉乘的三个不同构造"),
   caption: [
@@ -28,6 +30,12 @@ $ W = 1 / 2\(2 times 10^(- 6)\)\(10\)^2thin upright(F thin V^2) = 10^(- 4) thin 
 
 == 向量：大小和方向要一起写清
 <向量大小和方向要一起写清>
+=== 连续走两段路，位移怎样相加
+<连续走两段路位移怎样相加>
+在平面上取x向右、y向上。先从原点走到(3m,4m)，第一段位移为$upright(bold(A)) =\(3\,4\,0\)thin upright(m)$；再向左3m、向上2m，第二段为$upright(bold(B)) =\(- 3\,2\,0\)thin upright(m)$。终点的横坐标是3−3=0，纵坐标是4+2=6，因此总位移为$\(0\,6\,0\)$m，大小6m、向上。
+
+第一段路长$sqrt(3^2 + 4^2) = 5$m，第二段路长$sqrt(\(- 3\)^2+ 2^2) = sqrt(13)$m。总路程约8.61m，而从起点到终点的位移大小只有6m。路程逐段加长度，位移逐方向加分量，它们回答不同问题。电场等其他向量使用同样的分量加法。
+
 标量只有大小，例如质量、温度、电势。向量还需要方向，例如位移、速度、电场、磁场。选定右手直角坐标系以后，把箭头分成沿三个坐标轴的份额：
 
 $ upright(bold(A)) = A_x hat(upright(bold(x))) + A_y hat(upright(bold(y))) + A_z hat(upright(bold(z)))\,#h(2em)\|upright(bold(A))\|= sqrt(A_x^2 + A_y^2 + A_z^2) . $
@@ -35,14 +43,6 @@ $ upright(bold(A)) = A_x hat(upright(bold(x))) + A_y hat(upright(bold(y))) + A_z
 带帽的 $hat(upright(bold(x)))$ 是朝 x 正方向、长度为1的单位向量。$A_x$ 可以为负，表示这一份朝 x 负方向。向量的大小 $\|upright(bold(A))\|$ 总不小于0。写"场强为 $- 5 thin upright(N\/C)$"容易含糊；更清楚的写法是"x 分量为 $- 5 thin upright(N\/C)$，场强大小为 $5 thin upright(N\/C)$"。
 
 向量加法逐分量做。两个大小都为10的箭头，同向相加得到20，反向相加得到0，垂直相加得到 $10 sqrt(2)$。因此电场叠加时不能先加大小再决定方向。带电体很对称时，可以先配对消去某些分量，这一步正是在减少需要相加的箭头。
-
-=== 算例：一个负号怎样把答案转向
-<算例一个负号怎样把答案转向>
-某点有两个场：$upright(bold(E))_1 =\(3\,4\,0\)thin upright(N\/C)$，$upright(bold(E))_2 =\(- 3\,2\,0\)thin upright(N\/C)$。总场为 $\(0\,6\,0\)thin upright(N\/C)$，大小6，朝 y 正向。放一个 $q = - 2 thin mu upright(C)$ 的试探电荷，所受力
-
-$ upright(bold(F)) = q upright(bold(E)) =\(0\,- 12 times 10^(- 6)\,0\)thin upright(N) . $
-
-场朝上，负电荷受力朝下。不要为了迁就负电荷而把场的方向也改掉：电场由源电荷决定，试探电荷的正负只影响它所受力。
 
 == 点乘在挑"沿这个方向的一份"
 <点乘在挑沿这个方向的一份>
@@ -66,7 +66,7 @@ $ Phi = E A cos\(60^compose\)= 200 times 3 times 10^(- 4) times 1 / 2 = 0.030 th
 <叉乘在找垂直方向>
 叉乘的结果是向量，大小为 $\|upright(bold(A)) times upright(bold(B))\|= A B sin theta$。方向按右手规则：右手四指从第一个向量朝第二个向量转过不超过180°的角，大拇指指向叉乘方向。交换顺序会反向，$upright(bold(B)) times upright(bold(A)) = - upright(bold(A)) times upright(bold(B))$。
 
-最值得记熟的三组是 $hat(upright(bold(x))) times hat(upright(bold(y))) = hat(upright(bold(z)))$、$hat(upright(bold(y))) times hat(upright(bold(z))) = hat(upright(bold(x)))$、$hat(upright(bold(z))) times hat(upright(bold(x))) = hat(upright(bold(y)))$。循环顺序为正，倒着来为负。磁力 $q upright(bold(v)) times upright(bold(B))$ 先按正电荷求叉乘，再考虑 q 的正负，能避免手指拧了半天还漏一个负号。
+最值得记熟的三组是 $hat(upright(bold(x))) times hat(upright(bold(y))) = hat(upright(bold(z)))$、$hat(upright(bold(y))) times hat(upright(bold(z))) = hat(upright(bold(x)))$、$hat(upright(bold(z))) times hat(upright(bold(x))) = hat(upright(bold(y)))$。循环顺序为正，倒着来为负。磁力 $q upright(bold(v)) times upright(bold(B))$ 先按正电荷求叉乘，再考虑 q 的正负，可把几何方向与电荷正负分别核对。
 
 例：速度朝右 $upright(bold(v)) = v hat(upright(bold(x)))$，磁场指向纸内 $upright(bold(B)) = - B hat(upright(bold(z)))$。于是 $upright(bold(v)) times upright(bold(B)) = v B hat(upright(bold(y)))$，正电荷受力向上，电子向下。纸面上的"⊙"表示箭头尖迎面而来、朝纸外；"⊗"表示看见箭尾、朝纸内。它们不是新的物理量。
 
@@ -80,7 +80,23 @@ $ Phi = E A cos\(60^compose\)= 200 times 3 times 10^(- 4) times 1 / 2 = 0.030 th
 
 === 算例：从密度还原总电荷
 <算例从密度还原总电荷>
-长 L 的细棒沿 x 轴从0延伸到L，$lambda\(x\)= a x$，其中 a 的单位为 C/m²。取小段 $d q = a x thin d x$，总电荷
+长 L 的细棒沿 x 轴从0延伸到L，$lambda\(x\)= a x$，其中 a 的单位为 C/m²。先把L=0.50m、a=4nC/m²代入，将棒分成四段，每段宽0.125m，在各段中点取密度：
+
+#figure(
+  align(center)[#table(
+    columns: 3,
+    align: (auto,right,right,),
+    table.header([中点x（m）], [密度λ=ax（nC/m）], [这一段电荷λΔx（nC）],),
+    table.hline(),
+    [0.0625], [0.25], [0.03125],
+    [0.1875], [0.75], [0.09375],
+    [0.3125], [1.25], [0.15625],
+    [0.4375], [1.75], [0.21875],
+  )]
+  , kind: table
+  )
+
+四段相加为0.50nC。对这条线性密度，中点密度恰好等于各段的平均密度，因此这次分段求和已经给出精确总量；一般变化的密度则需继续细分。把同一操作写成宽度趋零的形式，取$d q = a x thin d x$，总电荷
 
 $ Q = integral_0^L a x thin d x = a [x^2 / 2]_0^L = frac(a L^2, 2) . $
 
@@ -88,6 +104,18 @@ $ Q = integral_0^L a x thin d x = a [x^2 / 2]_0^L = frac(a L^2, 2) . $
 
 == 导数、梯度和小量近似怎样读
 <导数梯度和小量近似怎样读>
+=== 从一个具体电势算梯度
+<从一个具体电势算梯度>
+取$V\(x\,y\,z\)= alpha x^2 - beta y$，其中α=10V/m²，β=3V/m，x、y、z都用米。这些系数带单位，使两项都得到伏特。先固定y=z=0，从x=0.20m移到0.21m，电势由0.400V变成0.441V，变化率为0.041V/0.01m=4.1V/m；若只移到0.201m，变化率为0.00401V/0.001m=4.01V/m。步长继续减小时，这个比值趋向4V/m。下面把这次计算推广到任意x，固定y、z，令x增加h：
+
+$ frac(V\(x + h\,y\,z\)- V\(x\,y\,z\), h) = frac(alpha\[\(x + h\)^2- x^2\], h) = 2 alpha x + alpha h . $
+
+让h趋于0，得到$partial V\/partial x = 2 alpha x$。同样固定x、z，y增加h后电势差为−βh，除h得到$partial V\/partial y = - beta$。V完全不含z，沿z移动不变，故z偏导为0。因此
+
+$ upright(bold(E)) = - nabla V =\(- 2 alpha x\,beta\,0\). $
+
+在x=0.20m处，三个分量为(−4,3,0)V/m，大小5V/m。电势沿+x增加，场的x分量偏向−x；电势沿+y减少，场的y分量朝+y。负梯度的每一个负号都可以用这一局部变化核对。
+
 导数 $d f\/d x$ 是 f 随 x 的局部变化率。电场与电势关系 $E_x = - partial V\/partial x$ 的意思是：电势沿 x 增加得越快，电场的 x 分量越朝负方向。偏导符号 $partial$ 表示求这一方向变化时先固定其他坐标。梯度 $nabla V$ 把三个方向的变化率装成一个向量。
 
 小角近似 $sin theta approx theta$、$tan theta approx theta$ 要用弧度。1°约0.01745弧度。在 θ=0.1弧度时，sinθ 与 θ 只差约0.17%；θ=1弧度时已经差很多。写"角度很小"必须说明哪个角：光栅主峰中心角可能很大，而主峰附近的偏移量很小。
@@ -110,18 +138,6 @@ $ frac(d, d t) e^(- t\/tau) = - 1 / tau e^(- t\/tau)\,#h(2em) integral e^(- t\/t
 
 τ是正的时间常数，单位秒，因此t/τ没有单位，才允许进入指数。前面的−1/τ来自指数内部−t/τ的变化率，这就是链式求导。多乘的−τ使积分再求导时回到原函数。RC放电会反复用到这一项。
 
-=== 从一个具体电势算梯度
-<从一个具体电势算梯度>
-取$V\(x\,y\,z\)= alpha x^2 - beta y$，其中α=10V/m²，β=3V/m，x、y、z都用米。这些系数带单位，使两项都得到伏特。固定y、z，令x增加h：
-
-$ frac(V\(x + h\,y\,z\)- V\(x\,y\,z\), h) = frac(alpha\[\(x + h\)^2- x^2\], h) = 2 alpha x + alpha h . $
-
-让h趋于0，得到$partial V\/partial x = 2 alpha x$。同样固定x、z，y增加h后电势差为−βh，除h得到$partial V\/partial y = - beta$。V完全不含z，沿z移动不变，故z偏导为0。因此
-
-$ upright(bold(E)) = - nabla V =\(- 2 alpha x\,beta\,0\). $
-
-在x=0.20m处，三个分量为(−4,3,0)V/m，大小5V/m。电势沿+x增加，场的x分量偏向−x；电势沿+y减少，场的y分量朝+y。负梯度的每一个负号都可以用这一局部变化核对。
-
 == 看见散度、旋度时，先问它在比较什么
 <看见散度旋度时先问它在比较什么>
 散度 $nabla dot.op upright(bold(A))$ 比较一个很小盒子各面的净流出量，再除盒子体积。若各方向总是流出多于流入，那里像源，散度正；流入多于流出，像汇，散度负。只有流线弯曲并不表示有散度，绕着转的场也可能净流出0。
@@ -140,7 +156,7 @@ $ upright(bold(E)) = - nabla V =\(- 2 alpha x\,beta\,0\). $
 
 第二，图示长度不一定按比例。老师画一张极板与电子轨迹示意图时，板距、轨道半径可能只是为了看得清。计算依题目给的数值与几何关系，别拿屏幕上像素量出一个不存在的已知量。需要从实验数据图读斜率时，则应认真看轴刻度、是否对数坐标和误差范围。
 
-第三，箭头长度可能只表示方向。电场线疏密在满足特定画法时可示意强弱，单个随手画的箭头长度未必是定量比例。看见一根向右蓝箭头，先读图注它是速度、场还是法向；颜色不能替代物理量标记。
+第三，示意箭头未必按统一长度比例绘制。电场线疏密在满足特定画法时可示意强弱，单个示意箭头的长度未必对应定量比例。看见一根向右蓝箭头，先读图注，确认它表示速度、场还是法向；颜色不能替代物理量标记。
 
 == 把近似误差写成一项可检查的量
 <把近似误差写成一项可检查的量>

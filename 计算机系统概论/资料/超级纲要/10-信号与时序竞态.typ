@@ -30,13 +30,33 @@
 
 == 用sigsuspend关闭时间窗口
 <用sigsuspend关闭时间窗口>
+掩码是一组"目前推迟递送的信号"，不是完成标志。以SIGUSR1为目标，先区分三份集合：oldmask保存进入这段代码前的集合；当前集合在保护区中额外包含SIGUSR1；waitmask从oldmask复制但移除SIGUSR1，专门用于等待时允许目标通知进入。复制集合不会自动改变当前生效的集合，只有相应系统接口才会改变它。
+
+#figure(
+  align(center)[#table(
+    columns: 4,
+    align: (auto,auto,auto,auto,),
+    table.header([操作], [当前是否屏蔽SIGUSR1], [oldmask], [waitmask],),
+    table.hline(),
+    [进入前，先取常见未屏蔽情形], [否], [尚未保存], [尚未建立],
+    [屏蔽目标，同时保存旧集合], [是], [保存原来未屏蔽的集合], [尚未建立],
+    [从oldmask复制并移除目标], [仍是], [不变], [允许目标递送],
+    [sigsuspend采用waitmask等待], [等待期间否], [不变], [不变],
+    [处理函数结束，sigsuspend返回], [重新为是], [不变], [不变],
+    [最后恢复oldmask], [恢复原来未屏蔽], [不变], [不变],
+  )]
+  , kind: table
+  )
+
+这几行中，"请求是否已经发生"由pending表示，"处理函数是否已经记录请求"由requested表示；它们都不等于某份掩码。旧集合原本就含目标时，waitmask仍将目标移除，本次等待结束后再恢复调用者原本的屏蔽状态。
+
 基本思路是：先保存旧信号掩码并屏蔽目标信号；在屏蔽期间检查done；若未完成，调用sigsuspend，用临时掩码原子地替换当前掩码并等待；信号处理完后，sigsuspend返回，原先屏蔽掩码恢复，再检查done；最终恢复调用前掩码。
 
 原子地替换掩码并等待，意味着不会在"解除屏蔽"和"真正睡眠"之间再留下可丢通知的缝隙。如果目标信号已挂起，临时解除屏蔽时就能被递送，不会被忘掉。sigsuspend通常被信号打断后以−1和EINTR返回，这在此设计中是正常唤醒路径，不应当作意外失败直接退出。
 
 注意这是单线程教学方案。多线程程序中，每个线程有自己的信号掩码，通常使用pthread\_sigmask，并合理安排哪一个线程同步等待或处理信号。不能把进程级信号想成必然在某个指定线程里执行处理函数。
 
-用前面单线程SIGUSR1自测程序的名字，分别记：`blocked`是目标信号当前是否被屏蔽，`pending`是是否有未递送的目标通知，`requested`是处理函数写的标志。先假定旧掩码原本没有屏蔽目标：
+在紧接着的单线程SIGUSR1自测中，分别记：`blocked`是目标信号当前是否被屏蔽，`pending`是是否有未递送的目标通知，`requested`是处理函数写的标志。先假定旧掩码原本没有屏蔽目标：
 
 #figure(
   align(center)[#table(
@@ -64,6 +84,58 @@
 )
 
 若信号到得晚，程序先在sigsuspend中等待，后来递送同样设1并返回；若先到，pending记录它。两种到达时机都能走到重新检查，才是修复的内容。无关信号只会唤醒一次，requested仍0时继续等。旧掩码原本屏蔽目标的情况，等待临时允许它，退出仍恢复原屏蔽，不是把调用者环境清空。
+
+== 把原子等待写成一段能核对的程序
+<把原子等待写成一段能核对的程序>
+下面给出完整单线程自测程序：它先屏蔽SIGUSR1，再用raise给自己产生一个请求，然后执行刚才的等待流程。requested对应坏例中的done，只表示处理函数是否记录过请求。将代码存为signal-demo.c，在支持POSIX接口的系统执行`cc -std=c17 -Wall -Wextra signal-demo.c -o signal-demo`及`./signal-demo`，预期只输出一次"收到请求……"后结束。
+
+```c
+#define _POSIX_C_SOURCE 200809L
+#include <signal.h>
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+static volatile sig_atomic_t requested = 0;
+static void on_request(int signo) {
+    (void)signo;
+    requested = 1;
+}
+static void fail(const char *what) {
+    perror(what);
+    exit(EXIT_FAILURE);
+}
+int main(void) {
+    sigset_t block, oldmask;
+    struct sigaction sa = {0};
+    sa.sa_handler = on_request;
+    if (sigemptyset(&sa.sa_mask) == -1) fail("sigemptyset");
+    if (sigemptyset(&block) == -1) fail("sigemptyset");
+    if (sigaddset(&block, SIGUSR1) == -1) fail("sigaddset");
+    if (sigprocmask(SIG_BLOCK, &block, &oldmask) == -1)
+        fail("sigprocmask");
+    if (sigaction(SIGUSR1, &sa, NULL) == -1) fail("sigaction");
+
+    /* 自测：此时递送被屏蔽，通知先成为挂起状态。 */
+    if (raise(SIGUSR1) != 0) fail("raise");
+    sigset_t waitmask = oldmask;
+    if (sigdelset(&waitmask, SIGUSR1) == -1) fail("sigdelset");
+    while (!requested) {
+        if (sigsuspend(&waitmask) == -1 && errno != EINTR)
+            fail("sigsuspend");
+    }
+    if (sigprocmask(SIG_SETMASK, &oldmask, NULL) == -1)
+        fail("sigprocmask restore");
+    puts("收到请求；复杂工作在正常执行流中进行。");
+    return 0;
+}
+```
+
+顺序值得逐项核对：先屏蔽目标信号，再安装处理函数；raise使信号产生，但当前仍屏蔽，所以标志尚未被处理函数设1。waitmask从旧掩码复制，再明确移除目标信号，保证等待时允许递送它，即使调用前恰好已屏蔽这一信号也能完成本次等待。sigsuspend原子地采用waitmask并等待，挂起请求立即有机会被处理，函数返回后又恢复到进入前的屏蔽集合。
+
+最后恢复oldmask，而不是把所有信号一律放开。处理函数只写一个简单标志，没有printf，没有分配内存。输出发生在正常执行流中。代码中的raise是为了给出可重复自测；实际应用若等外部请求，应去掉自测产生步骤，但保留完整等待结构。
+
+这里还存在一个应用层选择：初始安装处理之前产生的信号如何处理，本例通过先屏蔽来保护后续安装窗口，但程序刚启动、尚未运行到屏蔽之前的外部信号不由这段代码承诺接收。若需要从进程创建最开始就保证信号策略，应由启动者或完整架构安排。局部代码能证明的范围，要和系统整体启动协议分开。
 
 == 算例二：子进程结束得比登记还快
 <算例二子进程结束得比登记还快>
@@ -130,58 +202,6 @@ sigsuspend可能被另一个无关信号唤醒，条件变量也可能虚假唤�
 例如同时装了SIGCHLD和SIGUSR1处理函数，父在等孩子，SIGUSR1先到。sigsuspend返回后，如果不看done而直接认定孩子已完成，就会继续使用未准备好的结果。while重新检查能保持目标语义。你可以把这个原则带到事件循环，但每种等待接口仍有自己的原子性与清理规则。
 
 练习：把done在等待前清零是否总安全？答案是否。若目标事件已发生、处理函数已设1，主程序随后无条件清零就抹掉真实状态。标志何时重置应属于完整协议，不能为"让循环再等一次"随意清空。
-
-== 把原子等待写成一段能核对的程序
-<把原子等待写成一段能核对的程序>
-下面是单线程进程的教学片段，展示如何等一个SIGUSR1请求。它不主动给其他进程发消息；启动后，你可以从同一程序的测试代码安排信号，重点是观察掩码与标志的关系。实际使用时应根据应用选择信号来源与终止策略。
-
-```c
-#define _POSIX_C_SOURCE 200809L
-#include <signal.h>
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-static volatile sig_atomic_t requested = 0;
-static void on_request(int signo) {
-    (void)signo;
-    requested = 1;
-}
-static void fail(const char *what) {
-    perror(what);
-    exit(EXIT_FAILURE);
-}
-int main(void) {
-    sigset_t block, oldmask;
-    struct sigaction sa = {0};
-    sa.sa_handler = on_request;
-    if (sigemptyset(&sa.sa_mask) == -1) fail("sigemptyset");
-    if (sigemptyset(&block) == -1) fail("sigemptyset");
-    if (sigaddset(&block, SIGUSR1) == -1) fail("sigaddset");
-    if (sigprocmask(SIG_BLOCK, &block, &oldmask) == -1)
-        fail("sigprocmask");
-    if (sigaction(SIGUSR1, &sa, NULL) == -1) fail("sigaction");
-
-    /* 自测：此时递送被屏蔽，通知先成为挂起状态。 */
-    if (raise(SIGUSR1) != 0) fail("raise");
-    sigset_t waitmask = oldmask;
-    if (sigdelset(&waitmask, SIGUSR1) == -1) fail("sigdelset");
-    while (!requested) {
-        if (sigsuspend(&waitmask) == -1 && errno != EINTR)
-            fail("sigsuspend");
-    }
-    if (sigprocmask(SIG_SETMASK, &oldmask, NULL) == -1)
-        fail("sigprocmask restore");
-    puts("收到请求；复杂工作在正常执行流中进行。");
-    return 0;
-}
-```
-
-顺序值得逐项核对：先屏蔽目标信号，再安装处理函数；raise使信号产生，但当前仍屏蔽，所以标志尚未被处理函数设1。waitmask从旧掩码复制，再明确移除目标信号，保证等待时允许递送它，即使调用前恰好已屏蔽这一信号也能完成本次等待。sigsuspend原子地采用waitmask并等待，挂起请求立即有机会被处理，函数返回后又恢复到进入前的屏蔽集合。
-
-最后恢复oldmask，而不是把所有信号一律放开。处理函数只写一个简单标志，没有printf，没有分配内存。输出发生在正常执行流中。代码中的raise是为了给出可重复自测；实际应用若等外部请求，应去掉自测产生步骤，但保留完整等待结构。
-
-这里还存在一个应用层选择：初始安装处理之前产生的信号如何处理，本例通过先屏蔽来保护后续安装窗口，但程序刚启动、尚未运行到屏蔽之前的外部信号不由这段代码承诺接收。若需要从进程创建最开始就保证信号策略，应由启动者或完整架构安排。局部代码能证明的范围，要和系统整体启动协议分开。
 
 == 自己做，再看答案
 <自己做再看答案>

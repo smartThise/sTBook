@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="360" viewBox="0 0 780 360"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<text x="390" y="27" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#192c40">1cm×1cm：把两边分别换成米，再相乘</text>
+<line x1="75" y1="75" x2="75" y2="295" stroke="#6b8095" stroke-width="2"/>
+<line x1="75" y1="75" x2="295" y2="75" stroke="#6b8095" stroke-width="2"/>
+<line x1="97" y1="75" x2="97" y2="295" stroke="#6b8095" stroke-width="2"/>
+<line x1="75" y1="97" x2="295" y2="97" stroke="#6b8095" stroke-width="2"/>
+<line x1="119" y1="75" x2="119" y2="295" stroke="#6b8095" stroke-width="2"/>
+<line x1="75" y1="119" x2="295" y2="119" stroke="#6b8095" stroke-width="2"/>
+<line x1="141" y1="75" x2="141" y2="295" stroke="#6b8095" stroke-width="2"/>
+<line x1="75" y1="141" x2="295" y2="141" stroke="#6b8095" stroke-width="2"/>
+<line x1="163" y1="75" x2="163" y2="295" stroke="#6b8095" stroke-width="2"/>
+<line x1="75" y1="163" x2="295" y2="163" stroke="#6b8095" stroke-width="2"/>
+<line x1="185" y1="75" x2="185" y2="295" stroke="#6b8095" stroke-width="2"/>
+<line x1="75" y1="185" x2="295" y2="185" stroke="#6b8095" stroke-width="2"/>
+<line x1="207" y1="75" x2="207" y2="295" stroke="#6b8095" stroke-width="2"/>
+<line x1="75" y1="207" x2="295" y2="207" stroke="#6b8095" stroke-width="2"/>
+<line x1="229" y1="75" x2="229" y2="295" stroke="#6b8095" stroke-width="2"/>
+<line x1="75" y1="229" x2="295" y2="229" stroke="#6b8095" stroke-width="2"/>
+<line x1="251" y1="75" x2="251" y2="295" stroke="#6b8095" stroke-width="2"/>
+<line x1="75" y1="251" x2="295" y2="251" stroke="#6b8095" stroke-width="2"/>
+<line x1="273" y1="75" x2="273" y2="295" stroke="#6b8095" stroke-width="2"/>
+<line x1="75" y1="273" x2="295" y2="273" stroke="#6b8095" stroke-width="2"/>
+<line x1="295" y1="75" x2="295" y2="295" stroke="#6b8095" stroke-width="2"/>
+<line x1="75" y1="295" x2="295" y2="295" stroke="#6b8095" stroke-width="2"/>
+<text x="185" y="61" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">1cm = 10mm</text>
+<text x="185" y="327" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">100个小格，每格1mm²</text>
+<text x="552" y="116" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">面积 = 0.01m × 0.01m</text>
+<text x="552" y="162" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="22" fill="#192c40">= 0.0001m²</text>
+<text x="552" y="222" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">3cm² = 3 × 0.0001m²</text>
+<text x="552" y="268" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="22" fill="#192c40">= 0.0003m²</text></svg>

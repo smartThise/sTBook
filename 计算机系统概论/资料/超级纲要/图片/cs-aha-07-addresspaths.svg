@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680">
+<defs><marker id="a" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="#34738d"/></marker></defs>
+<rect width="1200" height="680" fill="white"/>
+<style>text{font-family:"Arial Unicode MS","PingFang SC","Noto Sans CJK SC",sans-serif;fill:#173442}.mono{font-family:monospace}</style>
+<text x="35" y="38" font-size="25" text-anchor="start" class="">同样读取第1行第2列：连续矩阵与指针表</text>
+<rect x="20" y="62" width="555" height="590" rx="5" fill="#fbfdfe" stroke="#829ba8"/>
+<rect x="595" y="62" width="585" height="590" rx="5" fill="#fbfdfe" stroke="#829ba8"/>
+<text x="42" y="99" font-size="22" text-anchor="start" class="">连续矩阵 m[3][4]</text>
+<text x="42" y="130" font-size="17" text-anchor="start" class="">每项 int 4字节；行跨度16字节</text>
+<text x="618" y="99" font-size="22" text-anchor="start" class="">p 指向三根 int 指针</text>
+<text x="618" y="130" font-size="17" text-anchor="start" class="">指针表从0x5000开始；每根指针8字节</text>
+<text x="43" y="194" font-size="17" text-anchor="start" class="">第0行</text>
+<rect x="140" y="165" width="95" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="187.5" y="190" font-size="20" text-anchor="middle" class="">10</text>
+<text x="187.5" y="214" font-size="14" text-anchor="middle" class="mono">0x1000</text>
+<rect x="243" y="165" width="95" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="290.5" y="190" font-size="20" text-anchor="middle" class="">11</text>
+<text x="290.5" y="214" font-size="14" text-anchor="middle" class="mono">0x1004</text>
+<rect x="346" y="165" width="95" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="393.5" y="190" font-size="20" text-anchor="middle" class="">12</text>
+<text x="393.5" y="214" font-size="14" text-anchor="middle" class="mono">0x1008</text>
+<rect x="449" y="165" width="95" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="496.5" y="190" font-size="20" text-anchor="middle" class="">13</text>
+<text x="496.5" y="214" font-size="14" text-anchor="middle" class="mono">0x100C</text>
+<rect x="617" y="165" width="169" height="62" rx="5" fill="#eef5f8" stroke="#829ba8"/>
+<text x="629" y="189" font-size="17" text-anchor="start" class="">p[0] = 0x7000</text>
+<text x="629" y="213" font-size="15" text-anchor="start" class="">位于0x5000</text>
+<path d="M789,196 L862,196" fill="none" stroke="#34738d" stroke-width="2.5" marker-end="url(#a)"/>
+<rect x="875" y="165" width="64" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="907" y="190" font-size="20" text-anchor="middle" class="">10</text>
+<text x="907" y="214" font-size="12" text-anchor="middle" class="mono">0x7000</text>
+<rect x="945" y="165" width="64" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="977" y="190" font-size="20" text-anchor="middle" class="">11</text>
+<text x="977" y="214" font-size="12" text-anchor="middle" class="mono">0x7004</text>
+<rect x="1015" y="165" width="64" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="1047" y="190" font-size="20" text-anchor="middle" class="">12</text>
+<text x="1047" y="214" font-size="12" text-anchor="middle" class="mono">0x7008</text>
+<rect x="1085" y="165" width="64" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="1117" y="190" font-size="20" text-anchor="middle" class="">13</text>
+<text x="1117" y="214" font-size="12" text-anchor="middle" class="mono">0x700C</text>
+<text x="43" y="276" font-size="17" text-anchor="start" class="">第1行</text>
+<rect x="140" y="247" width="95" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="187.5" y="272" font-size="20" text-anchor="middle" class="">20</text>
+<text x="187.5" y="296" font-size="14" text-anchor="middle" class="mono">0x1010</text>
+<rect x="243" y="247" width="95" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="290.5" y="272" font-size="20" text-anchor="middle" class="">21</text>
+<text x="290.5" y="296" font-size="14" text-anchor="middle" class="mono">0x1014</text>
+<rect x="346" y="247" width="95" height="62" rx="5" fill="#ffe5bd" stroke="#829ba8"/>
+<text x="393.5" y="272" font-size="20" text-anchor="middle" class="">22</text>
+<text x="393.5" y="296" font-size="14" text-anchor="middle" class="mono">0x1018</text>
+<rect x="449" y="247" width="95" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="496.5" y="272" font-size="20" text-anchor="middle" class="">23</text>
+<text x="496.5" y="296" font-size="14" text-anchor="middle" class="mono">0x101C</text>
+<rect x="617" y="247" width="169" height="62" rx="5" fill="#fff0cf" stroke="#829ba8"/>
+<text x="629" y="271" font-size="17" text-anchor="start" class="">p[1] = 0x9000</text>
+<text x="629" y="295" font-size="15" text-anchor="start" class="">位于0x5008</text>
+<path d="M789,278 L862,278" fill="none" stroke="#34738d" stroke-width="2.5" marker-end="url(#a)"/>
+<rect x="875" y="247" width="64" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="907" y="272" font-size="20" text-anchor="middle" class="">20</text>
+<text x="907" y="296" font-size="12" text-anchor="middle" class="mono">0x9000</text>
+<rect x="945" y="247" width="64" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="977" y="272" font-size="20" text-anchor="middle" class="">21</text>
+<text x="977" y="296" font-size="12" text-anchor="middle" class="mono">0x9004</text>
+<rect x="1015" y="247" width="64" height="62" rx="5" fill="#ffe5bd" stroke="#829ba8"/>
+<text x="1047" y="272" font-size="20" text-anchor="middle" class="">22</text>
+<text x="1047" y="296" font-size="12" text-anchor="middle" class="mono">0x9008</text>
+<rect x="1085" y="247" width="64" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="1117" y="272" font-size="20" text-anchor="middle" class="">23</text>
+<text x="1117" y="296" font-size="12" text-anchor="middle" class="mono">0x900C</text>
+<text x="43" y="358" font-size="17" text-anchor="start" class="">第2行</text>
+<rect x="140" y="329" width="95" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="187.5" y="354" font-size="20" text-anchor="middle" class="">30</text>
+<text x="187.5" y="378" font-size="14" text-anchor="middle" class="mono">0x1020</text>
+<rect x="243" y="329" width="95" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="290.5" y="354" font-size="20" text-anchor="middle" class="">31</text>
+<text x="290.5" y="378" font-size="14" text-anchor="middle" class="mono">0x1024</text>
+<rect x="346" y="329" width="95" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="393.5" y="354" font-size="20" text-anchor="middle" class="">32</text>
+<text x="393.5" y="378" font-size="14" text-anchor="middle" class="mono">0x1028</text>
+<rect x="449" y="329" width="95" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="496.5" y="354" font-size="20" text-anchor="middle" class="">33</text>
+<text x="496.5" y="378" font-size="14" text-anchor="middle" class="mono">0x102C</text>
+<rect x="617" y="329" width="169" height="62" rx="5" fill="#eef5f8" stroke="#829ba8"/>
+<text x="629" y="353" font-size="17" text-anchor="start" class="">p[2] = 0xB000</text>
+<text x="629" y="377" font-size="15" text-anchor="start" class="">位于0x5010</text>
+<path d="M789,360 L862,360" fill="none" stroke="#34738d" stroke-width="2.5" marker-end="url(#a)"/>
+<rect x="875" y="329" width="64" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="907" y="354" font-size="20" text-anchor="middle" class="">30</text>
+<text x="907" y="378" font-size="12" text-anchor="middle" class="mono">0xB000</text>
+<rect x="945" y="329" width="64" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="977" y="354" font-size="20" text-anchor="middle" class="">31</text>
+<text x="977" y="378" font-size="12" text-anchor="middle" class="mono">0xB004</text>
+<rect x="1015" y="329" width="64" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="1047" y="354" font-size="20" text-anchor="middle" class="">32</text>
+<text x="1047" y="378" font-size="12" text-anchor="middle" class="mono">0xB008</text>
+<rect x="1085" y="329" width="64" height="62" rx="5" fill="#e9f1f5" stroke="#829ba8"/>
+<text x="1117" y="354" font-size="20" text-anchor="middle" class="">33</text>
+<text x="1117" y="378" font-size="12" text-anchor="middle" class="mono">0xB00C</text>
+<text x="42" y="453" font-size="17" text-anchor="start" class="">1. 算出第二行：0x1000 + 16 = 0x1010</text>
+<text x="42" y="490" font-size="17" text-anchor="start" class="">2. 再跨两项：0x1010 + 8 = 0x1018</text>
+<text x="42" y="527" font-size="17" text-anchor="start" class="">3. 从0x1018读取一个int，得到22</text>
+<text x="42" y="581" font-size="16" text-anchor="start" class="">0x1010处是整数20，没有另存一根行指针。</text>
+<text x="618" y="453" font-size="17" text-anchor="start" class="">1. 读表项：0x5000 + 1×8 = 0x5008</text>
+<text x="618" y="490" font-size="17" text-anchor="start" class="">2. 表项给出行起点0x9000</text>
+<text x="618" y="527" font-size="17" text-anchor="start" class="">3. 再到0x9000 + 2×4 = 0x9008，读得22</text>
+<text x="618" y="581" font-size="16" text-anchor="start" class="">行可分散；先读指针，再沿它读取int。</text>
+<text x="42" y="620" font-size="16" text-anchor="start" class="">橙色标最终读取的对象；所有地址为本例手算值。</text>
+</svg>

@@ -65,3 +65,9 @@
 - #link("https://man7.org/linux/man-pages/man2/read.2.html")[read]、#link("https://man7.org/linux/man-pages/man2/write.2.html")[write]、#link("https://man7.org/linux/man-pages/man2/dup.2.html")[dup]：实际计数、错误与描述符引用。
 - #link("https://man7.org/linux/man-pages/man3/malloc.3.html")[malloc/free/realloc]、#link("https://man7.org/linux/man-pages/man2/mmap.2.html")[mmap]：分配生命周期、映射与权限；页面中的Linux实现行为应与C/POSIX通用规则区分。
 - #link("https://man7.org/linux/man-pages/man3/pthread_cond_wait.3p.html")[pthread\_cond\_wait的POSIX说明]：等待时释放与重取锁，以及谓词重检查。
+
+== 新增完整示例的范围
+<新增完整示例的范围>
+14章的三线程示例采用POSIX线程，工作函数分别修改独立参数对象，主线程join后输出；它是解释创建、参数生命与同步的自编示例。17章的record-sum程序使用POSIX read解析固定四字节大端格式，并明确应用项数上限、截断与尾部策略。19章的heap-error是故意含越界的诊断输入，用于观察AddressSanitizer前移报错位置，不能作为正确分配用法。
+
+07章cs-aha-07-addresspaths.svg为本书自绘，比较3×4连续矩阵与三条行指针，两者仅在示例数据上相同；地址均为手算位置。01的16位字段、16的缓存写策略也是明确限定模型的自编预备例，不伪称教师原题。18章的FP8及INT8选择仍对应HW1第5题，对称量化示例显式取码域−127至127、固定比例因子，不代表所有部署的唯一约定。

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="395" viewBox="0 0 900 395"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<text x="450" y="27" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#192c40">均匀场沿+x：六个面分别算，再相加</text>
+<rect x="28" y="66" width="265" height="113" rx="6" fill="#f0f5fa" stroke="#b3c5d4" stroke-width="1.5"/>
+<text x="160" y="93" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">右面：外法向+x</text>
+<text x="160" y="125" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">与E夹角0°</text>
+<text x="160" y="157" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">通量 +2 N·m²/C</text>
+<rect x="323" y="66" width="265" height="113" rx="6" fill="#f0f5fa" stroke="#b3c5d4" stroke-width="1.5"/>
+<text x="455" y="93" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">左面：外法向−x</text>
+<text x="455" y="125" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">与E夹角180°</text>
+<text x="455" y="157" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">通量 −2 N·m²/C</text>
+<rect x="618" y="66" width="265" height="113" rx="6" fill="#f0f5fa" stroke="#b3c5d4" stroke-width="1.5"/>
+<text x="750" y="93" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">前面：外法向+z</text>
+<text x="750" y="125" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">与E夹角90°</text>
+<text x="750" y="157" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">通量 0 N·m²/C</text>
+<rect x="28" y="203" width="265" height="113" rx="6" fill="#f0f5fa" stroke="#b3c5d4" stroke-width="1.5"/>
+<text x="160" y="230" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">后面：外法向−z</text>
+<text x="160" y="262" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">与E夹角90°</text>
+<text x="160" y="294" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">通量 0 N·m²/C</text>
+<rect x="323" y="203" width="265" height="113" rx="6" fill="#f0f5fa" stroke="#b3c5d4" stroke-width="1.5"/>
+<text x="455" y="230" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">上面：外法向+y</text>
+<text x="455" y="262" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">与E夹角90°</text>
+<text x="455" y="294" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">通量 0 N·m²/C</text>
+<rect x="618" y="203" width="265" height="113" rx="6" fill="#f0f5fa" stroke="#b3c5d4" stroke-width="1.5"/>
+<text x="750" y="230" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">下面：外法向−y</text>
+<text x="750" y="262" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">与E夹角90°</text>
+<text x="750" y="294" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">通量 0 N·m²/C</text>
+<text x="450" y="372" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">a=0.10m，E=200N/C；总通量=2−2+0+0+0+0=0，E仍处处非零</text></svg>

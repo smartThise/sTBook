@@ -20,17 +20,30 @@
 
 == 3 · 三种树表示：多存一条边，省下哪种搜索
 <三种树表示多存一条边省下哪种搜索>
-只有parent时，判断u是否为v祖先，可从v向上走到根，最坏O(h)。接入新节点时设置parent即可，但若要列出它的所有孩子，就可能扫描全体节点。删除整棵子树若无孩子索引，也需要先找到哪些节点属于它，不能只看摘根那一步。
+固定同一棵有序树，再分别只保留三种目录：
 
-只有孩子列表时，从u向下DFS能判断v是否属于其子树，最坏O(size(u))；要从全树删除子树根，还需知道它在父节点孩子列表中的位置，若没有parent或外部位置，可能先从根搜索。已知插入父亲和孩子序号时，插入成本还取决于孩子容器是数组还是链表。
+```text
+        A
+      /   \
+     B     C
+    / \
+   D   E
 
-parent加孩子列表兼顾上溯和下行，但每次接入、移动、删除都要两边同步。删除含s个节点的子树至少要处理这s个对象，故实际释放Ω(s)。
+父目录：A→空，B→A，C→A，D→B，E→B。
+孩子目录：A:[B,C]，B:[D,E]，C:[]，D:[]，E:[]。
+```
 
-用一棵小树核对父表示的查询：A是根，B、C的parent为A，D、E的parent为B。问B是不是E的祖先，从E走到B就命中；问C是不是E的祖先，则E→B→A→空都没遇到C，拒绝。接入F为C的孩子，只写`parent[F]=C`便能表达这条父关系；但问"C有哪些孩子"时，只有parent数组就需扫描所有节点找parent等于C的项。一个方向的边能让上行容易，不会自动提供反向目录。
+#strong[只有parent]时，判断B是不是E的祖先，可以从E向上：E→B，命中；问C是不是E的祖先，则E→B→A→空都没有C。每步沿一条父边，最坏$O\(h + 1\)$，其中h是树高。这个过程并不需要先找B的孩子。
 
-相同树下求D和C的LCA：深度D为2、C为1，先把D移到B，使两边都深1；B与C不同，一起上移到A，得到答案A。每次走向parent都会使深度减1，故至多高度量级。
+现在把新节点F接到C下面，设置`parent[F]=C`便表达了父关系。但要列出C的所有孩子，父目录里没有"指向C的人"的反向名单，可能必须扫描全体节点。若要释放B整棵子树，也不能只删除B：D、E仍指向已经失效的对象。一个直接办法是对每个节点沿parent检查是否会到B，收集出B、D、E，再统一释放，最坏$O\(n h\)$；这只是一个正确但不一定最优的办法，不应把"设置一条父边常数时间"推广到"整棵子树删除常数时间"。
 
-求LCA时，有parent可先算深度、把更深节点上移，再同时上移，O(h)时间；没有parent，可从根找两条路径再比较最后公共位置，普通实现O(n)时间、O(h)路径空间。预处理倍增或时间戳能改进多次查询，但需要额外结构和预处理成本。
+#strong[只有孩子列表]时，B的目录直接给出D、E，所以从B下行就能访问它的整棵子树；问E是否属于它，DFS最坏访问$s i z e\(B\)$个节点。但若现在只拿到待删节点B，想把它从全树接线中摘掉，还需找到父亲A，以及B在`A.children`中的位置。没有父目录或外部给定位置，普通办法从根搜索，最坏$O\(n\)$。找到后，在数组孩子表中删去B还要移动后面的C；在有已知位置的双向孩子链表中，摘掉可以常数改链。不能只写"孩子列表插删$O\(1\)$"而不说存储形式和已知句柄。
+
+#strong[两种目录都保留]时，接入F就要同时执行`C.children`加入F、`F.parent=C`。删除B整棵子树时，先从A的孩子表摘B，再沿B的孩子表处理D、E，最后处理B；所有权若要求逐个释放这s个对象，至少要$Omega\(s\)$。移动B到C下面则不同：D、E不必逐个改parent，因为它们的直接父亲仍是B；只改A、C的孩子列表与`B.parent`，并检查C不是B的后代，否则会把树接成环。
+
+两侧目录的同步也可用同一图检查：把B移到C下面以后，父目录只有B由A改为C，孩子目录由`A:[B,C],C:[]`改为`A:[C],C:[B]`，B仍为`[D,E]`。若漏改任一侧，向上与向下遍历就会对"B在哪里"给出相互矛盾的答案。
+
+求D和C的最近公共祖先LCA，已有parent时先算深度：D深2、C深1；把D移到B，使两边同深1。B与C不同，再一起上移到A，得到答案。两者每次都向根前进，时间$O\(h + 1\)$。只有孩子列表时，可从根分别找到通往两点的路径`A,B,D`与`A,C`，比较最后一个相同节点，得到A；普通搜索最坏$O\(n\)$时间，保存路径需$O\(h + 1\)$空间。若需要大量LCA查询，再考虑额外预处理，不能把它的成本省掉后用于本题的原结构比较。
 
 == 4 · 叶子总比双分支多一个：同一条边数两遍
 <叶子总比双分支多一个同一条边数两遍>
@@ -140,19 +153,42 @@ B                      B   #
 
 中序也可以先复制左边，保存结果L，创建当前根，再复制右边并连接；不能因为"根在中间创建"就说不可能。要保存孩子身份，而非仅把中序值输出，再当作BST插入，那会改变原形状。
 
-后序复制的最小实现可直接对照结构：
+用一个最小节点类实现它。这里把parent、height、size一起维护，后面的重建也使用相同节点表示。`make_tree`接上的两棵子树应当原本互不相交；它不是随意移动现有共享子图的通用接口。
 
-```text
-clone(p):
-    若p为空，返回空
-    L = clone(p.left)
-    R = clone(p.right)
-    q = 新建与p数据相同的节点
-    q.left=L；若L非空则L.parent=q
-    q.right=R；若R非空则R.parent=q
-    更新q的height/size
-    返回q
+```python
+from dataclasses import dataclass
+
+@dataclass(eq=False)
+class TreeNode:
+    data: object
+    left: object = None
+    right: object = None
+    parent: object = None
+    height: int = 0
+    size: int = 1
+
+def make_tree(data, left=None, right=None):
+    node = TreeNode(data, left, right)
+    if left is not None:
+        left.parent = node
+    if right is not None:
+        right.parent = node
+    hl = left.height if left is not None else -1
+    hr = right.height if right is not None else -1
+    node.height = 1 + max(hl, hr)
+    node.size = 1 + (left.size if left is not None else 0) \
+                  + (right.size if right is not None else 0)
+    return node
+
+def clone(node, copy_data=lambda x: x):
+    if node is None:
+        return None
+    left_copy = clone(node.left, copy_data)
+    right_copy = clone(node.right, copy_data)
+    return make_tree(copy_data(node.data), left_copy, right_copy)
 ```
+
+左右递归都返回以后，两个孩子的height、size已经算好，当前节点才能据此更新。克隆树的根parent默认为空，接到更大的克隆子树时再由新父亲更新；不会从原树照抄parent地址。默认的数据处理适合整数、字符串等不需要另复制可变资源的标签；如果data里有可变列表，默认会共享那个列表，调用者应另传合适的`copy_data`，例如深复制函数。树节点独立与节点内业务资源独立，是两层不同承诺。
 
 对原树A左B右C，先创建新B'，再C'，最后A'，连接A'.left=B'、A'.right=C'。根数据相同但地址不相同，且B'、C'都不指回原A。只复制中序`B,A,C`并逐项插入BST，可能得到根B、右A、A右C，与原形状不同。复制值序列不能代替复制孩子位置。
 
@@ -293,7 +329,7 @@ def preorder_right_vine_iter(root, visit):
   D   c
 ```
 
-访问A、B、C、D时，栈中的非空右任务依次为`[a]、[a,b]、[a,b,c]、[a,b,c]`，底层任务c最先恢复。树高3，待办峰值3。左链若完全不挂右叶，左祖先数仍大，实际非空任务却为0，说明这个数量是上界而非每棵树的精确等式。
+访问A、B、C、D时，栈中的非空右任务依次为`[a]、[a,b]、[a,b,c]、[a,b,c]`，栈顶任务c最先恢复。树高3，待办峰值3。左链若完全不挂右叶，左祖先数仍大，实际非空任务却为0，说明这个数量是上界而非每棵树的精确等式。
 
 题目问两个上界之比的数学期望，必须说明树形与选点分布。左右方向独立对称的一条固定路径，其左转次数期望是路径长一半；但"全树最大左祖先数/全树高度"的期望不是因此自动一半。max与期望以及比值都不能随意交换。没有随机模型，不能给出普遍数字。
 
@@ -444,6 +480,46 @@ pre = [A,B,D,E,C]       post = [D,E,B,C,A]
 
 用标签到后序位置的字典可使定位期望常数，总体O(n)；若每层线性找标签，退化树形可二次。还要验证左右块均合法、根标签一致、标签集合一致，不能把不一致序列强行拼成树。
 
+下面的完整实现不复制子数组，递归参数分别指定先序和后序的半开边界。标签要求可哈希且互异，用字典定位后序位置。它先核对集合，递归中再核对对应的根和左右块；集合一样只是必要条件，并不自动保证遍历相容。
+
+```python
+def full_tree_from_pre_post(pre, post):
+    n = len(pre)
+    if len(post) != n or len(set(pre)) != n \
+            or len(set(post)) != n or set(pre) != set(post):
+        raise ValueError("两序列须含相同的互异标签")
+    position = {label: i for i, label in enumerate(post)}
+
+    def build(pl, pr, ql, qr):
+        size = pr - pl
+        if size != qr - ql:
+            raise ValueError("对应子树的节点数不同")
+        if size == 0:
+            return None
+        if pre[pl] != post[qr - 1]:
+            raise ValueError("先序首项与后序末项不是同一根")
+        if size == 1:
+            return make_tree(pre[pl])
+        if size % 2 == 0:
+            raise ValueError("非空真二叉树节点数必须为奇数")
+        left_end = position[pre[pl + 1]]
+        if not ql <= left_end < qr - 1:
+            raise ValueError("左根不在当前后序块内")
+        left_size = left_end - ql + 1
+        right_size = size - 1 - left_size
+        if left_size % 2 == 0 or right_size <= 0 or right_size % 2 == 0:
+            raise ValueError("内部节点必须有两棵非空真子树")
+        left = build(pl + 1, pl + 1 + left_size, ql, left_end + 1)
+        right = build(pl + 1 + left_size, pr, left_end + 1, qr - 1)
+        return make_tree(pre[pl], left, right)
+
+    return build(0, n, 0, n)
+```
+
+对`pre=ABDEC, post=DEBCA`，第一次参数是`(0,5,0,5)`；字典找到B在后序2，切成`(1,4,0,3)`与`(4,5,3,4)`，恰对应上图。单标签是叶；两份空序列约定恢复空树；`pre=AB,post=BA`虽然能表示单孩子树，却不属于本接口的真树范围。又如`pre=ABCDE,post=DBECA`，标签集合相同、根也同为A，但B在后序1导致左块大小2，立即拒绝，不能制造一棵不符合真树要求的结果。
+
+在字典期望常数定位模型下，预处理和递归总计$O\(n\)$时间，新树$Theta\(n\)$存储、调用栈$O\(h + 1\)$。最后还可以独立遍历新树，把先后序与输入逐项比较，并检查每个内部节点恰有两个孩子、每条孩子的parent确实指回父亲；这些是比"能画出一棵树"更完整的核对。
+
 == 30 · 增强遍历：空标记能救先序、后序，救不了中序
 <增强遍历空标记能救先序后序救不了中序>
 先序读一个token，若是\#返回空；否则建根，再依次读取左、右子树。对 `A B # # C # #`，先建A，左建B并读两个空，右建C并读两个空，边界被递归结构唯一确定。
@@ -461,6 +537,33 @@ pre = [A,B,D,E,C]       post = [D,E,B,C,A]
 后序从末尾反读，遇根后先恢复右、再恢复左，同样唯一。每个真实节点和空位置读一次，时间线性，还要检查最后有没有多余token。
 
 中序增强不唯一：A只有右孩子B，与B只有左孩子A，都会给 `# A # B #`。空标记本身不自动记录根在哪，所以"所有增强序列都能唯一重建"是错误推广。
+
+增强先序的读取规则也能写成真正有错误出口的解析器。下面用`None`作空token，因此真实数据不允许等于None；数据中若要使用它，需另选带类型的标记。
+
+```python
+def tree_from_augmented_preorder(tokens):
+    cursor = iter(tokens)
+
+    def read():
+        try:
+            token = next(cursor)
+        except StopIteration:
+            raise ValueError("序列提前结束，仍欠孩子") from None
+        if token is None:
+            return None
+        left = read()
+        right = read()
+        return make_tree(token, left, right)
+
+    root = read()
+    try:
+        next(cursor)
+    except StopIteration:
+        return root
+    raise ValueError("树已经完整，后面仍有多余token")
+```
+
+`['A','B',None,None,'C',None,None]`恢复上面的三节点树。若删去末尾None，递归到C的右孩子时发现还欠一个token而报错；若尾部再加'D'，整树读取后发现多余token而报错。空树必须显式写成`[None]`，完全空的token流没有给出那棵空树的表示，因而属于截断输入。这个区别使解析器能报告文件损坏，避免把缺失数据默默解释成空孩子。
 
 == 31 · 组合重建：每个"唯一"都带着前提
 <组合重建每个唯一都带着前提>
@@ -533,13 +636,13 @@ $W_1$是第一棵子树所有叶权之和，不是子树根原来的data；$d_1$
 
 == 36 · 平均比较排序下界：少数短路径救不了所有排列
 <平均比较排序下界少数短路径救不了所有排列>
-互异n项共有n!个等概率排列，每个对应决策树一片可区分叶，深度di是比较次数。二叉树满足Kraft界 $sum 2^(- d_i) lt.eq 1$，且函数 $2^(- x)$ 凸，所以 $ 2^(- macron(d)) lt.eq frac(1, n !) sum_i 2^(- d_i) lt.eq frac(1, n !)\, $ 得到 $macron(d) gt.eq log_2\(n !\)= Omega\(n log n\)$。
+只讨论通过二元大小比较决定控制流程、对每个输入都正确的排序算法。互异n项共有$n !$个等概率排列，每个排列必须落在足以确定其顺序的决策叶上。令$N = n !$，叶$i$的深度$d_i$就是这个输入的比较次数，所有输入的平均深度为$macron(d) =\(d_1 + dots.h.c + d_N\)\/N$。只知道某片叶很深，只能约束最坏情况；这里必须把N片叶一起计算。
 
-上式中的Kraft界可以不用新术语直接看成空间分配：给二叉决策树根一个长度1的区间，每比较一次把当前区间平分给两个孩子。深度$d_i$的叶占长度$2^(- d_i)$，不同叶区间不相交，所以总长≤1。设$N = n !$，这N个长度的几何平均不超过算术平均，于是
+先看二叉决策树给叶子分配了多少可区分的空间：给二叉决策树根一个长度1的区间，每比较一次把当前区间平分给两个孩子。深度$d_i$的叶占长度$2^(- d_i)$，不同叶区间不相交，所以总长≤1。设$N = n !$，这N个长度的几何平均不超过算术平均，于是
 
 $ (product_(i = 1)^N 2^(- d_i))^(1\/N) = 2^(-\(d_1 + dots.h.c + d_N\)\/N) lt.eq frac(sum_i 2^(- d_i), N) lt.eq 1 / N . $
 
-两边取以2为底的对数再改符号，便得到平均深度$macron(d) gt.eq log_2 N$。最深叶只约束一个输入；这一平均数不等式把所有叶都算进来，因此才能回答本题。
+两边取以2为底的对数再改符号，便得到平均深度$macron(d) gt.eq log_2 N$。叶区间总长不超过1的性质常称为Kraft界；上面的几何平均不超过算术平均，也等价于对凸函数$2^(- x)$使用平均值不等式。先有具体叶区间，再看这些术语，证明中就没有凭空多出的一条定理。最深叶只约束一个输入；这一平均数不等式把所有叶都算进来，因此才能回答本题。
 
 也就是说，哪怕某些输入一眼就能认出，其他分支必须付出足够比较，均匀平均仍不能突破此界。若输入分布高度集中，平均下界应该用其信息量重新描述；若采用整数桶、位运算等超出比较模型的操作，也不能把这条下界照搬过去。
 

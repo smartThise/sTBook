@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="450" viewBox="0 0 1100 450">
+<rect width="1100" height="450" fill="#fff"/>
+<style>text{font-family:Arial, 'PingFang SC', 'Noto Sans CJK SC', sans-serif;fill:#172334}.title{font-size:25px;font-weight:600}.note{font-size:16px;fill:#68778b}</style>
+<text x="28" y="35" class="title">插入13：末叶先出现4键</text>
+<text x="28" y="65" class="note">教师事后修复版：(a,b)=(2,4)，非根页1–3键；4键或0键是待修复暂态</text>
+<line x1="540" y1="155" x2="145" y2="265" stroke="#8090a3" stroke-width="2.2"/>
+<line x1="540" y1="155" x2="405" y2="265" stroke="#8090a3" stroke-width="2.2"/>
+<line x1="540" y1="155" x2="665" y2="265" stroke="#8090a3" stroke-width="2.2"/>
+<line x1="540" y1="155" x2="925" y2="265" stroke="#8090a3" stroke-width="2.2"/>
+<rect x="463.0" y="105" width="154" height="50" rx="8" fill="#f4f8ff" stroke="#2563eb" stroke-width="2.5"/><text x="540" y="138" text-anchor="middle" style="font-size:23px;fill:#2563eb">3 | 6 | 9</text>
+<rect x="96.0" y="265" width="98" height="50" rx="8" fill="#f4f8ff" stroke="#2563eb" stroke-width="2.5"/><text x="145" y="298" text-anchor="middle" style="font-size:23px;fill:#2563eb">1 | 2</text>
+<rect x="356.0" y="265" width="98" height="50" rx="8" fill="#f4f8ff" stroke="#2563eb" stroke-width="2.5"/><text x="405" y="298" text-anchor="middle" style="font-size:23px;fill:#2563eb">4 | 5</text>
+<rect x="616.0" y="265" width="98" height="50" rx="8" fill="#f4f8ff" stroke="#2563eb" stroke-width="2.5"/><text x="665" y="298" text-anchor="middle" style="font-size:23px;fill:#2563eb">7 | 8</text>
+<rect x="792.0" y="265" width="266" height="50" rx="8" fill="#f4f8ff" stroke="#b91c1c" stroke-width="2.5"/><text x="925" y="298" text-anchor="middle" style="font-size:23px;fill:#b91c1c">10 | 11 | 12 | 13</text>
+<text x="670" y="365" class="note">末叶上溢；取下标2的12上交</text>
+<text x="670" y="393" class="note">拆后左页[10,11]，右页[13]</text>
+</svg>

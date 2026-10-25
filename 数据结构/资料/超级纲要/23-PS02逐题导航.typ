@@ -4,12 +4,15 @@
 
 == 1 · 面向对象：从一个能自己维护状态的小类开始
 <面向对象从一个能自己维护状态的小类开始>
-对象是一次具体存在，例如某份成绩记录；类说明这些对象有哪些数据、能做哪些操作。属性保存状态，方法读写状态。构造函数建立合法初态，析构函数在对象生命结束时释放它独占的资源。把数据放进类，却允许外部随手把规模改成比容量大，仍没有保护合法状态。
+先做一个具体的小程序：保存两个数，求和；再让一个对象记住"每次加3"；最后从同一种基类接口查询不同图形的角数。这三个要求分别用到模板、函数对象和虚函数，先看它们各自解决什么问题，避免把名词混成一团。
 
 ```cpp
+#include <iostream>
+
 template<class T>
-struct Pair {
+class Pair {
     T first, second;
+public:
     Pair(T a, T b) : first(a), second(b) {}
     T sum() const { return first + second; }
 };
@@ -17,13 +20,6 @@ struct AddTo {
     int delta;
     void operator()(int& x) const { x += delta; }
 };
-```
-
-`Pair<int> p(2,5)` 把模板参数T具体化成int，`p.sum()` 得7。`AddTo plus3{3}; plus3(x);` 看起来像函数调用，其实调用对象的 `operator()`，delta则保存在对象里。
-
-把继承和虚方法也落到一次调用上：
-
-```cpp
 struct Shape {
     virtual int corners() const { return 0; }
     virtual ~Shape() = default;
@@ -31,14 +27,29 @@ struct Shape {
 struct Triangle : Shape {
     int corners() const override { return 3; }
 };
-Triangle t;
-Shape& s = t;
-// s.corners() 返回3，因为它是虚方法，实际对象为Triangle。
+int main() {
+    Pair<int> p(2, 5);
+    Pair<double> q(0.5, 1.25);
+    std::cout << p.sum() << ' ' << q.sum() << '\n';
+    int x = 4;
+    AddTo plus3{3};
+    plus3(x);
+    std::cout << x << '\n';
+    Triangle t;
+    Shape& s = t;
+    std::cout << s.corners() << '\n';
+}
 ```
 
-`s`的静态类型是`Shape&`，但它引用的对象是`t`。若把`virtual`去掉，并相应去掉派生类的`override`，通过`Shape&`调用便选基类方法而返回0。虚析构使将来通过基类指针释放派生对象有合适的析构行为；它与"运行时挑哪一个普通方法"是相关但不同的规则。模板则是在编译时按`T`生成合适代码，不能把模板和虚函数当同一种机制。
+输出依次是`7 1.75`、`7`和`3`。从第一行开始看：`Pair<int>`把T确定为int，两个成员存的是2和5；`Pair<double>`则存0.5和1.25。模板是按类型生成相应代码的规则，`Pair`本身并不是一个已经装了两个数的对象。`p`与`q`才是实际存在的对象，各自保有数据。
 
-重载是在同一名称下提供不同参数签名；重写是派生类替换基类的虚方法实现。通过基类指针调用非虚方法，并不会自动按对象实际类型改选。阅读Vector模板时，先判断当前是哪个对象、哪个类型、哪份资源，再研究语法，别让一串名词把状态藏起来。
+`Pair(T a,T b) : first(a),second(b)`是构造函数，冒号后在进入函数体前初始化两个成员。这里成员不向外公开，外部不能随手更改它们；`sum() const`表示这次求和不修改该对象的普通成员。课程Vector同样要用构造函数建立`size<=capacity`等合法初态，不过它还拥有动态资源，需要进一步处理复制和析构；本例没有自己申请数组，不能拿它代替资源管理例子。
+
+`plus3`中`delta`存3。表达式`plus3(x)`调用的是`operator()`，形参`int&`直接引用原来的x，因此把x由4变成7。若写成`int x`而没有`&`，改的将是函数内的副本，主函数中的x仍为4。方法结尾的`const`只说明不会改`plus3.delta`，不妨碍通过引用修改另外的x。这是两个不同对象，不能见到`const`就断言所有东西都不能改。
+
+最后，`s`的静态类型是`Shape&`，引用的实际对象却是Triangle的`t`。`corners`是虚方法，所以运行时选择Triangle的实现，得到3。若把基类的`virtual`和派生类的`override`一起去掉，通过`Shape&`调用将选基类方法而返回0。`override`的作用是要求编译器核对"我确实在重写基类虚方法"，拼错签名会被报错。
+
+虚析构保证将来通过基类指针释放派生对象时有合适的析构行为；它不是求角数所需的步骤，但与这个可派生接口的资源安全有关。#strong[重载]是在同一名称下提供不同参数签名，#strong[重写]则是派生类提供基类虚方法的实现。模板在编译期按类型选代码，虚调用根据实际对象选择实现；读Vector模板时，应分别看清类型、对象、引用和资源，而不是用一句"多态"盖过它们。
 
 == 2 · std::vector：reserve以后，为什么仍不能写v\[0\]
 <stdvectorreserve以后为什么仍不能写v0>
@@ -182,7 +193,21 @@ Shape& s = t;
 
 改成低于C/4才缩为C/2，缩后约半满。要再扩容得插入约C/4项，要再缩还需删掉一批项。这个间隔使累计收费能够覆盖搬移。
 
-例如容量16、规模8，删到7先不缩；删到4附近满足具体阈值时才缩为8。"小于"还是"小于等于"会改变边界那一步，但不改变要留间隔的理由。最小容量要有固定下限，空表也不应反复分配无意义的零长数组。
+仍从容量16、规模8开始，固定采用严格不等式$n < C\/4$，用同一串"加2、删2"就看得出差别：
+
+#figure(
+  align(center)[#table(
+    columns: 3,
+    align: (auto,auto,auto,),
+    table.header([操作结束时的规模], [8→7→8→9→8→7], [每步是否触发迁移],),
+    table.hline(),
+    [半满就缩], [容量16→8→8→16→16→8], [搬7、0、8、0、7项],
+    [四分之一才缩], [容量一直16], [全部不迁移],
+  )]
+  , kind: table
+  )
+
+继续一直删除时，规模4恰好等于16/4，仍不缩；删到3才搬3项，容量改成8。此时再追加5项可使规模依次4、5、6、7、8，都不迁移，第6次追加才先扩成16再写第9项。若改为继续删，容量8的阈值是2，规模2仍不缩，删到1才再缩。昂贵操作之间隔着与当前容量成比例的一批普通操作，才是摊还成本可控的原因。阈值用$l e$会挪动边界那一步，分析时必须统一；最小容量还要有固定下限，空表不应反复分配零长数组。
 
 == 11 · 去重里的哨兵：当前项本来就在停止位置上
 <去重里的哨兵当前项本来就在停止位置上>
@@ -227,20 +252,36 @@ Shape& s = t;
 
 == 13 · 函数对象：累加到的是外部对象还是内部副本
 <函数对象累加到的是外部对象还是内部副本>
-求和访问器保存一个累加状态：
+求和访问器保存累加状态。要判断结果保存在哪里，必须把访问器的传参方式一起写出来，而不能只看到`operator()`就认为外部对象会变化：
 
 ```cpp
+#include <iostream>
+#include <vector>
 struct Sum {
     long long value = 0;
     void operator()(const int& x) { value += x; }
 };
-// 假设 traverse 按引用接收访问器
-Sum s;
-v.traverse(s);
-std::cout << s.value;
+template<class Visitor>
+void traverse_ref(const std::vector<int>& a, Visitor& visit) {
+    for (const int& x : a) visit(x);
+}
+template<class Visitor>
+Visitor traverse_copy(const std::vector<int>& a, Visitor visit) {
+    for (const int& x : a) visit(x);
+    return visit;
+}
+int main() {
+    std::vector<int> a{2, -1, 5};
+    Sum s;
+    traverse_ref(a, s);
+    std::cout << s.value << '\n';
+    Sum t;
+    Sum result = traverse_copy(a, t);
+    std::cout << t.value << ' ' << result.value << '\n';
+}
 ```
 
-对\[2,-1,5\]，状态0→2→1→6。若traverse按值接收，内部副本变成6，外部s仍是0。先看函数签名，再判断它有没有工作。也可让接口返回访问器副本，但设计必须明确。
+第一种在调用点把s直接交给引用，访问后的状态是0→2→1→6，外部s也为6。第二种先把t复制成形参visit，内部副本同样变成6，原t仍为0；返回的副本由result接住，因此输出`0 6`。两种接口都能实现求和，调用者取结果的位置不同。课程`traverse`究竟采用哪一种，应读它的签名再调用；不能拿这段演示函数名当作课程已有接口。
 
 空表求和保持初值0；整数元素多了以后可能超过int，所以累加器范围仍要算。函数对象能把"访问时顺便保存状态"组织起来，不能免掉数值范围和复制语义。
 
@@ -292,7 +333,7 @@ read向前读，write指向最后保留位置；新值与保留值不同才推�
 
 == 19 · 分支次序：大O相同，不等于比较次数相同
 <分支次序大o相同不等于比较次数相同>
-一次查找要区分小于、大于、等于轴点三种情况。用两个if和末尾else表达，排在第一种的情况只用一次关键字比较，其余用两次。若本层三类概率为 $p_L\,p_R\,p_E$，把概率最大的类别放第一，理想化的期望比较次数为 $2 - max\(p_L\,p_R\,p_E\)$。
+一次查找要区分小于、大于、等于轴点三种情况。用两个if和末尾else表达，排在第一种的情况只用一次关键字比较，其余用两次。若本层三类概率为$p_L\,p_R\,p_E$，三者之和为1；设放第一的类别概率为$p$，则成本为$1 c d o t p + 2 c d o t\(1 - p\)= 2 - p$。所以在这套收费且各类都能用一次测试辨别的模型下，应把概率最大的类别放第一，最小期望为$2 - m a x\(p_L\,p_R\,p_E\)$。实际比较器若只提供`<`，要先确认能否真的用一次操作判断所选类别；判等可能需要两次`<`，这时得重列成本。
 
 无论怎么排，只要每次把区间按固定比例缩短，最坏迭代轮数仍是 $Theta\(log n\)$。但相等命中若极少，把相等测试放第一，就可能每层几乎都要多做一次比较。取百万个互异uint32\_t关键字、目标在全部 $2^32$ 个数中均匀抽取，总命中概率约 $10^6\/2^32 approx 0.000233$，即0.0233%。
 
@@ -398,7 +439,7 @@ def predecessor(a, target, lo, hi):
 
 一般n就不能把"同一主项"说成精确相等。n=2时，间隙依次小于首项、两项之间、大于末项，比较次数为2、2、1，失败平均为5/3；目标等于两个关键字时为2、1，成功平均为3/2。两者已经不同。
 
-设 $N = n + 1\,k = floor.l log_2 N floor.r$，这类对半决策树的间隙深度为k或k+1。深层叶数为 $2\(N - 2^k\)$，因此叶深总和 $D = N\(k + 2\)- 2^(k + 1)$，失败均值为D/N。成功等于第j个键的轨迹与其右侧间隙相同，所以成功均值是 $\(D - d_0\)\/n$，其中 $d_0 = ceil.l log_2\(n + 1\)ceil.r$ 是最左间隙深度。
+沿用刚才的$N\,k\,D$，失败均值是$D\/N$，因为这次把所有$N$个间隙等概率平均。成功等于第j个键的轨迹与其右侧间隙相同，成功查询覆盖除最左间隙外的所有叶子，因此成功均值是$\(D - d_0\)\/n$。其中$d_0 = l c e i l l o g_2\(n + 1\)c e i l$是最左间隙深度。例如$n = 2$有$N = 3\,k = 1\,D = 5\,d_0 = 2$，代回正好得到失败$5\/3$、成功$\(5 - 2\)\/2 = 3\/2$。$n = 0$没有成功键，成功平均本来就未定义；失败查询则0次。
 
 这些式子共同给出 $log_2 n + O\(1\)$，即主项系数为1。题面用大Theta串起的表达应按渐近意义理解；若要求任意n时两个精确均值相等，上面的n=2就是反例。对数底与概率模型也必须说明。
 
@@ -548,6 +589,51 @@ Hopcroft结构用稠密表dense保存当前存在的值，稀疏表sparse给出�
 将"查不到的旧值"也走一次：删除9前，查询9读`sparse[9]=1`，1\<3且`dense[1]=9`，两关都过；删除后m=2，旧`sparse[9]`仍为1，第一关1\<2还过，但第二关`dense[1]=2!=9`，因此拒绝。若只检查位置在有效范围，就会把9错判为仍存在。后来再插入9，写`dense[2]=9,sparse[9]=2,m=3`，双向关系重新建立。
 
 每次只改常数个格子，因此删除O(1)。前提是先确认x确实存在；若拿一个无效sparse位置直接搬，会破坏其他记录。删后dense的顺序可能变化，这也是它与保持插入顺序容器的差别。
+
+这三个接口可以放在同一个完整结构里验证。为避免读取未初始化位置，下面在创建时初始化sparse；"常数时间清空"只指创建完成后把逻辑长度改成0。
+
+```python
+class SparseSet:
+    def __init__(self, universe):
+        if universe < 0:
+            raise ValueError("值域大小非负")
+        self.sparse = [0] * universe
+        self.dense = [0] * universe
+        self.size = 0
+
+    def contains(self, x):
+        return (0 <= x < len(self.sparse)
+                and self.sparse[x] < self.size
+                and self.dense[self.sparse[x]] == x)
+
+    def add(self, x):
+        if not 0 <= x < len(self.sparse):
+            raise ValueError("元素超出值域")
+        if self.contains(x):
+            return False
+        self.dense[self.size] = x
+        self.sparse[x] = self.size
+        self.size += 1
+        return True
+
+    def remove(self, x):
+        if not self.contains(x):
+            return False
+        hole = self.sparse[x]
+        last = self.dense[self.size - 1]
+        self.dense[hole] = last
+        self.sparse[last] = hole
+        self.size -= 1
+        return True
+
+    def clear(self):
+        self.size = 0
+
+    def values(self):
+        return self.dense[:self.size]
+```
+
+例如依次加入4、9、2，删除9，`values()`得到`[4,2]`，再加入9得到`[4,2,9]`。`clear()`不擦数组，但随后所有`contains`的第一关都失败；重新插入时会逐项建立新的双向对应。`remove`删除末项时让它写回自身也合法，只是多做两次常数赋值。`values()`为了返回一个独立列表要复制size项，耗$O\(s i z e\)$，这不影响内部单项查、增、删和逻辑清空的常数时间结论。
 
 == 43 · Hopcroft位图：免掉全域扫描，付出什么代价
 <hopcroft位图免掉全域扫描付出什么代价>
