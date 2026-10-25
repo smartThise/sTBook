@@ -211,6 +211,8 @@ package.json
 /马克思主义基本原理/slides/第01讲-2026周一.pptx
 
 # 本地编译产物（源码、测试输入与报告照常发布）
+__pycache__/
+*.py[cod]
 **/*.dSYM/
 /数据结构/HW/Lab1/code/debug/battle_fixed_run/battle
 /数据结构/HW/Lab1/code/debug/battle_fixed_run/check_input

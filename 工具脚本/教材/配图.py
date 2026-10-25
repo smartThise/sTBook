@@ -37,7 +37,7 @@ for q in ax:q.legend(fontsize=8);q.grid(alpha=.2)
 save('大学物理B(2)','本书示意-势阱波函数与密度',f)
 
 n=np.arange(2,41);f,ax=plt.subplots(figsize=(7,3.6))
-for y,label,col in [(n,'n',BLUE),(n*np.log2(n),'n log₂n',GREEN),(n*n,'n²',RED),(2.0**n,'2ⁿ',GRAY)]:ax.semilogy(n,y,label=label,color=col)
+for y,label,col in [(n,'n',BLUE),(n*np.log2(n),r'$n\log_2 n$',GREEN),(n*n,r'$n^2$',RED),(2.0**n,r'$2^n$',GRAY)]:ax.semilogy(n,y,label=label,color=col)
 ax.set(xlabel='输入规模 n',ylabel='操作量（对数纵轴）',title='增长快慢：纵轴每大格都是乘一个倍数');ax.legend();ax.grid(alpha=.2);save('数据结构','本书示意-复杂度增长',f)
 X='ABCBDAB';Y='BDCABA';d=np.zeros((len(X)+1,len(Y)+1),dtype=int)
 for i,c in enumerate(X,1):
