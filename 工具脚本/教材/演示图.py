@@ -1206,5 +1206,145 @@ DEMOS.update({
     "ds08-stackperm": demo_stack_perm,
 })
 
+
+
+# ---------- 演示：ch09 轮转调度 ----------
+
+def demo_roundrobin():
+    q = ["A", "B", "C", "D"]
+    frames = []
+    W, H = 720, 220
+    X, Y, CW = 60, 110, 92
+
+    def scene(queue, front, serve, note, round_no):
+        sc = Scene(W, H)
+        sc.label(X, 30, f"轮转调度第{round_no}轮：队首出队→接受一个时间片→重新入队", size=15, fill=SUB)
+        for k, name in enumerate(queue):
+            hot = (k == front) or (serve == name)
+            sc.add("rect", x=X + k * (CW + 6), y=Y, width=CW, height=52, rx=10,
+                   fill=(HOT if hot else (WRITE if k == len(queue) - 1 and serve else CELL)),
+                   stroke=(HOT_STROKE if hot else CELL_STROKE), stroke_width=1.5)
+            sc.label(X + k * (CW + 6) + CW / 2, Y + 26, name, size=18, mono=True, anchor="middle")
+            if k == front:
+                sc.label(X + k * (CW + 6) + CW / 2, Y - 8, "队首→出队", size=12, fill=HOT_STROKE, anchor="middle")
+            if k == len(queue) - 1 and serve:
+                sc.label(X + k * (CW + 6) + CW / 2, Y + 72, "← 重新入队", size=12, fill=WRITE_STROKE, anchor="middle")
+        sc.label(X, 196, note, size=15)
+        return sc
+
+    frames.append(frame("初始队列", "A、B、C、D共享一个CPU，按FIFO公平轮转。", "队列保证谁等得最久谁先被服务。",
+                        "一轮之后谁排在最前？", scene(q, 0, None, "等待调度。", 1)))
+    for rnd in range(2):
+        head = q.pop(0)
+        frames.append(frame(f"第{rnd+1}轮：{head}出队", f"队首{head}出队，接受一个时间片的服务。", "服务时长quantum有限：一次只服务一小段。",
+                            "", scene(q, 0, head, f"{head}正在服务。", rnd + 1)))
+        q.append(head)
+        frames.append(frame(f"第{rnd+1}轮：{head}重新入队", f"{head}挂到队尾，让位给等待更久的伙伴。", "出队→服务→入队三步，循环往复，公平由此而来。",
+                            "", scene(q, 0, None, f"{head}已回到队尾。", rnd + 1)))
+    frames.append(frame("公平性", "每轮循环后队列循环左移一格：没有客户会被饿死。", "FIFO次序即公平次序；CPU、打印机等共享资源皆用此法。",
+                        "", scene(q, 0, None, "队列回到循环平移后的状态。", 3)))
+    return write_demo("ds09-roundrobin", "轮转调度：出队、服务、再入队", frames)
+
+
+# ---------- 演示：ch09 双栈当队 ----------
+
+def demo_two_stack_queue():
+    frames = []
+    W, H = 760, 280
+    XR, XF, Y, CW = 60, 420, 120, 70
+
+    def scene(R, F, note, why, hotR=None, hotF=None):
+        sc = Scene(W, H)
+        sc.label(XR, 30, "R栈：只管enqueue（新元素压入R顶）", size=14, fill=SUB)
+        for i, v in enumerate(R):
+            sc.add("rect", x=XR, y=Y + (3 - i) * 54, width=CW, height=46, rx=8,
+                   fill=(HOT if (hotR is not None and i == len(R) - 1 - hotR) else CELL),
+                   stroke=CELL_STROKE, stroke_width=1.5)
+            sc.label(XR + CW / 2, Y + (3 - i) * 54 + 29, v, size=17, mono=True, anchor="middle")
+        sc.label(XF, 30, "F栈：只管dequeue（从F顶弹出）", size=14, fill=SUB)
+        for i, v in enumerate(F):
+            sc.add("rect", x=XF, y=Y + (3 - i) * 54, width=CW, height=46, rx=8,
+                   fill=(HOT if (hotF is not None and i == len(F) - 1 - hotF) else CELL),
+                   stroke=CELL_STROKE, stroke_width=1.5)
+            sc.label(XF + CW / 2, Y + (3 - i) * 54 + 29, v, size=17, mono=True, anchor="middle")
+        sc.label(XR, 252, note, size=15)
+        sc.label(XR, 276, "为什么：" + why, size=14, fill=SUB)
+        return sc
+
+    R, F = ["A", "B", "C"], []
+    frames.append(frame("连续入队A,B,C", "三个新元素依次压入R栈。", "enqueue只碰R，O(1)。", "",
+                        scene(R, F, "R=[A,B,C]（C为顶）。", "F仍空，尚无出队需求。")))
+    frames.append(frame("首次dequeue：倒腾", "F为空：把R整体逐一弹出压入F——C、B、A依次倒过去。", "倒腾后F顶恰是最早入队的A：FIFO次序由两次LIFO复合而成。",
+                        "", scene([], ["C", "B", "A"], "整体倒腾，R清空、F=[C,B,A]。", "仅当F空时才倒腾，次序不会乱。")))
+    frames.append(frame("dequeue出A", "弹出F顶A。", "队首是最老的A，先进先出。", "",
+                        scene([], ["B", "A"], "弹出A。", "F顶=B，下一无需再倒腾。")))
+    R.append("D")
+    frames.append(frame("再入队D", "D压入R栈。", "enqueue永远只走R，不碰F。", "",
+                        scene(["D"], ["B", "A"], "R=[D]，F=[B,A]。", "两栈分工明确，互不打扰。")))
+    frames.append(frame("dequeue出B", "F非空：直接弹F顶B。", "F仍非空时绝不倒腾——这是均摊O(1)的关键纪律。",
+                        "", scene(["D"], ["A"], "弹出B。", "每个元素至多被倒腾一次。")))
+    return write_demo("ds09-two-stack", "双栈当队：R进F出，倒腾一次", frames)
+
+
+# ---------- 演示：ch09 直方图单调栈 ----------
+
+def demo_histogram():
+    Hh = [2, 1, 4, 5, 1]
+    n = len(Hh)
+    frames = []
+    W, H = 780, 300
+    X, Y, BW = 40, 96, 90
+
+    def scene(stack, popped, note, cur=None):
+        sc = Scene(W, H)
+        sc.label(X, 30, "单调栈求最大矩形：栈内高度自底向顶严格递增", size=15, fill=SUB)
+        for k, h in enumerate(Hh):
+            hot = (k == cur)
+            bh = h * 18
+            sc.add("rect", x=X + k * (BW + 12), y=Y + 150 - bh, width=BW, height=bh, rx=4,
+                   fill=(HOT if hot else (DONE if k in popped else WRITE if (stack and stack[-1][0] == k) else CELL)),
+                   stroke=(HOT_STROKE if hot else CELL_STROKE), stroke_width=1.5)
+            sc.label(X + k * (BW + 12) + BW / 2, Y + 166, str(h), size=15, mono=True, anchor="middle")
+            sc.label(X + k * (BW + 12) + BW / 2, Y + 184, str(k), size=12, fill=FAINT, mono=True, anchor="middle")
+        tops = " ← ".join(f"r{k}(h{Hh[k]})" for k, _ in reversed(stack)) if stack else "（空）"
+        sc.label(X, 216, "栈（自底→顶）：" + tops, size=14, mono=True)
+        sc.label(X, 266, note, size=15)
+        return sc
+
+    stack = []
+    popped_done = set()
+    frames.append(frame("准备", "直方图[2,1,4,5,1]，加哨兵高度0于两端。", "最大矩形必以某根柱子为高度、向两侧扩展到极限。",
+                        "遇到比栈顶矮的柱子时，谁被结算？", scene(stack, set(), "从左向右扫描。")))
+    for r, h in enumerate(Hh):
+        while stack and Hh[stack[-1][0]] >= h:
+            k, _ = stack.pop()
+            popped_done.add(k)
+            left = stack[-1][0] + 1 if stack else 0
+            width = r - left
+            area = Hh[k] * width
+            frames.append(frame(f"读入h[{r}]={h}：结算r{k}", f"H[{k}]={Hh[k]} ≥ {h}，弹出结算：宽{width}×高{Hh[k]}=面积{area}。",
+                                "弹出即知左右边界：新柱提供了右边界，新栈顶提供了左边界。", "",
+                                scene(stack, popped_done, f"柱r{k}被结算，面积{area}。", cur=r)))
+        stack.append((r, h))
+        frames.append(frame(f"h[{r}]={h}入栈", f"H[{r}]高于栈顶，直接入栈。", "保持栈内高度严格递增。",
+                            "", scene(stack, popped_done, f"r{r}入栈。", cur=r)))
+    # sentinel 0 flushes the rest
+    areas = [2, 8, 5, 4]
+    k, _ = stack.pop(); popped_done.add(k)
+    left = stack[-1][0] + 1 if stack else 0
+    area = Hh[k] * (n - left)
+    frames.append(frame("哨兵0清栈：结算r4", f"末尾哨兵把滞留的r4结算：宽{n - left}×高1={area}。", "清栈阶段每个滞留柱子的右边界都是n。",
+                        "", scene(stack, popped_done, f"全程各块面积：{areas}，最大8。")))
+    frames.append(frame("完成", "最大矩形=高度4、宽度2（柱2与柱3），面积8。", "每个柱子至多入栈、出栈各一次：均摊O(n)。",
+                        "", scene([], popped_done, "完成：最大矩形面积8。")))
+    return write_demo("ds09-histogram", "直方图最大矩形：单调栈结算", frames)
+
+
+DEMOS.update({
+    "ds09-roundrobin": demo_roundrobin,
+    "ds09-two-stack": demo_two_stack_queue,
+    "ds09-histogram": demo_histogram,
+})
+
 if __name__ == "__main__":
     main(sys.argv[1:])
