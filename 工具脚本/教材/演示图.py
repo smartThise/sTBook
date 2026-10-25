@@ -1682,5 +1682,42 @@ def demo_kmp_next():
 
 DEMOS.update({"ds19-kmp": demo_kmp_next})
 
+
+
+# ---------- 演示：ch20 LUG划分 ----------
+
+def demo_partition():
+    frames = []
+    W, H = 780, 230
+
+    def scene(a, lo, hi, gphase, note, done_idx=None):
+        sc = Scene(W, H)
+        sc.label(40, 30, f"LUG划分：pivot=6，lo={lo}，hi={hi}，当前向{'左拓展G' if gphase else '右拓展L'}", size=15, fill=SUB)
+        for k, v in enumerate(a):
+            hot = (k == done_idx)
+            fill = (WRITE if hot else (HOT if (k == lo or k == hi - 1) and not hot else CELL))
+            stc = (WRITE_STROKE if hot else (HOT_STROKE if (k == lo or k == hi - 1) and not hot else CELL_STROKE))
+            sc.add("rect", x=40 + k * 118, y=90, width=110, height=52, rx=8, fill=fill, stroke=stc, stroke_width=1.5)
+            sc.label(40 + k * 118 + 55, 122, str(v), size=18, mono=True, anchor="middle")
+        sc.label(40, 200, note, size=15)
+        return sc
+
+    a = [6, 3, 8, 2, 9, 1]
+    frames.append(frame("候选轴点=6", "取A[lo]=6为候选轴点（实际先经随机交换）。L=[0,0)空，G=[6,6)空，中间全是未定U。", "轴点只需n−1次比较、2次移动。",
+                        "两端如何交替收缩？", scene(a, 0, 6, True, "未动。")))
+    a2 = [1, 3, 8, 2, 9, 1]
+    frames.append(frame("G拓展：1归入L端", "6>1：把1搬到左端A[0]，G换向L。", "L=[0,1)={1}≤6；空穴在右端[5]。", "",
+                        scene(a2, 0, 5, False, "A=[1,3,8,2,9,·]。")))
+    a3 = [1, 3, 8, 2, 9, 8]
+    frames.append(frame("L拓展：8归入G端", "3<6留在L；8≥6被甩到右端A[5]，G换向。", "L=[0,2)={1,3}；空穴回到中间[2]。", "",
+                        scene(a3, 2, 5, True, "A=[1,3,·,2,9,8]。")))
+    a4 = [1, 3, 2, 6, 9, 8]
+    frames.append(frame("就位：6落到秩3", "9>6跳过；2<6搬至左端；lo==hi=3，轴点6就位。", "L=[1,3,2]≤6、G=[9,8]>6；就地、线性、不稳定。",
+                        "", scene(a4, 3, 4, True, "划分完成：pivot就位秩3。", done_idx=3)))
+    return write_demo("ds20-partition", "LUG划分：6怎样各就各位", frames)
+
+
+DEMOS.update({"ds20-partition": demo_partition})
+
 if __name__ == "__main__":
     main(sys.argv[1:])
