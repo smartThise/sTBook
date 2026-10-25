@@ -26,6 +26,8 @@ WRITE = "#d9eaf9"
 WRITE_STROKE = "#6d9dd6"
 DONE = "#d9f0e2"
 DONE_STROKE = "#6cb98d"
+BAD = "#fbe4e4"
+BAD_STROKE = "#d89393"
 PALE = "#eef3f0"
 CJK = "PingFang SC, Noto Sans CJK SC, sans-serif"
 MONO = "Menlo, Consolas, monospace"
@@ -347,6 +349,211 @@ def demo_ram_divide():
     return write_demo("ds01-ram", "RAM上整除：25÷12的14步快照", frames)
 
 
+
+
+# ---------- 演示：ch02 迭代空间（正方形→三角形→倍增） ----------
+
+def demo_iter_space():
+    frames = []
+    W, H = 640, 300
+
+    def grid_scene(x, y, cells, cw=22, chh=22, n=8, title=""):
+        sc = Scene(W, H)
+        sc.label(x, 30, title, size=15, fill=SUB)
+        for (i, j, st) in cells:
+            f, stc = st
+            sc.add("rect", x=x + j * cw, y=y + i * chh, width=cw - 2, height=chh - 2, rx=4,
+                   fill=f, stroke=stc, stroke_width=1)
+        for k in range(n):
+            sc.label(x + k * cw + cw / 2 - 1, y + n * chh + 16, str(k), size=11, fill=FAINT, mono=True, anchor="middle")
+        return sc
+
+    DOT = (WRITE, WRITE_STROKE)
+    EMPTY = (CELL, CELL_STROKE)
+    # 正方形：逐行填充
+    for r in range(1, 9):
+        cells = [(i, j, DOT if i < r else EMPTY) for i in range(8) for j in range(8)]
+        total = sum(8 for _ in range(r))
+        frames.append(frame(f"实例A：正方形填到第{r}行", f"外层i={r-1}这一行，内层j跑满8格，新增8个点。",
+                            "两层独立，每行都是8点：面积=n²。", "", grid_scene(70, 60, cells, title=f"for i in 0..n-1: for j in 0..n-1    已执行{total}次")))
+    # 三角形：逐行填充
+    for r in range(1, 9):
+        cells = [(i, j, DOT if j < i else EMPTY) for i in range(8) for j in range(8)]
+        total = r * (r - 1) // 2 + r - 1
+        frames.append(frame(f"实例B：三角形填到第{r}行", f"第{r-1}行只有{i if False else r-1}个点（j<i），新增{r-1}个点。",
+                            "行宽逐行加1：点阵是三角形，面积约为正方形的一半，阶不变O(n²)。",
+                            "", grid_scene(70, 60, cells, title=f"for i in 0..n-1: for j in 0..i-1    已执行{(r-1)*r//2}次")))
+    frames[-1] = frame("实例B完成：三角形", "8行共填0+1+…+7=28个点。",
+                       "n=28时28点=8×7/2；一般n行总面积n(n−1)/2，O(n²)。",
+                       "", grid_scene(70, 60, [(i, j, DOT if j < i else EMPTY) for i in range(8) for j in range(8)],
+                                      title="for i in 0..n-1: for j in 0..i-1    已执行28次"))
+    # 倍增行宽
+    rows = [1, 2, 4]
+    for k, wdt in enumerate(rows, 1):
+        cells = []
+        for i in range(6):
+            w = wdt if i == k - 1 else (rows[min(i, len(rows) - 1)] if i < k else 0)
+            for j in range(w):
+                cells.append((i, j, DOT))
+        cells += [(i, j, EMPTY) for i in range(6) for j in range(8) if all(not (ii == i and jj == j) for ii, jj, _ in cells)]
+        frames.append(frame(f"实例D：倍增行宽第{k}行", f"外层i翻倍：第{k}行宽度{i if False else 2**(k-1)}，新增{2**(k-1)}个点。",
+                            "行宽1,2,4,8…构成几何级数，总点数由末行支配，O(n)。",
+                            "", grid_scene(70, 60, cells, title="for i=1; i<n; i<<=1: for j in 0..i-1")))
+    return write_demo("ds02-iter", "循环的点阵：正方形、三角形与倍增", frames)
+
+
+# ---------- 演示：ch03 最大区间右扫（19元素） ----------
+
+def demo_gs_ls():
+    A = [1, -2, 7, 2, 6, -9, 5, 6, -12, -8, 13, 0, -3, 1, -2, 8, 0, -5, 3]
+    n = len(A)
+    frames = []
+    W, H = 1080, 260
+    X, Y, CW = 20, 96, 54
+
+    def scene(a, k, s, gs, reset, note, upd=False):
+        sc = Scene(W, H)
+        st = {}
+        for i in range(n):
+            if i == k:
+                st[i] = (HOT, HOT_STROKE)
+            elif i > k:
+                st[i] = (PALE, CELL_STROKE)
+        if upd:
+            st[k] = (WRITE, WRITE_STROKE)
+        sc.array(X, Y, a, st, cw=CW, ch=44)
+        sc.pointer(X + k * (CW + 2) + CW / 2 - 1, Y - 42, "k", HOT_STROKE)
+        sc.label(X, 40, f"已扫区间[{k+1},19)；当前sum={'0' if reset else s}；gs={gs}", size=16, mono=True)
+        sc.chip(X, 178, 130, 24, "sum≤0，剪为0", BAD, BAD_STROKE, size=12, mono=False) if reset else None
+        sc.label(X, 226, note, size=15)
+        return sc
+
+    frames.append(frame("准备", "自右向左扫描；sum=0（以当前下标为起点的最大和），gs=0（接口Ⅰ，允许空区间）。",
+                        "sum剪除非正前缀：负的起点对更左的位置毫无帮助。",
+                        "读入A[18]=3后，sum与gs各是多少？",
+                        scene(A, 18, 0, 0, False, "尚未扫描。")))
+    gs = 0
+    s_acc = 0
+    for i in range(n - 1, -1, -1):
+        s_acc += A[i]
+        upd = gs < s_acc
+        if upd:
+            gs = s_acc
+        reset = s_acc <= 0
+        act = f"sum += A[{i}]={A[i]} → sum={s_acc}" + ("；sum≤0，剪为0" if reset else "")
+        if upd:
+            act += f"；gs更新为{gs}"
+        why = "sum保存以k为起点的最大区间和；gs记录全程最大。" + ("负的sum只会拖累更左的起点，剪除。" if reset else "")
+        frames.append(frame(f"k={i}：读入{A[i]}", act, why,
+                            f"下一个k={i-1}时，sum会加上哪个数？" if i > 0 else None,
+                            scene(A, i, s_acc, gs, reset, act, upd=upd)))
+        if reset:
+            s_acc = 0
+    frames.append(frame("扫描结束", "gs=17，对应区间[10,16)：13,0,−3,1,−2,8。",
+                        "三个并列17的区间中，[10,17)长7落选，等长取靠后者。",
+                        "", scene(A, -1, 0, 17, False, "最终答案gs=17。")))
+    return write_demo("ds03-gs-ls", "最大区间：从右向左一次扫描（19元素实例）", frames)
+
+
+# ---------- 演示：ch04 向量插入搬移 ----------
+
+def demo_vec_insert():
+    v = ["D", "A", "T", "A"]
+    frames = []
+    W, H = 640, 240
+    X, Y, CW = 60, 96, 64
+
+    def scene(vals, hi_from, states, note, extra=None):
+        sc = Scene(W, H)
+        sc.label(X, 30, "insert(2, 'I')：把后缀[2,4)整体后移一位，再写入I", size=15, fill=SUB)
+        for i, val in enumerate(vals):
+            if val is None:
+                sc.add("rect", x=X + i * (CW + 2), y=Y, width=CW, height=46, rx=8, fill="#fbfdff", stroke=CELL_STROKE, stroke_width=1.2)
+                sc.label(X + i * (CW + 2) + CW / 2, Y + 29, "·", size=17, fill=FAINT, anchor="middle")
+            else:
+                f, st = states.get(i, (CELL, CELL_STROKE))
+                sc.add("rect", x=X + i * (CW + 2), y=Y, width=CW, height=46, rx=8, fill=f, stroke=st, stroke_width=1.5)
+                sc.label(X + i * (CW + 2) + CW / 2, Y + 29, val, size=18, mono=True, anchor="middle")
+            sc.label(X + i * (CW + 2) + CW / 2, Y + 62, str(i), size=12, fill=FAINT, mono=True, anchor="middle")
+        if extra:
+            extra(sc)
+        sc.label(X, 176, note, size=15)
+        sc.label(X, 204, "_size = 4 → 5；容量足够，无需扩容", size=14, fill=SUB, mono=True)
+        return sc
+
+    def arrow_move(sc, i, color=HOT_STROKE):
+        x1 = X + i * (CW + 2) + CW / 2
+        sc.add("line", x1=x1, y1=Y - 10, x2=x1 + (CW + 2), y2=Y - 10, stroke=color, stroke_width=1.6)
+        sc.add("circle", cx=x1 + (CW + 2), cy=Y - 10, r=3, fill=color)
+
+    frames.append(frame("初态", "向量D A T A，在秩2插入字符I。", "后缀[2,4)（T、A）必须整体右移腾位。",
+                        "哪一个元素先搬？", scene(v, 2, {}, "搬移方向：自后向前。")))
+    frames.append(frame("搬A（秩3→4）", "先把末尾的A搬到新末位。", "自后向前才不会覆盖尚未搬动的元素。",
+                        "", scene(["D", "A", "T", "A", None][:4] + ["A"], 2, {4: (WRITE, WRITE_STROKE)}, "A就位。")))
+    v2 = ["D", "A", "T", "A", "A"]
+    frames.append(frame("搬T（秩2→3）", "把T搬到秩3。", "继续自后向前。", "",
+                        scene(["D", "A", "T", "T", "A"], 2, {3: (WRITE, WRITE_STROKE)}, "T就位，秩2空出。")))
+    frames.append(frame("写入I", "把I写入秩2。", "空位已腾出，直接写入。", "",
+                        scene(["D", "A", "I", "T", "A"], 2, {2: (WRITE, WRITE_STROKE)}, "I就位。")))
+    frames.append(frame("完成", "向量变为D A I T A，规模加一。", "与教材表2.2第15行一致。",
+                        "", scene(["D", "A", "I", "T", "A"], 2, {2: (WRITE, WRITE_STROKE)}, "insert(2,'I')完成。")))
+    return write_demo("ds04-insert", "向量插入：后缀怎样整体后移", frames)
+
+
+# ---------- 演示：ch05 二分查找版本C ----------
+
+def demo_binsearch_c():
+    K = list("ABCDEFGHIJK")   # n=11
+    e = "D"
+    frames = []
+    W, H = 760, 250
+    X, Y, CW = 36, 108, 62
+
+    def scene(lo, hi, mi, act_note, exited=False):
+        sc = Scene(W, H)
+        sc.label(X, 30, f"binSearch版本C：在有序向量中查'{e}'；不变性：[0,lo)≤e＜[hi,11)", size=15, fill=SUB)
+        st = {}
+        for i in range(11):
+            if i < lo:
+                st[i] = (PALE, CELL_STROKE)
+            elif i >= hi:
+                st[i] = (PALE, CELL_STROKE)
+            elif mi is not None and i == mi:
+                st[i] = (HOT, HOT_STROKE)
+        sc.array(X, Y, K, st, cw=CW, ch=46)
+        sc.pointer(X + lo * (CW + 2) + CW / 2 - 1, Y - 40, "lo", WRITE_STROKE) if lo < 11 else None
+        sc.pointer(X + (hi - 1) * (CW + 2) + CW / 2 - 1, Y - 40, "hi-1", BAD_STROKE) if hi > 0 else None
+        if mi is not None:
+            sc.pointer(X + mi * (CW + 2) + CW / 2 - 1, Y + 72, "mi", HOT_STROKE)
+        sc.label(X, 190, act_note, size=15)
+        sc.label(X, 216, f"lo={lo}，hi={hi}" + (f"，mi={mi}" if mi is not None else "") +
+                 ("" if exited else "，区间宽度11→…逐次折半"), size=15, mono=True, fill=SUB)
+        return sc
+
+    lo, hi = 0, 11
+    frames.append(frame("初始", "lo=0，hi=11，整个向量都是候选。", "不变性两端为空，自然成立。",
+                        "mi取多少？", scene(lo, hi, None, "等待第一步。")))
+    seq = [(5, "S[5]=F。D<F成立：e只可能在[0,5)，hi=5。", "e<S[mi]分支：一次比较，前缀保留。", 5),
+           (2, "S[2]=C。D<C不成立：e只可能在(2,5)，lo=3。", "else分支：lo=mi+1，轴点被排除。", None),
+           (4, "S[4]=E。D<E成立：hi=4。", "继续向左收缩。", 4)]
+    for it, (mi, act, why, upd) in enumerate(seq, 1):
+        frames.append(frame(f"第{it}次迭代：mi={mi}", act, why,
+                            f"下一次mi是多少？" if it < 3 else None,
+                            scene(lo, hi, mi, act)))
+        if mi == 5:
+            hi = 5
+        elif mi == 2:
+            lo = 3
+        elif mi == 4:
+            hi = 4
+        frames.append(frame(f"第{it}次迭代后", f"lo={lo}，hi={hi}。", "候选区间缩小，不变性保持。",
+                            "", scene(lo, hi, None, f"区间[{lo},{hi})仍含答案位置。")))
+    frames.append(frame("退出：lo==hi==4", "区间宽度为0，返回lo−1=3。", "S[3]=D恰是不大于e的最后一个元素；插入位置是4。", "",
+                        scene(4, 4, None, "返回3：即元素D的秩；search('D')=3。", exited=True)))
+    return write_demo("ds05-binsearch-c", "二分查找版本C：区间收缩与返回值", frames)
+
+
+
 DEMOS = {
     "ds01-bubble": demo_bubble_pass,
     "ds01-tm": demo_tm_increase,
@@ -360,6 +567,13 @@ def main(argv):
         n = DEMOS[did]()
         print(f"{did}: {n} frames")
 
+
+DEMOS.update({
+    "ds02-iter": demo_iter_space,
+    "ds03-gs-ls": demo_gs_ls,
+    "ds04-insert": demo_vec_insert,
+    "ds05-binsearch-c": demo_binsearch_c,
+})
 
 if __name__ == "__main__":
     main(sys.argv[1:])
