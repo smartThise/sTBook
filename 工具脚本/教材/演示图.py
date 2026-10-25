@@ -1558,5 +1558,47 @@ def demo_kdtree():
 
 DEMOS.update({"ds14-kdtree": demo_kdtree})
 
+
+
+# ---------- 演示：ch15 线性试探 ----------
+
+def demo_linear_probing():
+    M = 7
+    frames = []
+    W, H = 780, 240
+    X, Y, CW = 40, 110, 94
+
+    def scene(table, states, probe=None, note=None):
+        sc = Scene(W, H)
+        sc.label(X, 30, f"闭散列·线性试探：M={M}，hash(k)=k % {M}", size=15, fill=SUB)
+        for i in range(M):
+            f, stc = states.get(i, (CELL, CELL_STROKE))
+            if probe is not None and i == probe:
+                f, stc = HOT, HOT_STROKE
+            sc.add("rect", x=X + i * (CW + 4), y=Y, width=CW, height=46, rx=8, fill=f, stroke=stc, stroke_width=1.5)
+            sc.label(X + i * (CW + 4) + CW / 2, Y + 29, str(table[i]) if table[i] else "", size=17, mono=True, anchor="middle")
+            sc.label(X + i * (CW + 4) + CW / 2, Y + 64, str(i), size=12, fill=FAINT, mono=True, anchor="middle")
+        sc.label(X, 200, note, size=15)
+        return sc
+
+    table = [None] * M
+    writes = []
+    frames.append(frame("空表", "7个桶全部为空。", "hash(k) = k % M 定位首选桶。", "12会落在哪个桶？", scene(table, {})))
+    table[5] = 12
+    frames.append(frame("插入12：直接命中", "12 % 7 = 5，桶[5]空，直接放入。", "无冲突时一次定位。", "",
+                        scene(table, {5: (WRITE, WRITE_STROKE)}, probe=5)))
+    table[5 + 1] = 26
+    frames.append(frame("插入26：冲突后试探", "26 % 7 = 5，桶[5]已被占，试探[6]：空，放入。", "线性试探：依次向后一个桶查找空位。",
+                        "", scene(table, {6: (WRITE, WRITE_STROKE)}, probe=6)))
+    table[5 + 2 - M] = 19   # (5+2) % M = 0
+    frames.append(frame("插入19：连锁试探", "19 % 7 = 5，[5]、[6]接连被占，试探[7%7]=[0]：空，放入。", "注意：19本应落[5]，却安家[0]——聚集把冲突推远了。",
+                        "", scene(table, {0: (WRITE, WRITE_STROKE)}, probe=0)))
+    frames.append(frame("初级聚集", "桶[5][6][0]连成一片；此后任何hash值落在5、6、0的键都要连环试探。", "初级聚集：键连续的词条占据一段区间，区间内新冲突还会加剧扩张。MAD法/平方试探可缓解。",
+                        "", scene(table, {5: (DONE, DONE_STROKE), 6: (DONE, DONE_STROKE), 0: (DONE, DONE_STROKE)}, probe=None)))
+    return write_demo("ds15-probing", "线性试探：冲突怎样连成一片", frames)
+
+
+DEMOS.update({"ds15-probing": demo_linear_probing})
+
 if __name__ == "__main__":
     main(sys.argv[1:])
