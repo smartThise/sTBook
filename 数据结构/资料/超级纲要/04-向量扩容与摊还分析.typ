@@ -271,6 +271,69 @@ template <typename T> void increase( Vector<T>& V )
 
 更复杂的任务同样可以封装。统计总和，可以让函数对象持有外部累加器的引用，遍历时逐项累加；统计相邻逆序对个数，可以让它记住前驱元素，每访问一个元素就与前驱比较、更新计数------计数为零当且仅当向量整体有序。统一的遍历机制加上可定制的函数对象，使这些彼此不同的任务共用同一个遍历算法。
 
+== 无序查找与去重：判等器、哨兵与O(n²)
+#label("无序查找与去重判等器哨兵与on²")
+表2.1中`find(e)`与`search(e)`的一个隐蔽差别值得先说清楚：前者面向无序向量，只要求元素可#strong[判等]（e == x）；后者面向有序向量，依赖元素可#strong[比较]大小（e \< x）。两者对应两种不同的接口约定。以词条（entry）为例------它由键（key）与值（value）组成：
+
+```cpp
+template <typename K, typename V> struct Entry {
+   K key;  V value;                    //键、值
+   bool operator== ( const Entry<K, V>& e ) { return key == e.key; }  //判等：只比键
+   bool operator<  ( const Entry<K, V>& e ) { return key <  e.key; }  //比较：只比键
+   bool operator>  ( const Entry<K, V>& e ) { return key >  e.key; }  //比较：只比键
+};
+```
+
+得益于判等器与比较器，此后的算法不必区分词条及其对应的键。
+
+#strong[顺序查找]。在无序区间`[lo, hi)`内查找e，最直接的做法是逐个比对。实现里有一个省事的小技巧：先把e存入`_elem[hi]`充当#strong[哨兵]，这样即便e不存在，扫描也必然在hi处命中终止，每次比对因此免去一次越界判断：
+
+```cpp
+template <typename T>   //0 <= lo < hi <= _size
+Rank Vector<T>::find( const T& e, Rank lo, Rank hi ) const {   //O(hi - lo)
+   T bak = _elem[hi];  _elem[hi] = e;      //将目标存入哨兵
+   while ( e != _elem[lo] ) lo++;          //自前向后，逐个比对
+   _elem[hi] = bak;  return lo;            //哨兵还原；返回最靠前的命中者，或hi示意失败
+}
+```
+
+顺序查找是#strong[输入敏感]的（input-sensitive）：最好情况e恰在lo处，一次比对即返回，$O\(1\)$；最坏情况e不存在或位于末尾，需要$O\(h i - l o\)$。同一算法在不同输入上的成本有实质差别，这与二分查找"无论成败都约$log n$次"的表现不同。
+
+#strong[去重]（deduplicate）。无序向量的重复元素位置杂乱，利用减治思想：从秩k = 0开始，在前缀`[0, k)`中查找与`_elem[k]`相等者；找到就删除前者（保留靠后者），否则k前移一位：
+
+```cpp
+template <typename T> Rank Vector<T>::dedup() {   //剔除相等的元素，保留最靠后者
+   for ( Rank k = 0; k < _size; ) {
+      Rank i = find( _elem[k], 0, k );   //在前缀[0,k)中查找与_elem[k]相等者：O(k+1)
+      if ( i < k )
+         remove( i );                    //若命中（必为最靠前者），删除之：O(n-k)
+      else
+         k++;                            //前缀中无重复，k前移
+   }
+   return _size - oldSize;               //返回被删除元素的总数
+}  //O(n^2)
+```
+
+以本章表2.2第16行的操作为实例：对`D A I T A`执行`dedup()`，逐步为
+
+#figure(
+  align(center)[#table(
+    columns: 4,
+    align: (auto,auto,auto,auto,),
+    table.header([k], [`find(_elem[k], 0, k)`的结果], [动作], [此后向量],),
+    table.hline(),
+    [0], [前缀空，返回0], [k++], [`D A I T A`],
+    [1], [前缀无A，返回1], [k++], [`D A I T A`],
+    [2], [前缀无I，返回2], [k++], [`D A I T A`],
+    [3], [前缀无T，返回3], [k++], [`D A I T A`],
+    [4], [前缀秩1命中A], [删除秩1], [`D I T A`],
+    [4], [前缀无A，返回4], [k++，循环结束], [`D I T A`],
+  )]
+  , kind: table
+  )
+
+复杂度：前缀查找的比对次数最坏为$1 + 2 + dots.h.c + n = r a c n\(n + 1\) 2$（输入全无重复时恰好如此），加上每次删除$O\(n\)$的移动，总体$O\(n^2\)$。第05章将看到：同样的去重，在有序向量上只需$O\(n\)$。
+
 == 本章要点
 <本章要点>
 - 抽象数据类型＝数据模型＋定义其上的操作，只管外部逻辑语义；数据结构＝ADT的一种具体实现，与复杂度密切相关。同一ADT可以有多种实现，接口规范让实现与应用可以分工。
