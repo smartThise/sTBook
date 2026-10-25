@@ -26,6 +26,7 @@
   show link: set text(fill: accent)
   set table(inset: 6pt, stroke: 0.35pt + rgb("c7d2dc"))
   set figure(gap: 8pt)
+  show figure.where(kind: table): set block(breakable: true)
   show figure.caption: set text(size: 9pt)
   align(center)[
     #v(25mm)
