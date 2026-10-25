@@ -1479,5 +1479,47 @@ def demo_avl_lr():
 
 DEMOS.update({"ds12-avl-lr": demo_avl_lr})
 
+
+
+# ---------- 演示：ch13 B树插入上溢分裂 ----------
+
+def demo_btree_insert():
+    frames = []
+    W, H = 760, 280
+
+    def nodebox(x, y, keys, hot=True):
+        sc = Scene(W, H)
+        w = 46 * len(keys) + 24
+        sc.add("rect", x=x, y=y, width=w, height=44, rx=8,
+               fill=(HOT if hot else CELL), stroke=(HOT_STROKE if hot else CELL_STROKE), stroke_width=1.5)
+        for i, k in enumerate(keys):
+            sc.label(x + 20 + 46 * i + 23, y + 28, str(k), size=17, mono=True, anchor="middle")
+        return x + w / 2
+
+    def scene(root, kids, note, why):
+        sc = Scene(W, H)
+        sc.label(40, 30, "3阶B树（(2,3)-树）：节点至多2个关键码、3个分支", size=15, fill=SUB)
+        if root:
+            rx = nodebox(300, 150, root, hot=True)
+            for i, kk in enumerate(kids):
+                cx = 120 + i * 220
+                nodebox(cx - 45 * len(kk) + 45, 230, kk, hot=False)
+                sc.add("line", x1=rx, y1=196, x2=cx, y2=226, stroke=LINE, stroke_width=1.6)
+        sc.label(40, 216 if not root else 92, note, size=15)
+        sc.label(40, 262, "为什么：" + why, size=14, fill=SUB)
+        return sc
+
+    frames.append(frame("插入5", "空树：5成为根，单节点[5]。", "B树插入总是先落在叶节点。", "", scene([5], [], "根=[5]。", "规模1，无上溢。")))
+    frames.append(frame("插入8", "8并入根：[5, 8]。", "仍不超过2个关键码，无需分裂。", "", scene([5, 8], [], "根=[5, 8]。", "满载边缘。")))
+    frames.append(frame("插入11：上溢！", "[5, 8, 11]有3个关键码，超出上界。", "m=3阶节点关键码上限为m−1=2。", "", scene([5, 8, 11], [], "上溢！必须分裂。", "上溢节点必为叶。")))
+    frames.append(frame("分裂：中码上提", "取中间关键码8上提出根；5、11分居两叶。", "分裂后关键码数2×⌈m/2⌉−2≤2m，必然不再上溢；树高+1仅此一种情形。",
+                        "", scene([8], [[5], [11]], "分裂完成：根[8]，两叶[5]、[11]。", "外部节点保持理想平衡。")))
+    frames.append(frame("插入15", "15大于8，落到右叶：[11, 15]。", "查找自根下行至叶，插入叶内；未上溢则结束。",
+                        "", scene([8], [[5], [11, 15]], "完成。", "外部节点仍全部同层。")))
+    return write_demo("ds13-btree", "B树插入：[5,8,11]怎样分裂", frames)
+
+
+DEMOS.update({"ds13-btree": demo_btree_insert})
+
 if __name__ == "__main__":
     main(sys.argv[1:])
