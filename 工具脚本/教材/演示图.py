@@ -1433,5 +1433,51 @@ def demo_huffman():
 
 DEMOS.update({"ds11-huffman": demo_huffman})
 
+
+
+# ---------- 演示：ch12 AVL双旋LR ----------
+
+def demo_avl_lr():
+    frames = []
+    W, H = 720, 300
+    # node positions per stage
+    stages = [
+        # (nodes{val:(x,y)}, edges[(p,c)], imbalanced, note, act, why)
+        ({5: (360, 90), 3: (220, 190)},
+         [(5, 3)], None,
+         "插入3：成为5的左孩子，树仍平衡（各点|balFac|≤1）。", "insert(3)。", "平衡因子balFac = h左 − h右。"),
+        ({5: (360, 90), 3: (220, 190), 4: (290, 190)},
+         [(5, 3), (3, 4)], 5,
+         "插入4：落在3的右侧。g=5的balFac升到+2，失衡；p=3（较高孩子），v=4（p的较高孩子）。", "insert(4)引发失衡。", "p与v异侧：LR型失衡，需双旋。"),
+        ({4: (290, 90), 3: (170, 190), 5: (410, 190)},
+         [(4, 3), (4, 5)], None,
+         "双旋（zag(p)后zig(g)，等价于rotateAt(v)）：v=4升至根部，3、5各归两侧。", "以v为轴双旋。", "三节点中序3<4<5保持不变——等价变换，上下可变、左右不乱。"),
+    ]
+
+    def scene(nodes, edges, gnode, note, act, why):
+        sc = Scene(W, H)
+        sc.label(40, 30, act, size=15, fill=SUB)
+        for (p1, p2) in edges:
+            x1, y1 = nodes[p1]; x2, y2 = nodes[p2]
+            sc.add("line", x1=x1, y1=y1 + 26, x2=x2, y2=y2 - 8, stroke=LINE, stroke_width=2)
+        for val, (x, y) in nodes.items():
+            hot = (val == gnode)
+            fill = BAD if hot else (WRITE if val == 4 else CELL)
+            stc = BAD_STROKE if hot else (WRITE_STROKE if val == 4 else CELL_STROKE)
+            sc.add("rect", x=x - 36, y=y - 6, width=72, height=44, rx=10, fill=fill, stroke=stc, stroke_width=1.5)
+            sc.label(x, y + 20, str(val), size=18, mono=True, anchor="middle")
+        sc.label(40, 266, note, size=15)
+        sc.label(40, 290, "为什么：" + why, size=14, fill=SUB)
+        return sc
+
+    for (nodes, edges, gnode, note, act, why) in stages:
+        frames.append(frame(act, note, why, "", scene(nodes, edges, gnode, note, act, why)))
+    frames.append(frame("结果", "AVL性质恢复：新根4的balFac=0，3、5的balFac=0。", "高度复原：插入后的复衡只需局部双旋，更高祖先不受影响。",
+                        "", scene(stages[2][0], stages[2][1], None, "双旋完成。", "恢复平衡。", "单旋LL/RR同理：p与v同侧时只需一次旋转。")))
+    return write_demo("ds12-avl-lr", "AVL双旋：LR失衡与复衡", frames)
+
+
+DEMOS.update({"ds12-avl-lr": demo_avl_lr})
+
 if __name__ == "__main__":
     main(sys.argv[1:])
