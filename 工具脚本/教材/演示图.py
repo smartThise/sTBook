@@ -1643,5 +1643,44 @@ def demo_dijkstra():
 
 DEMOS.update({"ds17-dijkstra": demo_dijkstra})
 
+
+
+# ---------- 演示：ch19 KMP next表 ----------
+
+def demo_kmp_next():
+    P = "MAMMIA"
+    nxt = [-1, 0, 0, 1, 1, 0, 0]
+    frames = []
+    W, H = 760, 230
+
+    def scene(j, t, note):
+        sc = Scene(W, H)
+        sc.label(40, 30, f"next表构造（模式P=MAMMIA）：当前算到j={j}，t={t}", size=15, fill=SUB)
+        for k in range(6):
+            hot = (k == j - 1)
+            sc.add("rect", x=40 + k * 74, y=80, width=66, height=46, rx=8,
+                   fill=(HOT if hot else (WRITE if k < j else CELL)),
+                   stroke=(HOT_STROKE if hot else (WRITE_STROKE if k < j else CELL_STROKE)), stroke_width=1.5)
+            sc.label(40 + k * 74 + 33, 109, P[k], size=18, mono=True, anchor="middle")
+            sc.label(40 + k * 74 + 33, 142, f"next[{k}]={nxt[k]}", size=12, mono=True, anchor="middle",
+                     fill=(INK if k < j + 1 else FAINT))
+        sc.label(40, 200, note, size=15)
+        return sc
+
+    frames.append(frame("约定", "next[0] = -1：失配时模式串从最左重启。", "next[j]：P[0,j)中最长真自匹配前缀的长度——失配时j直接跳到next[j]。",
+                        "", scene(0, -1, "起点：next[0]=-1。")))
+    frames.append(frame("j=3，t=0：P[2]=M=P[0]命中", "t增至1，next[3]=1。", "前缀M已自匹配到位置2。", "",
+                        scene(3, 1, "next[3]=1。")))
+    frames.append(frame("j=4，t=1：P[3]=M与P[1]=A失配", "回退t=next[1]=0；P[0]=M=P[3]命中，t=1，next[4]=1。", "回退由已算好的next表指引，绝不重扫。",
+                        "", scene(4, 1, "next[4]=1。")))
+    frames.append(frame("j=5，t=1：P[1]=A与P[4]=I失配", "回退t=next[1]=0；再比P[0]=M与P[4]=I仍失配，t=next[0]=-1，终止。next[5]=0。", "自匹配传递链：回退次序即next表本身。",
+                        "", scene(5, 0, "next[5]=0。")))
+    frames.append(frame("j=6，t=0：P[0]=M与P[5]=A失配", "t=next[0]=-1终止，next[6]=0。构造完成：next=[-1,0,0,1,1,0]。", "查询时失配于j，j直接跳到next[j]，正文指针i绝不回退。",
+                        "", scene(6, 0, "完成：[-1,0,0,1,1,0]。")))
+    return write_demo("ds19-kmp", "KMP next表：MAMMIA逐步构造", frames)
+
+
+DEMOS.update({"ds19-kmp": demo_kmp_next})
+
 if __name__ == "__main__":
     main(sys.argv[1:])
