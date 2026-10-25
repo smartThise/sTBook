@@ -575,5 +575,448 @@ DEMOS.update({
     "ds05-binsearch-c": demo_binsearch_c,
 })
 
+
+
+# ---------- 演示：ch05 uniquify 双指针 ----------
+
+def demo_uniquify():
+    a = [3, 3, 5, 5, 5, 5, 8, 8, 13, 13, 13, 13]
+    n = len(a)
+    frames = []
+    W, H = 900, 240
+    X, Y, CW = 24, 100, 70
+
+    def scene(i, j, a_cur, act, why, q=None):
+        sc = Scene(W, H)
+        st = {}
+        for k in range(n):
+            if k <= i:
+                st[k] = (DONE, DONE_STROKE)
+            if k == i:
+                st[k] = (WRITE, WRITE_STROKE)
+            if k == j:
+                st[k] = (HOT, HOT_STROKE)
+        sc.array(X, Y, a_cur[:n], st, cw=CW, ch=44)
+        sc.pointer(X + i * (CW + 2) + CW / 2 - 1, Y - 40, "i", WRITE_STROKE)
+        sc.pointer(X + j * (CW + 2) + CW / 2 - 1, Y + 66, "j", HOT_STROKE)
+        sc.label(X, 40, f"已确认无重复的前缀：[0, {i}]", size=15, mono=True)
+        sc.label(X, 186, act, size=15)
+        sc.label(X, 212, "为什么：" + why, size=14, fill=SUB)
+        return sc
+
+    i = 0
+    a = list(a)
+    frames.append(frame("初始", "i=0，j=1。前缀[0,1)天然无重复。", "两个指针分别站在已确认区间的末尾与待检查的位置。", "A[1]=A[0]，j会怎样？",
+                        scene(0, 1, a, "等待比较。", "有序向量的重复元素必然相邻，只需比较相邻项。")))
+    steps = []
+    for j in range(1, n):
+        same = a[j] == a[i]
+        steps.append((j, same))
+    j = 1
+    log = []
+    while j < n:
+        same = a[j] == a[i]
+        if same:
+            frames.append(frame(f"j={j}：A[{j}]=A[{i}]={a[j]}，重复", "j右移一格，i不动。", "重复元素被跳过，不进入保留区。", "",
+                                scene(i, j, a, "跳过。", "与保留区末尾相等者不必保留两份。")))
+            j += 1
+        else:
+            i += 1
+            a[i] = a[j]
+            frames.append(frame(f"j={j}：A[{j}]={a[j]}是新元素", f"i前移至{i}，A[{i}]=A[{j}]={a[j]}。", "保留区扩张一格，新元素就位。",
+                                "", scene(i, j, a, "写入保留区。", "新元素紧接保留区末尾放置，向量保持有序。")))
+            j += 1
+    frames.append(frame("扫描结束", f"j到达{n}，i={i}；_size更新为{i+1}，向量收缩为{a[:i+1]}。",
+                        "12个元素剔重后剩4个，一次线性扫描完成，O(n)。",
+                        "", scene(i, n - 1, a, "完成：3, 5, 8, 13。", "每个元素恰好被j访问一次。")))
+    return write_demo("ds05-uniquify", "uniquify：双指针一次扫描去重", frames)
+
+
+# ---------- 演示：ch05 Fibonacci查找 ----------
+
+def demo_fibsearch():
+    a = [2, 4, 6, 8, 10, 11, 12]
+    e = 11
+    frames = []
+    W, H = 760, 260
+    X, Y, CW = 30, 116, 96
+
+    def scene(lo, hi, mi, fibv, note, exited=False):
+        sc = Scene(W, H)
+        st = {}
+        for k in range(7):
+            if mi is not None and k == mi:
+                st[k] = (HOT, HOT_STROKE)
+            elif k < lo or k >= hi:
+                st[k] = (PALE, CELL_STROKE)
+        sc.array(X, Y, a, st, cw=CW, ch=46)
+        sc.label(X, 40, f"fib.get() = {fibv}；切分点 mi = lo + fib.get() − 1 = {mi}", size=15, mono=True)
+        sc.label(X, 194, note, size=15)
+        sc.label(X, 220, f"lo={lo}，hi={hi}", size=15, mono=True, fill=SUB)
+        return sc
+
+    fibs = [8, 5, 3, 2, 1]
+    lo, hi = 0, 7
+    fi = 0
+    frames.append(frame("准备", "Fib对象从不小于n=7的最小Fibonacci项8开始。", "n取fib(k)−1形式时可反复套用黄金分割切分。",
+                        "第一个切分点在哪？", scene(lo, hi, None, 8, "初始。")))
+    probes = [(4, 5, "S[4]=10 < 11：e只可能在(4,7)，lo=5。", "深入后半段只需2次比较的一半，所以前段故意放长。"),
+              (6, 2, "mi=5+2−1=6：S[6]=12 > 11：e只可能在[5,6)，hi=6。", "深入前半段只需1次比较，故前段短些。"),
+              (5, 1, "mi=5+1−1=5：S[5]=11，命中！返回5。", "fibSearch在S[mi]处命中即停。")]
+    for k, (mi, fibv, act, why) in enumerate(probes, 1):
+        if k == 1:
+            pass
+        frames.append(frame(f"第{k}次探测：mi={mi}", act, why, "", scene(lo, hi, mi, fibv, act)))
+        if k == 1:
+            lo = 5
+        elif k == 2:
+            hi = 6
+        else:
+            frames.append(frame("命中", "fibSearch(11) = 5，共探测3次（4→6→5）。", "黄金分割切分使平均查找长度略优于二分版本A（7元素：4.00对4.14）。",
+                                "", scene(lo, hi, mi, 1, "查找成功。", exited=True)))
+    return write_demo("ds05-fibsearch", "Fibonacci查找：切分点4→6→5", frames)
+
+
+# ---------- 演示：ch05 插值查找 ----------
+
+def demo_interp():
+    a = [5, 10, 12, 14, 19, 23, 29, 36, 39, 41, 44, 51, 54, 59, 72, 79, 82, 86, 92]
+    e = 50
+    frames = []
+    W, H = 1080, 270
+    X, Y, CW = 16, 118, 54
+
+    def scene(lo, hi, mi, note, formula):
+        sc = Scene(W, H)
+        st = {}
+        for k in range(19):
+            if mi is not None and k == mi:
+                st[k] = (HOT, HOT_STROKE)
+            elif k < lo or k >= hi:
+                st[k] = (PALE, CELL_STROKE)
+            elif k == lo:
+                st[k] = (WRITE, WRITE_STROKE)
+        sc.array(X, Y, a, st, cw=CW, ch=46)
+        sc.label(X, 40, formula, size=15, mono=True)
+        if mi is not None:
+            sc.pointer(X + mi * (CW + 2) + CW / 2 - 1, Y + 72, "mi", HOT_STROKE)
+        sc.label(X, 240, note, size=15)
+        return sc
+
+    lo, hi = 0, 19
+    frames.append(frame("初始", "lo=0，hi=19。数组近似均匀分布，秩与数值近似线性。", "插值公式按线性关系猜测目标位置。",
+                        "e=50的秩估计是多少？", scene(0, 19, None, "初始。", "mi = lo + (hi−lo)(e−S[lo])/(S[hi]−S[lo])")))
+    mi1 = 0 + 18 * (50 - 5) // (92 - 5)
+    frames.append(frame(f"第1次插值：mi={mi1}", f"S[{mi1}]=41 < 50：lo={mi1+1}。", "猜测点落在目标左侧，区间右缩。",
+                        "", scene(10, 19, mi1, "S[9]=41<50，lo=10。", "mi = 0 + 18×(50−5)/(92−5) = 9")))
+    mi2 = 10 + 8 * (50 - 44) // (92 - 44)
+    frames.append(frame(f"第2次插值：mi={mi2}", f"S[{mi2}]=51 > 50：hi={mi2}。", "猜测点落在目标右侧，区间左缩。",
+                        "", scene(10, 11, mi2, "S[11]=51>50，hi=11。", "mi = 10 + 8×(50−44)/(92−44) = 11")))
+    mi3 = 10 + 1 * (50 - 44) // (51 - 44)
+    frames.append(frame(f"第3次插值：mi={mi3}", f"S[{mi3}]=44 < 50：lo={mi3+1}=11，lo==hi，退出。", "返回10：不大于50的最大者是44。",
+                        "", scene(10, 11, mi3, "退出，search返回10。", "mi = 10 + 1×(50−44)/(51−44) = 10")))
+    return write_demo("ds05-interp", "插值查找：3次定位（e=50）", frames)
+
+
+# ---------- 演示：ch05 位图 ----------
+
+def demo_bitmap():
+    frames = []
+    W, H = 760, 240
+    bits = [0] * 24
+
+    X0 = 40
+
+    def scene(k, note, mark=None, clear=False):
+        sc = Scene(W, H)
+        sc.label(40, 30, "字节1（位8～15）：k=13 → 字节 13>>3=1，位 13&7=5，掩码 0x80>>5 = 0x04", size=14, fill=SUB, mono=True)
+        for i in range(8):
+            bit_i = 8 + i
+            on = bits[bit_i]
+            hot = (bit_i == k)
+            sc.add("rect", x=X0 + i * 84, y=80, width=78, height=52, rx=8,
+                   fill=(HOT if hot else (DONE if on else CELL)),
+                   stroke=(HOT_STROKE if hot else (DONE_STROKE if on else CELL_STROKE)), stroke_width=1.5)
+            sc.label(X0 + i * 84 + 39, 112, str(on), size=19, mono=True, anchor="middle")
+            sc.label(X0 + i * 84 + 39, 148, str(bit_i), size=12, fill=FAINT, mono=True, anchor="middle")
+        sc.label(X0, 196, note, size=15)
+        return sc
+
+    frames.append(frame("初始：全0", "24个比特分3个字节存放，初始全0。", '每一位只回答一个"有没有"。', "",
+                        scene(None, "位图清零。")))
+    bits[13] = 1
+    frames.append(frame("set(13)", "定位字节1的第5位，按0x04置1。", "或运算写入，其余位不受影响。",
+                        "", scene(13, "第13位变为1。")))
+    frames.append(frame("test(13)", "F[k]<size且T[F[k]]==k（快速版）或直接读位：返回1。", "读位即判等，O(1)。",
+                        "", scene(13, "test(13) = 1。")))
+    bits[13] = 0
+    frames.append(frame("clear(13)", "按掩码0x04清0（普通版）；快速版用校验环交换删除。", '清0后该位回到"没有"状态。',
+                        "", scene(13, "第13位清0。")))
+    return write_demo("ds05-bitmap", '位图：一个比特回答"有没有"', frames)
+
+
+# ---------- 演示：ch05 筛法 ----------
+
+def demo_sieve():
+    N = 30
+    nums = list(range(2, N))
+    cleared = set()
+    frames = []
+    W, H = 900, 330
+    cols = 10
+    cw, chh = 80, 44
+
+    def scene(cross, note, title):
+        sc = Scene(W, H)
+        sc.label(24, 30, title, size=15, fill=SUB)
+        for idx, v in enumerate(nums):
+            r, c = divmod(idx, cols)
+            x, y = 30 + c * cw, 60 + r * 58
+            gone = v in cleared
+            hot = (v == cross)
+            prime = (not gone) and v > 1
+            sc.add("rect", x=x, y=y, width=cw - 8, height=chh, rx=8,
+                   fill=(BAD if gone else (HOT if hot else (DONE if prime else CELL))),
+                   stroke=(BAD_STROKE if gone else (HOT_STROKE if hot else (DONE_STROKE if prime else CELL_STROKE))), stroke_width=1.5)
+            sc.label(x + (cw - 8) / 2, y + 28, str(v), size=16, mono=True, anchor="middle",
+                     fill=(FAINT if gone else INK))
+        sc.label(24, 250, note, size=15)
+        sc.chip(24, 268, 120, 24, "质数", DONE, DONE_STROKE, size=13, mono=False)
+        sc.chip(154, 268, 120, 24, "合数", BAD, BAD_STROKE, size=13, mono=False)
+        sc.chip(284, 268, 130, 24, "本轮清除", HOT, HOT_STROKE, size=13, mono=False)
+        return sc
+
+    frames.append(frame("准备", "2～29各占一格，全部待筛。", "筛法的对象是连续整数区间，天然对应位图。", "",
+                        scene(None, "从最小的质数2开始。", "Eratosthenes筛法：n=30")))
+    seq = [(2, "从2²=4起，步长2清除：4,6,8,…,28共13个。", [v for v in range(4, N, 2)]),
+           (3, "从3²=9起，步长3清除：9,15,21,27为新清除（12,18,24已被2筛过）。", [v for v in range(9, N, 3)]),
+           (5, "从5²=25起清除：25（30越界）。", [25]),
+           (7, "7²=49>30，筛法终止。", [])]
+    for pr, note, cross in seq:
+        cleared.update(cross)
+        frames.append(frame(f"用质数{pr}筛", note, "小于p²的合数必含更小质因子，已被更早的轮次清除。",
+                            "", scene(min(cross) if cross else None, note, f"用{pr}筛之后")))
+    frames.append(frame("完成", "剩下10个质数：2,3,5,7,11,13,17,19,23,29。", "内循环总次数Σn/p ≈ n·ln ln n，几乎线性。",
+                        "", scene(None, "筛法完成。", "Eratosthenes筛法：n=30")))
+    return write_demo("ds05-sieve", "筛法：30以内怎么筛出质数", frames)
+
+
+DEMOS.update({
+    "ds05-uniquify": demo_uniquify,
+    "ds05-fibsearch": demo_fibsearch,
+    "ds05-interp": demo_interp,
+    "ds05-bitmap": demo_bitmap,
+    "ds05-sieve": demo_sieve,
+})
+
+
+
+# ---------- 演示：ch06 跳跃版起泡 ----------
+
+def demo_bubble_jump():
+    a = [2, 1, 3, 5, 4, 6, 7]
+    n = len(a)
+    frames = []
+    W, H = 780, 236
+    X, Y, CW = 50, 96, 58
+
+    def scene(values, lo, hi, last, hot=None, note=None, newly=None):
+        sc = Scene(W, H)
+        sc.label(X, 30, f"跳跃版：本趟扫描区间[lo, hi)=[{lo}, {hi})，last={last}", size=15, fill=SUB, mono=True)
+        st = {}
+        for k in range(n):
+            if k >= hi or k < lo:
+                st[k] = (DONE, DONE_STROKE)
+        if newly is not None:
+            st[newly] = (WRITE, WRITE_STROKE)
+        if hot:
+            for k in hot:
+                st[k] = (HOT, HOT_STROKE)
+        sc.array(X, Y, values, st, cw=CW, ch=44)
+        if hot:
+            i = hot[0]
+            sc.bracket(X + i * (CW + 2), X + (i + 1) * (CW + 2) - 2, Y - 12, f"a[{i}] ? a[{i+1}]", HOT_STROKE)
+        sc.label(X, 210, note, size=15)
+        return sc
+
+    lo, hi = 0, n
+    frames.append(frame("初态", "lo=0，hi=7。输入仅两处逆序：2>1与5>4。", "跳跃版的看点：一趟扫描能一次跳过多少尾部。",
+                        "一趟扫描后last会是多少？", scene(a, lo, hi, 0, note="last每趟初始化为lo。")))
+    # pass 1
+    last = lo
+    swaps = [(1, True), (4, True)]
+    trace1 = [(0, False), (1, True), (2, False), (3, False), (4, True), (5, False)]
+    for i, sw in trace1:
+        if sw:
+            a[i - 1], a[i] = a[i], a[i - 1]
+            last = i
+            frames.append(frame(f"比较a[{i-1}]与a[{i}]：逆序，交换", f"交换后last更新为{i}。",
+                                "last记住本趟最后一次交换的位置。", "",
+                                scene(a, lo, hi, last, hot=[i - 1, i], newly=i)))
+        else:
+            frames.append(frame(f"比较a[{i-1}]与a[{i}]：有序", "不交换，继续。", "该对非降序。", "",
+                                scene(a, lo, hi, last, hot=[i - 1, i])))
+    hi = last
+    frames.append(frame("第1趟结束：hi跳到last=4", f"最后交换发生在a[3]与a[4]，后缀[4,7)必然就位，hi=4。",
+                        "断言：[lo,last)的元素 < [last] <= (last,hi)的元素。下一趟只扫[0,4)。",
+                        "", scene(a, lo, hi, last, note="区间从7缩短到4：跳过了3个元素。")))
+    # pass 2
+    last = lo
+    for i in range(1, hi):
+        frames.append(frame(f"第2趟：比较a[{i-1}]与a[{i}]：有序", "不交换。", "前缀已无逆序。", "",
+                            scene(a, lo, hi, last, hot=[i - 1, i])))
+    hi = last
+    frames.append(frame("第2趟结束：last=0，hi=0", "整趟无交换，last保持lo=0，hi=0，循环退出。",
+                        "sorted的语义：一趟无交换即整体有序。总耗时：第1趟6次比较、第2趟3次。",
+                        "", scene(a, 0, 0, 0, note="最好情况O(n)的来源：一趟发现无逆序即收工。")))
+    return write_demo("ds06-jump", "跳跃版起泡：last怎样让区间跳跃收缩", frames)
+
+
+# ---------- 演示：ch06 二路归并 ----------
+
+def demo_merge():
+    A = [1, 3, 6, 7]
+    B = [2, 4, 5, 8]
+    frames = []
+    W, H = 760, 300
+    XA, XB, XS, Y, CW = 40, 40, 40, 88, 62
+
+    def scene(Aa, Bb, S, a, b, note, why, done=None):
+        sc = Scene(W, H)
+        sc.label(XA, 30, "归并：A与B的首元素两两比较，小者优先进入S", size=15, fill=SUB)
+        sc.label(XA, 60, "A（前缀副本）", size=13, fill=SUB)
+        stA = {a: (HOT, HOT_STROKE)} if a < len(Aa) else {}
+        sc.array(XA, Y, Aa, stA, cw=CW, ch=42)
+        sc.label(XB, 60, "B（后缀本体）", size=13, fill=SUB)
+        stB = {b: (HOT, HOT_STROKE)} if b < len(Bb) else {}
+        sc.array(XB + 340, Y, Bb, stB, cw=CW, ch=42)
+        sc.label(XS, 178, "S（归并输出，就地覆盖）", size=13, fill=SUB)
+        for k in range(8):
+            if k < len(S):
+                f, stc = (WRITE, WRITE_STROKE)
+                sc.add("rect", x=XS + k * (CW + 2), y=190, width=CW, height=42, rx=8, fill=f, stroke=stc, stroke_width=1.5)
+                sc.label(XS + k * (CW + 2) + CW / 2, 216, str(S[k]), size=17, mono=True, anchor="middle")
+            else:
+                sc.add("rect", x=XS + k * (CW + 2), y=190, width=CW, height=42, rx=8, fill="#fbfdff",
+                       stroke=CELL_STROKE, stroke_width=1.2)
+                sc.label(XS + k * (CW + 2) + CW / 2, 216, "·", size=15, fill=FAINT, anchor="middle")
+        sc.label(XA, 266, note, size=15)
+        sc.label(XA, 258, why, size=13, fill=SUB) if False else None
+        sc.label(XA, 288, "为什么：" + why, size=14, fill=SUB)
+        return sc
+
+    S = []
+    a = b = 0
+    frames.append(frame("准备", "A=[1,3,6,7]已复制出前缀；B=[2,4,5,8]留在原地。", "前缀会被S覆盖，必须先复制；后缀不会被覆盖，可直接使用。",
+                        "第一对比较是谁和谁？", scene(A, B, S, 0, 0, "等待首次比较。", "指针a、b分别指向两个首元素。")))
+    while a < len(A) and b < len(B):
+        if A[a] <= B[b]:
+            S.append(A[a]); a += 1
+            act, why = f"A[a]={S[-1]} ≤ B[b]，A首元素进入S。", "取等号时优先取A：稳定性由此保证。"
+        else:
+            S.append(B[b]); b += 1
+            act, why = f"B[b]={S[-1]} < A[a]，B首元素进入S。", "较小者归入S，指针右移。"
+        frames.append(frame(f"S新增{S[-1]}", act, why, "", scene(A, B, S, a, b, act, why)))
+    if a < len(A):
+        S += A[a:]
+        frames.append(frame("B耗尽：A残余整体归入", f"A剩下的{A[a:]}直接追加进S。", "A本就有序，无需再比较。",
+                            "", scene(A, B, S, a, b, "A残余追加。", "B先耗尽的情形；若A先耗尽，B残余本就在S中，无需搬动。")))
+    frames.append(frame("归并完成", "S=[1,2,3,4,5,6,7,8]，恰好a+b=4+4=8次输出。", "无论过程如何，总输出次数恒为la+lb=n：归并必为线性。",
+                        "", scene(A, B, S, a, b, "二路归并完成。", "比较至多n−1次，输出恰好n次。")))
+    return write_demo("ds06-merge", "二路归并：1,3,6,7与2,4,5,8怎样合并", frames)
+
+
+DEMOS.update({
+    "ds06-jump": demo_bubble_jump,
+    "ds06-merge": demo_merge,
+})
+
+
+
+# ---------- 演示：ch07 insertPred 前插入 ----------
+
+def demo_list_insert():
+    """A → B，在B之前插入X。节点行距120，指针画为节点间水平线。"""
+    frames = []
+    W, H = 720, 300
+    X0, Y0, NW, NH = 60, 150, 130, 54
+
+    def node_scene(names, link_old, link_new, note, why, step_label='逐步演示'):
+        sc = Scene(W, H)
+        if step_label:
+            sc.label(40, 30, step_label, size=15, fill=SUB)
+        pos = {}
+        for k, nm in enumerate(names):
+            x = X0 + k * (NW + 50)
+            pos[nm] = x + NW / 2
+            hot = nm in ("X",)
+            sc.add("rect", x=x, y=Y0, width=NW, height=NH, rx=10,
+                   fill=(WRITE if hot else CELL), stroke=(WRITE_STROKE if hot else CELL_STROKE), stroke_width=1.5)
+            sc.label(x + NW / 2, Y0 + 22, nm, size=18, mono=True, anchor="middle")
+            sc.label(x + 20, Y0 + 44, "pred", size=10, fill=FAINT, mono=True)
+            sc.label(x + NW - 20, Y0 + 44, "succ", size=10, fill=FAINT, mono=True, anchor="end")
+        y = Y0 - 18
+        for (src, dst, f, stc) in link_old:
+            sc.add("line", x1=pos[src], y1=y, x2=pos[dst], y2=y, stroke=(PALE if (src, dst) in [(l[0], l[1]) for l in link_new] else stc), stroke_width=1.4)
+        for (src, dst, f, stc) in link_new:
+            sc.add("line", x1=pos[src], y1=y, x2=pos[dst], y2=y, stroke=stc, stroke_width=2.2)
+            sc.add("circle", cx=pos[dst], cy=y, r=3, fill=stc)
+        sc.label(40, 240, note, size=15)
+        sc.label(40, 266, "为什么：" + why, size=14, fill=SUB)
+        return sc
+
+    A, B, X = "A", "B", "X"
+    frames.append(frame("初态", "链表片段A → B。任务：把新节点X插入B之前。", "insertPred需要改动三处指针，次序不可颠倒。",
+                        "先改哪一根？", node_scene([A, B], [(A, B, "", CELL_STROKE)], [(A, B, "", CELL_STROKE)], "尚无动作。", "新节点此刻还不存在。", "初态")))
+    frames.append(frame("第一步：创建新节点X", "new ListNode(e, pred=B的pred=A, this=B)：X的pred指向A、succ指向B。", "构造时一次性接好两根 outgoing 指针，此后旧链仍完整。",
+                        "", node_scene([A, X, B], [(A, B, "", CELL_STROKE)], [(A, X, "", WRITE_STROKE), (X, B, "", WRITE_STROKE)], "X诞生，两根新指针已接好。", "此刻A→B的旧链仍通，列表未被破坏。")))
+    frames.append(frame("第二步：pred->succ = x", "让A的succ改指X。", "旧链A→B就此断开，新链A→X接通；此刻若停在半途，B会失联——次序不能颠倒的根源。",
+                        "", node_scene([A, X, B], [(A, B, "", CELL_STROKE)], [(A, X, "", WRITE_STROKE), (X, B, "", WRITE_STROKE)], "A→X接通，A→B断开。", "X→B已在第一步接好，B依然可达。")))
+    frames.append(frame("第三步：pred = x", "让B的pred改指X。", "反向链补齐，双向链表恢复一致；整个过程O(1)。",
+                        "", node_scene([A, X, B], [(A, B, "", CELL_STROKE)], [(A, X, "", WRITE_STROKE), (X, B, "", WRITE_STROKE)], "三步完成：A → X → B。", "局部改动常数个指针，与列表总长无关。")))
+    return write_demo("ds07-insert", "前插入：三根指针的次序", frames)
+
+
+# ---------- 演示：ch07 remove 删除 ----------
+
+def demo_list_remove():
+    frames = []
+    W, H = 720, 300
+    X0, Y0, NW, NH = 40, 150, 120, 54
+
+    def scene(names, links, note, why, marked=None):
+        sc = Scene(W, H)
+        sc.label(40, 30, "remove(p)：让两侧指针绕过被删节点", size=15, fill=SUB)
+        pos = {}
+        for k, nm in enumerate(names):
+            x = X0 + k * (NW + 46)
+            pos[nm] = x + NW / 2
+            gone = (nm == marked)
+            sc.add("rect", x=x, y=Y0, width=NW, height=NH, rx=10,
+                   fill=(BAD if gone else CELL), stroke=(BAD_STROKE if gone else CELL_STROKE), stroke_width=1.5)
+            sc.label(x + NW / 2, Y0 + 28, nm, size=18, mono=True, anchor="middle",
+                     fill=(FAINT if gone else INK))
+        y = Y0 - 18
+        for (src, dst, stc) in links:
+            sc.add("line", x1=pos[src], y1=y, x2=pos[dst], y2=y, stroke=stc, stroke_width=2.2)
+            sc.add("circle", cx=pos[dst], cy=y, r=3, fill=stc)
+        sc.label(40, 240, note, size=15)
+        sc.label(40, 266, "为什么：" + why, size=14, fill=SUB)
+        return sc
+
+    frames.append(frame("初态", "链表片段A → p → C。要删除p。", "p的两侧指针必须先改，否则后续节点失联。",
+                        "两根指针各改成什么？", scene(["A", "p", "C"], [("A", "p", CELL_STROKE), ("p", "C", CELL_STROKE)], "尚未动作。", "被删节点的pred、succ分别指向A与C。")))
+    frames.append(frame("第一根：p->pred->succ = p->succ", "A的succ越过p改指C。", "正向链绕过p；此刻C还只能通过p的反向链找到。",
+                        "", scene(["A", "p", "C"], [("A", "C", WRITE_STROKE), ("p", "C", CELL_STROKE)], "正向链已绕过p。", "反向链尚需第二根。")))
+    frames.append(frame("第二根：p->succ->pred = p->pred", "C的pred越过p改指A。", "反向链接通后，p彻底出链；delete释放节点，规模减一。",
+                        "", scene(["A", "C"], [("A", "C", WRITE_STROKE)], "A → C，删除完成，O(1)。", "同样只是局部常数根指针，与表长无关。")))
+    return write_demo("ds07-remove", "删除节点：让两侧指针绕过它", frames)
+
+
+DEMOS.update({
+    "ds07-insert": demo_list_insert,
+    "ds07-remove": demo_list_remove,
+})
+
 if __name__ == "__main__":
     main(sys.argv[1:])
