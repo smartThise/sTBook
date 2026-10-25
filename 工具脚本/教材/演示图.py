@@ -164,7 +164,7 @@ def svg_for_frame(demo_title, idx, total, f):
     return "".join(parts)
 
 
-def write_demo(demo_id, title, frames):
+def write_demo(demo_id, title, frames, outdir=None):
     validate(frames)
     for f in frames:
         sc = f["scene"]
@@ -181,7 +181,7 @@ def write_demo(demo_id, title, frames):
         svg = svg_for_frame(title, i, total, static_frame)
         if i == 1:
             svg = svg.replace("</title>", f'</title><metadata id="stbook-trace">{meta}</metadata>', 1)
-        (IMG / f"演示-{demo_id}-{i:02d}.svg").write_text(svg, encoding="utf-8")
+        ( (outdir or IMG) / f"演示-{demo_id}-{i:02d}.svg" ).write_text(svg, encoding="utf-8")
     return total
 
 
@@ -1718,6 +1718,114 @@ def demo_partition():
 
 
 DEMOS.update({"ds20-partition": demo_partition})
+
+
+
+# ---------- CS演示 ----------
+
+CS_IMG = ROOT / "计算机系统概论" / "资料" / "超级纲要" / "图片"
+
+def demo_cs_overflow():
+    """8位补码：127+1=-128。"""
+    bits = list("01111111")
+    frames = []
+    W, H = 740, 230
+    X, Y, CW = 52, 100, 82
+
+    def scene(b, note, carry=False):
+        sc = Scene(W, H)
+        sc.label(X, 30, "8位补码：int8_t a = 127; a = a + 1; 会得到什么？", size=15, fill=SUB)
+        for i, c in enumerate(b):
+            sc.add("rect", x=X + i * (CW + 4), y=Y, width=CW, height=50, rx=8,
+                   fill=(WRITE if (carry and i == 7) else CELL), stroke=CELL_STROKE, stroke_width=1.5)
+            sc.label(X + i * (CW + 4) + CW / 2, Y + 31, c, size=19, mono=True, anchor="middle")
+            sc.label(X + i * (CW + 4) + CW / 2, Y + 68, f"2^{7-i}", size=11, fill=FAINT, mono=True, anchor="middle")
+        sc.chip(X, 176, 220, 26, "符号位=最高位", WRITE, WRITE_STROKE, size=13, mono=False)
+        sc.label(X + 240, 192, note, size=15)
+        return sc
+
+    frames.append(frame("127 = 01111111", "正数补码即其二进制：最高位0表示非负，数值=64+32+16+8+4+2+1=127。", "8位有符号数的范围是−128到+127。",
+                        "127加1后每一位会怎样？", scene(bits, "初始。")))
+    b2 = list("10000000")
+    frames.append(frame("加1：10000000", "末位+1产生连续进位，得10000000。", "补码规则下最高位是符号位：1开头即负数。",
+                        "", scene(b2, "位串变成10000000。", carry=True)))
+    frames.append(frame("按补码解释：−128", "10000000的补码值=−(2^7)=−128。127+1没有越过8位边界时会得到129，这里却得到−128：有符号溢出。", "C标准规定有符号溢出是未定义行为；机器层按模256回绕。",
+                        "", scene(b2, "a读出为−128。", carry=True)))
+    return write_demo("cs02-overflow", "8位补码溢出：127+1=−128", frames, outdir=CS_IMG)
+
+
+def demo_cs_stack():
+    """main→funcA→funcB调用栈压栈与弹栈。"""
+    frames = []
+    W, H = 720, 280
+    X, Y, FW, FH = 90, 60, 340, 52
+
+    def scene(stack, note, why=''):
+        sc = Scene(W, H)
+        sc.label(X, 30, "调用栈：每次调用压入一帧（参数+局部变量+返回地址），返回弹出一帧", size=15, fill=SUB)
+        for i, (nm, ra) in enumerate(stack):
+            hot = (i == len(stack) - 1)
+            y = Y + i * (FH + 8)
+            sc.add("rect", x=X, y=y, width=FW, height=FH, rx=10,
+                   fill=(HOT if hot else CELL), stroke=(HOT_STROKE if hot else CELL_STROKE), stroke_width=1.5)
+            sc.label(X + 14, y + 22, nm, size=16, mono=True)
+            sc.label(X + FW - 14, y + 22, f"返回地址 {ra}", size=13, mono=True, anchor="end", fill=SUB)
+        sc.label(X + FW + 20, Y + 24, "栈底", size=13, fill=FAINT)
+        sc.label(X + FW + 20, Y + len(stack) * (FH + 8) + 4, "栈顶", size=13, fill=FAINT)
+        sc.label(X, 262, note, size=15)
+        sc.label(X, 284, "为什么：" + why, size=13, fill=SUB) if False else None
+        return sc
+
+    frames.append(frame("main运行中", "栈里只有main帧：局部i=9。", "程序启动时main是栈底。", "",
+                        scene([("main()", "0x0700")], "栈深1。")))
+    frames.append(frame("调用funcA：压栈", "funcA(i*i)=funcA(81)被调用：压入新帧，含j=81、k、返回地址0x1000。", "返回地址记录调用点下一条指令的地址，返回时跳回。",
+                        "", scene([("main()", "0x0700"), ("funcA(j=81,k=27)", "0x1000")], "栈深2。")))
+    frames.append(frame("funcA调用funcB：再压栈", "funcB(k+5)=funcB(32)：新帧m=32、返回地址0x1500。", "递归同理：每层自己的参数与局部变量互不干扰。",
+                        "", scene([("main()", "0x0700"), ("funcA(j=81,k=27)", "0x1000"), ("funcB(m=32)", "0x1500")], "栈深3。")))
+    frames.append(frame("funcB返回：弹栈", "funcB结束：弹出其帧，跳回0x1500回到funcA。", "栈顶帧的返回地址决定回到哪里；数据随帧消失。",
+                        "", scene([("main()", "0x0700"), ("funcA(j=81,k=27)", "0x1000")], "栈深2，回到funcA。")))
+    frames.append(frame("全部返回", "funcA、main相继返回，栈清空。", "递归深度=最深时的栈帧数——这就是第03章'空间取决于深度'的机器根源。", "",
+                        scene([("main()", "0x0700")], "回到main。")))
+    return write_demo("cs06-stack", "调用栈：main→funcA→funcB的压栈弹栈", frames, outdir=CS_IMG)
+
+
+def demo_cs_pagetable():
+    """虚拟地址0x12AB经单级页表翻译到物理地址0x3AAB。"""
+    frames = []
+    W, H = 760, 240
+    X, Y = 50, 96
+
+    def scene(vp, pf, note, step_lbl):
+        sc = Scene(W, H)
+        sc.label(X, 30, step_lbl, size=15, fill=SUB)
+        sc.add("rect", x=X, y=Y, width=200, height=48, rx=8, fill=WRITE, stroke=WRITE_STROKE, stroke_width=1.5)
+        sc.add("rect", x=X + 104, y=Y, width=96, height=48, rx=0, fill=HOT, stroke=HOT_STROKE, stroke_width=1.5)
+        sc.label(X + 52, Y + 30, "0x12", size=17, mono=True, anchor="middle")
+        sc.label(X + 152, Y + 30, "AB", size=17, mono=True, anchor="middle")
+        sc.label(X + 52, Y + 62, "虚拟页号", size=11, fill=FAINT, anchor="middle")
+        sc.label(X + 152, Y + 62, "页内偏移", size=11, fill=FAINT, anchor="middle")
+        sc.label(X + 240, Y + 30, "页表：0x12 → 0x3A（驻留、可读）", size=15, mono=True)
+        sc.add("rect", x=X + 40, y=Y + 92, width=200, height=48, rx=8, fill=WRITE, stroke=WRITE_STROKE, stroke_width=1.5)
+        sc.add("rect", x=X + 144, y=Y + 92, width=96, height=48, rx=0, fill=HOT, stroke=HOT_STROKE, stroke_width=1.5)
+        sc.label(X + 92, Y + 122, "0x3A", size=17, mono=True, anchor="middle")
+        sc.label(X + 192, Y + 122, "AB", size=17, mono=True, anchor="middle")
+        sc.label(X + 92, Y + 154, "物理页框", size=11, fill=FAINT, anchor="middle")
+        sc.label(X + 192, Y + 154, "偏移不变", size=11, fill=FAINT, anchor="middle")
+        sc.label(X, 216, note, size=15)
+        return sc
+
+    frames.append(frame("拆分虚拟地址", "0x12AB=0001001010101011：低8位0xAB是页内偏移，其余0x12是虚拟页号。", "页大小256=2^8，低8位天然是偏移。",
+                        "", scene("0x12", "0x3A", "第一步：拆出页号与偏移。", "拆分。")))
+    frames.append(frame("查页表替换页号", "页表把虚拟页0x12翻译为物理页框0x3A；偏移原样保留。", "翻译只改页号，页内字节次序不受影响。",
+                        "", scene("0x12", "0x3A", "物理地址=0x3A00+0xAB=0x3AAB。", "翻译。")))
+    return write_demo("cs11-pagetable", "页表翻译：0x12AB怎样到0x3AAB", frames, outdir=CS_IMG)
+
+
+DEMOS.update({
+    "cs02-overflow": demo_cs_overflow,
+    "cs06-stack": demo_cs_stack,
+    "cs11-pagetable": demo_cs_pagetable,
+})
 
 if __name__ == "__main__":
     main(sys.argv[1:])
