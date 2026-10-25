@@ -1600,5 +1600,48 @@ def demo_linear_probing():
 
 DEMOS.update({"ds15-probing": demo_linear_probing})
 
+
+
+# ---------- 演示：ch17 Dijkstra松弛 ----------
+
+def demo_dijkstra():
+    # edges: S->A(10), S->B(3), B->A(4), A->C(2), B->C(8)
+    adj = {"S": [("A", 10), ("B", 3)], "B": [("A", 4), ("C", 8)], "A": [("C", 2)], "C": []}
+    frames = []
+    W, H = 780, 270
+
+    def scene(dist, done, popped, note, relax=None):
+        sc = Scene(W, H)
+        sc.label(40, 30, "Dijkstra：每步取出dist最小且未定的顶点，松弛其邻居", size=15, fill=SUB)
+        sc.label(40, 58, "dist: " + "  ".join(f"{k}={'∞' if dist.get(k) is None else dist[k]}" for k in ["S", "A", "B", "C"]), size=15, mono=True)
+        sc.label(40, 84, "已确定: " + (" ".join(done) if done else "（无）"), size=15, mono=True)
+        if popped:
+            sc.chip(500, 44, 200, 26, f"取出 {popped}", HOT, HOT_STROKE, size=14, mono=True)
+        if relax:
+            sc.label(40, 240, "松弛：" + relax, size=14, mono=True)
+        sc.label(40, 214, note, size=15)
+        return sc
+
+    dist = {"S": 0, "A": None, "B": None, "C": None}
+    done = []
+    frames.append(frame("初始化", "dist[S]=0，其余∞。", "最短路径树从S生长；每个前缀本身就是最短路径。", "",
+                        scene(dist, done, None, "等待取出S。")))
+    done.append("S")
+    frames.append(frame("取出S，松弛邻居", "S出列确定。松弛A：0+10=10；B：0+3=3。", "dist单调下降的候选进入优先队列。", "",
+                        scene({"S": 0, "A": 10, "B": 3, "C": None}, done, "S", "A:0+10=10；B:0+3=3")))
+    done.append("B")
+    frames.append(frame("取出B（dist=3），松弛", "B确定为3。松弛A：min(10, 3+4)=7改进；C：3+8=11。", "经B绕行更短，A的候选值从10降到7。",
+                        "", scene({"S": 0, "A": 7, "B": 3, "C": 11}, done, "B", "A:3+4=7；C:3+8=11")))
+    done.append("A")
+    frames.append(frame("取出A（dist=7），松弛", "A确定为7。松弛C：min(11, 7+2)=9改进。", "S→B→A→C全程9，优于直达绕行。",
+                        "", scene({"S": 0, "A": 7, "B": 3, "C": 9}, done, "A", "C:7+2=9")))
+    done.append("C")
+    frames.append(frame("取出C，结束", "C确定为9。全部顶点确定。", "负权边时本贪心失效——需Bellman-Ford；每对顶点则用Floyd。",
+                        "", scene({"S": 0, "A": 7, "B": 3, "C": 9}, done, "C", None)))
+    return write_demo("ds17-dijkstra", "Dijkstra：S/A/B/C的松弛过程", frames)
+
+
+DEMOS.update({"ds17-dijkstra": demo_dijkstra})
+
 if __name__ == "__main__":
     main(sys.argv[1:])
