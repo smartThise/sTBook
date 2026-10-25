@@ -1395,5 +1395,43 @@ def demo_level_order():
 
 DEMOS.update({"ds10-level": demo_level_order})
 
+
+
+# ---------- 演示：ch11 Huffman贪心合并 ----------
+
+def demo_huffman():
+    # freq: A=2 B=3 C=5 D=8
+    # merges: (A2,B3)->5A ; (C5,5A)->10C ; (D8,10C)->18
+    steps = [("合并A2与B3 → 权5", "森林中最小的两个：A(2)、B(3)。合并为新树，权重5。", "贪心：最小的两个配对，保证它们处于最深处。", ["C5", "5A", "D8"], "5A"),
+             ("合并C5与5A → 权10", "新的最小两个：C(5)与刚合成的5A。合并为10。", "刚合成的树立即参与后续比较。", ["D8", "10C"], "10C"),
+             ("合并D8与10C → 权18", "最后两棵合并为整棵Huffman树，权重18=全部频数和。", "迭代n−1次后森林只剩一棵。", [], "18D")]
+    frames = []
+    W, H = 740, 250
+
+    def scene(forest, note, hl=None):
+        sc = Scene(W, H)
+        sc.label(40, 30, "Huffman贪心：森林F中取出权重最小的两棵合并，插回森林", size=15, fill=SUB)
+        for k, (nm, wt) in enumerate(forest):
+            hot = (nm == hl)
+            sc.add("rect", x=60 + k * 150, y=90, width=130, height=64, rx=10,
+                   fill=(HOT if hot else CELL), stroke=(HOT_STROKE if hot else CELL_STROKE), stroke_width=1.5)
+            sc.label(60 + k * 150 + 65, 118, nm, size=17, mono=True, anchor="middle")
+            sc.label(60 + k * 150 + 65, 140, f"w={wt}", size=13, fill=FAINT, mono=True, anchor="middle")
+        sc.label(40, 210, note, size=15)
+        return sc
+
+    frames.append(frame("初始森林", "四个字符按频数作为单节点树：A2、B3、C5、D8。", "编码目标：总编码长度（带权路径长WPL）最小。",
+                        "先合并哪两个？", scene([("A", 2), ("B", 3), ("C", 5), ("D", 8)], "初始：四棵单节点树。")))
+    for t, (title, act, why, forest, hl) in enumerate(steps, 1):
+        frames.append(frame(title, act, why, "", scene([(nm, int(nm[-1] if nm[-1].isdigit() else 5)) for nm in forest] if forest else [], act, hl)))
+    codes = "A=110，B=111，C=10，D=0"
+    wpl = 3*2 + 3*3 + 2*5 + 1*8
+    frames.append(frame("编码结果", f"WPL = 3×2 + 3×3 + 2×5 + 1×8 = {wpl}。", "频数最高的D只占1位，最低的A占3位：高频短码、低频长码。",
+                        "", scene([("D", 8)], f"编码：{codes}；WPL={wpl}。")))
+    return write_demo("ds11-huffman", "Huffman贪心合并：2,3,5,8", frames)
+
+
+DEMOS.update({"ds11-huffman": demo_huffman})
+
 if __name__ == "__main__":
     main(sys.argv[1:])
