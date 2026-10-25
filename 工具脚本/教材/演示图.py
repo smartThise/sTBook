@@ -1346,5 +1346,54 @@ DEMOS.update({
     "ds09-histogram": demo_histogram,
 })
 
+
+
+# ---------- 演示：ch10 层次遍历 ----------
+
+def demo_level_order():
+    # tree: A(B(D,E),C(-,F))
+    children = {"A": ["B", "C"], "B": ["D", "E"], "C": ["", "F"], "D": [], "E": [], "F": []}
+    frames = []
+    W, H = 760, 300
+    TX, TY = 80, 110
+    pos = {"A": (330, TY), "B": (180, TY + 90), "C": (480, TY + 90), "D": (100, TY + 180), "E": (260, TY + 180), "F": (560, TY + 180)}
+
+    def scene(queue, visited, note, deq=None):
+        sc = Scene(W, H)
+        sc.label(40, 30, "层次遍历：队列Q；出队→访问→孩子依次入队", size=15, fill=SUB)
+        edges = [("A", "B"), ("A", "C"), ("B", "D"), ("B", "E"), ("C", "F")]
+        for (p1, p2) in edges:
+            x1, y1 = pos[p1]; x2, y2 = pos[p2]
+            sc.add("line", x1=x1, y1=y1 + 26, x2=x2, y2=y2 - 6, stroke=LINE, stroke_width=1.6)
+        for nm, (x, y) in pos.items():
+            done = nm in visited
+            hot = (deq == nm)
+            infut = nm in queue
+            fill = HOT if hot else (DONE if done else (WRITE if infut else CELL))
+            stc = HOT_STROKE if hot else (DONE_STROKE if done else (WRITE_STROKE if infut else CELL_STROKE))
+            sc.add("rect", x=x - 34, y=y - 4, width=68, height=40, rx=10, fill=fill, stroke=stc, stroke_width=1.5)
+            sc.label(x, y + 22, nm, size=17, mono=True, anchor="middle")
+        sc.label(40, 36, "队列Q（自队首向队尾）：" + (" ".join(queue) if queue else "（空）"), size=15, mono=True)
+        sc.label(40, 288, note, size=15)
+        return sc
+
+    q = ["A"]; visited = []
+    frames.append(frame("根入队", "根A入队。", "层次遍历按深度自上而下、同层自左向右；队列的FIFO恰保证这一顺序。",
+                        "A出队后谁入队？", scene(q, visited, "Q=[A]。")))
+    order = []
+    while q:
+        v = q.pop(0); visited.append(v); order.append(v)
+        kids = [k for k in children.get(v, []) if k]
+        note = f"访问{v}" + ("，孩子 " + " ".join(kids) + " 依次入队。" if kids else "，叶节点无孩子。")
+        q.extend(kids)
+        frames.append(frame(f"出队访问 {v}", note, "先访问者，其孩子先入队——同层次序由入队次序保证。",
+                            "", scene(q, visited, note, deq=v)))
+    frames.append(frame("完成", f"访问序列：{' '.join(order)}。", "队列FIFO保证：同层节点先访问者的孩子也先入队、先访问。",
+                        "", scene([], visited, f"层次遍历序列：{' '.join(order)}。")))
+    return write_demo("ds10-level", "层次遍历：队列怎样决定访问次序", frames)
+
+
+DEMOS.update({"ds10-level": demo_level_order})
+
 if __name__ == "__main__":
     main(sys.argv[1:])
