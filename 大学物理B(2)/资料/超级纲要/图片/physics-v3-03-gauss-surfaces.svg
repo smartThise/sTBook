@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="990" height="360" viewBox="0 0 990 360"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<text x="165" y="28" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">球对称：同心球面</text>
+<circle cx="165" cy="172" r="87" fill="#f1f7ff" stroke="#738fa8" stroke-width="2"/>
+<circle cx="165" cy="172" r="38" fill="#fff1cd" stroke="#bb9250" stroke-width="2"/>
+<text x="165" y="177" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">Q</text>
+<line x1="252.0" y1="172.0" x2="287.0" y2="172.0" stroke="#2d805d" stroke-width="2"/>
+<polygon points="287.0,172.0 278.0,168.0 278.0,176.0" fill="#2d805d"/>
+<line x1="208.5" y1="96.65578987075384" x2="226.0" y2="66.34490073829849" stroke="#2d805d" stroke-width="2"/>
+<polygon points="226.0,66.34490073829849 218.03589838486224,72.13912937235844 224.96410161513776,76.13912937235844" fill="#2d805d"/>
+<line x1="121.50000000000001" y1="96.65578987075384" x2="104.00000000000003" y2="66.34490073829848" stroke="#2d805d" stroke-width="2"/>
+<polygon points="104.00000000000003,66.34490073829848 105.03589838486228,76.13912937235843 111.96410161513778,72.13912937235843" fill="#2d805d"/>
+<line x1="78.0" y1="172.0" x2="43.0" y2="172.0" stroke="#2d805d" stroke-width="2"/>
+<polygon points="43.0,172.0 52.0,176.0 52.0,168.0" fill="#2d805d"/>
+<line x1="121.49999999999997" y1="247.34421012924614" x2="103.99999999999996" y2="277.6550992617015" stroke="#2d805d" stroke-width="2"/>
+<polygon points="103.99999999999996,277.6550992617015 111.96410161513771,271.86087062764153 105.03589838486221,267.86087062764153" fill="#2d805d"/>
+<line x1="208.5" y1="247.34421012924616" x2="226.0" y2="277.65509926170154" stroke="#2d805d" stroke-width="2"/>
+<polygon points="226.0,277.65509926170154 224.96410161513776,267.8608706276416 218.03589838486224,271.8608706276416" fill="#2d805d"/>
+<text x="165" y="306" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">每处E与外法向n平行</text>
+<text x="165" y="333" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">同一半径r上的E大小相同</text>
+<text x="495" y="28" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">柱对称：同轴圆柱面</text>
+<rect x="427" y="95" width="136" height="154" rx="0" fill="#f1f7ff" stroke="#738fa8" stroke-width="1.5"/>
+<ellipse cx="495" cy="95" rx="68" ry="18" fill="#edf4ff" stroke="#738fa8"/><ellipse cx="495" cy="249" rx="68" ry="18" fill="#edf4ff" stroke="#738fa8"/>
+<line x1="495" y1="56" x2="495" y2="283" stroke="#b67742" stroke-width="2"/>
+<text x="516" y="60" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">轴z</text>
+<line x1="427" y1="130" x2="389" y2="130" stroke="#2d805d" stroke-width="2"/>
+<polygon points="389,130 398.0,134.0 398.0,126.0" fill="#2d805d"/>
+<line x1="563" y1="130" x2="601" y2="130" stroke="#2d805d" stroke-width="2"/>
+<polygon points="601,130 592.0,126.0 592.0,134.0" fill="#2d805d"/>
+<line x1="427" y1="175" x2="389" y2="175" stroke="#2d805d" stroke-width="2"/>
+<polygon points="389,175 398.0,179.0 398.0,171.0" fill="#2d805d"/>
+<line x1="563" y1="175" x2="601" y2="175" stroke="#2d805d" stroke-width="2"/>
+<polygon points="601,175 592.0,171.0 592.0,179.0" fill="#2d805d"/>
+<line x1="427" y1="220" x2="389" y2="220" stroke="#2d805d" stroke-width="2"/>
+<polygon points="389,220 398.0,224.0 398.0,216.0" fill="#2d805d"/>
+<line x1="563" y1="220" x2="601" y2="220" stroke="#2d805d" stroke-width="2"/>
+<polygon points="601,220 592.0,216.0 592.0,224.0" fill="#2d805d"/>
+<line x1="495" y1="95" x2="495" y2="64" stroke="#6b8095" stroke-width="2"/>
+<polygon points="495,64 491.0,73.0 499.0,73.0" fill="#6b8095"/>
+<line x1="495" y1="249" x2="495" y2="281" stroke="#6b8095" stroke-width="2"/>
+<polygon points="495,281 499.0,272.0 491.0,272.0" fill="#6b8095"/>
+<text x="548" y="74" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">端面n</text>
+<text x="495" y="306" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">侧面E平行n，端面E垂直n</text>
+<text x="495" y="333" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">只剩侧面积2πrL</text>
+<text x="825" y="28" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">面反射对称：两端薄盒</text>
+<rect x="765" y="92" width="120" height="155" rx="0" fill="#f1f7ff" stroke="#738fa8" stroke-width="1.5"/>
+<line x1="715" y1="173" x2="938" y2="173" stroke="#b67742" stroke-width="2"/>
+<text x="920" y="164" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">+σ</text>
+<line x1="790" y1="135" x2="790" y2="61" stroke="#2d805d" stroke-width="2"/>
+<polygon points="790,61 786.0,70.0 794.0,70.0" fill="#2d805d"/>
+<line x1="790" y1="207" x2="790" y2="278" stroke="#2d805d" stroke-width="2"/>
+<polygon points="790,278 794.0,269.0 786.0,269.0" fill="#2d805d"/>
+<line x1="855" y1="135" x2="855" y2="61" stroke="#2d805d" stroke-width="2"/>
+<polygon points="855,61 851.0,70.0 859.0,70.0" fill="#2d805d"/>
+<line x1="855" y1="207" x2="855" y2="278" stroke="#2d805d" stroke-width="2"/>
+<polygon points="855,278 859.0,269.0 851.0,269.0" fill="#2d805d"/>
+<text x="825" y="306" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">上下均沿外法向穿出</text>
+<text x="825" y="333" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">两个端面各贡献EA</text></svg>

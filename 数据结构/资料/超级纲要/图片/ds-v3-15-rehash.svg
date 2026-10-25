@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="327" viewBox="0 0 700 327"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<text x="229.5" y="24" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="12" fill="#60758a">0</text>
+<text x="272.5" y="24" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="12" fill="#60758a">1</text>
+<text x="315.5" y="24" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="12" fill="#60758a">2</text>
+<text x="358.5" y="24" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="12" fill="#60758a">3</text>
+<text x="401.5" y="24" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="12" fill="#60758a">4</text>
+<text x="444.5" y="24" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="12" fill="#60758a">5</text>
+<text x="487.5" y="24" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="12" fill="#60758a">6</text>
+<text x="530.5" y="24" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="12" fill="#60758a">7</text>
+<text x="573.5" y="24" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="12" fill="#60758a">8</text>
+<text x="616.5" y="24" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="12" fill="#60758a">9</text>
+<text x="659.5" y="24" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="12" fill="#60758a">10</text>
+<text x="12" y="67" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">旧容量7的下标</text>
+<rect x="205" y="42" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="225.0" y="67" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">0</text>
+<rect x="248" y="42" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="268.0" y="67" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">1</text>
+<rect x="291" y="42" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="311.0" y="67" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">2</text>
+<rect x="334" y="42" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="354.0" y="67" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">3</text>
+<rect x="377" y="42" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="397.0" y="67" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">4</text>
+<rect x="420" y="42" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="440.0" y="67" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">5</text>
+<rect x="463" y="42" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="483.0" y="67" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">6</text>
+<text x="12" y="124" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">旧表有效项</text>
+<rect x="205" y="99" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="225.0" y="124" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="248" y="99" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="268.0" y="124" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="291" y="99" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="311.0" y="124" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="334" y="99" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="354.0" y="124" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">10</text>
+<rect x="377" y="99" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="397.0" y="124" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">17</text>
+<rect x="420" y="99" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="440.0" y="124" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">24</text>
+<rect x="463" y="99" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="483.0" y="124" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<text x="12" y="181" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">新容量17的下标</text>
+<rect x="205" y="156" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="225.0" y="181" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">0</text>
+<rect x="248" y="156" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="268.0" y="181" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">1</text>
+<rect x="291" y="156" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="311.0" y="181" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">2</text>
+<rect x="334" y="156" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="354.0" y="181" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">3</text>
+<rect x="377" y="156" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="397.0" y="181" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">4</text>
+<rect x="420" y="156" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="440.0" y="181" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">5</text>
+<rect x="463" y="156" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="483.0" y="181" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">6</text>
+<rect x="506" y="156" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="526.0" y="181" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">7</text>
+<rect x="549" y="156" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="569.0" y="181" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">8</text>
+<rect x="592" y="156" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="612.0" y="181" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">9</text>
+<rect x="635" y="156" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="655.0" y="181" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">10</text>
+<text x="12" y="238" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">按新模数重插</text>
+<rect x="205" y="213" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="225.0" y="238" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">17</text>
+<rect x="248" y="213" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="268.0" y="238" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="291" y="213" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="311.0" y="238" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="334" y="213" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="354.0" y="238" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="377" y="213" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="397.0" y="238" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="420" y="213" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="440.0" y="238" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="463" y="213" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="483.0" y="238" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="506" y="213" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="526.0" y="238" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">24</text>
+<rect x="549" y="213" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="569.0" y="238" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="592" y="213" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="612.0" y="238" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="635" y="213" width="40" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="655.0" y="238" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">10</text>
+<text x="350.0" y="315" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">新表未画11..16；它们均空。不能原位复制旧桶3/4/5。</text></svg>

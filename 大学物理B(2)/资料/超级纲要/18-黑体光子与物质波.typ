@@ -26,7 +26,9 @@ $ P = A sigma_(upright("SB"))\(1000^4 - 300^4\)approx 70.7 thin upright(W) . $
 
 $ M_lambda\(T\)= frac(2 pi h c^2, lambda^5) frac(1, e^(h c\/\(lambda k_B T\)) - 1) . $
 
-这里kB是Boltzmann常数，不是波数或库仑常数。指数分母hc/(λkBT)无量纲；如果单位没有消掉，公式输入就错了。
+这里kB是Boltzmann常数，不是波数或库仑常数。指数分母hc/(λkBT)无量纲；如果单位没有消掉，公式输入就错了。$M_lambda$的单位是$upright(W\/\(m^2 dot.op m\))$：表面每平方米、每一米波长区间的功率。给一个窄区间$\[lambda\,lambda + Delta lambda\]$，该区间出射度才近似为$M_lambda Delta lambda$；只看谱曲线某一点高度，还没有算总功率。
+
+用无量纲$x = h c\/\(lambda k_B T\)$可读两端。当波长很长、x≪1时，$e^x - 1 approx x$，所以$M_lambda approx 2 pi c k_B T\/lambda^4$，这恢复经典长波近似；当波长很短、x≫1时，$1\/\(e^x - 1\)approx e^(- x)$，指数衰减压住$1\/lambda^5$的增长，短波端不发散。以T=1000K、λ=1μm代入，$x approx 14.4$，属于短波指数端；若λ=100μm，x≈0.144，才接近长波近似。不能只听到"红外"就统一选一端公式。
 
 光子能量 $E_gamma = h f = h c\/lambda_0$，真空动量大小p=E/c=h/λ₀。h约 $6.626 times 10^(- 34)$J·s，$ℏ = h\/\(2 pi\)$。常用 $h c approx 1240$eV·nm。这个换算把波长用nm时直接给eV，不能换成mm还沿用1240。
 
@@ -82,7 +84,11 @@ $ lambda = h / sqrt(2 m_e e U) approx 0.123 thin upright(n m) . $
 
 $ p_e^2 c^2 = E^2 + E' ""^2 - 2 E E' cos theta . $
 
-电子相对论关系 $E_e^2 = p_e^2 c^2 + m_e^2 c^4$。把能量守恒给的 $E_e = m_e c^2 + E - E'$ 代进去，平方并消去相同项，得到 $m_e c^2\(E - E'\)= E E'\(1 - cos theta\)$。两边除EE′，再用E=hc/λ，就得到波长差λ′−λ=h(1−cosθ)/(mec)。
+电子相对论关系 $E_e^2 = p_e^2 c^2 + m_e^2 c^4$。把能量守恒给的 $E_e = m_e c^2 + E - E'$ 代进去，不能跳过这次平方。左边展开为$m_e^2 c^4 +\(E - E'\)^2+ 2 m_e c^2\(E - E'\)$；右边代入动量关系为$m_e^2 c^4 + E^2 + E' ""^2 - 2 E E' cos theta$。两边先消$m_e^2 c^4$，再把$\(E - E'\)^2= E^2 + E' ""^2 - 2 E E'$展开，消去$E^2 + E' ""^2$，余下
+
+$ - 2 E E' + 2 m_e c^2\(E - E'\)= - 2 E E' cos theta . $
+
+把$- 2 E E'$移到右边并除以2，得到$m_e c^2\(E - E'\)= E E'\(1 - cos theta\)$。两边除EE′，再用E=hc/λ，就得到波长差λ′−λ=h(1−cosθ)/(mec)。
 
 推导中电子用了总能量含静能，不能用p²/(2m)替代所有散射角度下的精确反冲能；光子用了E=pc，不能给它添一个经典静质量再用mv²/2。三种能量表达各有对象与范围，守恒本身不允许它们随意混用。
 

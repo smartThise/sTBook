@@ -88,7 +88,41 @@ x86寻址比例只支持1、2、4、8，24i可以先算3i，再乘8。例如lea�
 
 == 工坊十：为有缺口的switch填完整表
 <工坊十为有缺口的switch填完整表>
+先把本地HW2第3---4页的函数放在这里，后面的返回值都由它算出。`x`是要参与运算的数，`n`决定走哪个分支；本例只代入不会发生有符号溢出的小整数。
+
+```c
+long sw(long x, long n) {
+    long result = x;
+    switch (n) {
+    case 0: result = x + 5; break;
+    case 2:
+    case 3: result = x + x; break;
+    case 4: result = x - 2; break;
+    default: result = 1;
+    }
+    return result;
+}
+```
+
 case为0、2、3、4，1走default。范围检查先比较n与4，使用无符号ja排除大于4的位串，也把负long当成很大无符号数而排除。表中必须有五项，按0至4顺序：L0、Ldef、L23、L23、L4。case2与3共用同一目标，case1虽无显式分支仍必须占一个表格位置。
+
+#figure(
+  align(center)[#table(
+    columns: 5,
+    align: (right,right,auto,auto,right,),
+    table.header([n], [查表编号], [目标标签], [实际计算，取x=7], [返回值],),
+    table.hline(),
+    [0], [0], [L0], [7+5], [12],
+    [1], [1], [Ldef], [直接写入1], [1],
+    [2], [2], [L23], [7+7], [14],
+    [3], [3], [L23], [7+7], [14],
+    [4], [4], [L4], [7−2], [5],
+    [−1或5], [不查表], [Ldef], [范围检查直接跳到默认分支], [1],
+  )]
+  , kind: table
+  )
+
+例如n=3时，先确认它的无符号值不超过4，再算表首地址加`3*8`字节，读取第3号槽保存的L23地址并跳过去。L23用`lea (%rdi,%rdi),%rax`算x+x；这里`lea`只计算数值，不读取地址x+x处的内存。`ret`将14作为返回值交给调用者。标签名的23表示case2与3共用它，不能拿23当表下标。
 
 #figure(image("图片/老师原图-跳转表.png", alt: "教师原页：跳转表的构建与访问，PDF第39页。"),
   caption: [
@@ -113,6 +147,67 @@ case为0、2、3、4，1走default。范围检查先比较n与4，使用无符�
 取x=13，即1101₂。各层当前位依次1、0、1、1，剩余x依次6、3、1、0。最深0返回0；x1层得1；x3层得2；x6层加0仍2；x13层加1得3。总共四个1位候选位置，但其中一个位为0，所以结果3。栈最深含x13、6、3、1、0五次活动；非零层都需要保存跨递归的低位。
 
 图中`andl $1,%ebx`写32位子寄存器，会清高32位，rbx最终只为0或1，适合随后64位add。源参数是unsigned long，`shrq`用逻辑右移，高位补0。若误把类型改为有符号负数并用算术右移，可能永远保留最高1位，不再按同样方式到0，终止分析就变了。
+
+同一段汇编也可以直接逐行读，标签`.Lzero`是零输入的共同返回点：
+
+```asm
+pcount_r:
+    movl $0, %eax
+    testq %rdi, %rdi
+    je .Lzero
+    pushq %rbx
+    movq %rdi, %rbx
+    andl $1, %ebx
+    shrq $1, %rdi
+    call pcount_r
+    addq %rbx, %rax
+    popq %rbx
+.Lzero:
+    ret
+```
+
+`movl $0,%eax`先把全rax清0；test只设标志；x为0走共同ret，不执行push。非零层先保存旧rbx，再把当前最低位留在rbx；右移只改变下一层参数rdi。call回来后rax是高位部分的计数，add才补上当前层的那一位，pop再恢复上一层留着的位。不能把pop提前到add前，否则会拿上一层的低位代替本层低位。
+
+把该教师递归例子的每个保存地址具体化。设最外层入口`rsp=0x7FF8`，原`rbx=99`，各非零层执行push rbx后再call，每次共让下一层入口降低16字节：
+
+#figure(
+  align(center)[#table(
+    columns: 5,
+    align: (right,auto,auto,right,right,),
+    table.header([当前x], [入口rsp], [push保存在哪/保存什么], [本层rbx留的低位], [右移后给下一层],),
+    table.hline(),
+    [13], [0x7FF8], [0x7FF0保存99], [1], [6],
+    [6], [0x7FE8], [0x7FE0保存1], [0], [3],
+    [3], [0x7FD8], [0x7FD0保存0], [1], [1],
+    [1], [0x7FC8], [0x7FC0保存1], [1], [0],
+    [0], [0x7FB8], [基础情况不push], [保持调用者的1], [直接返回rax=0],
+  )]
+  , kind: table
+  )
+
+x=0的ret先取`0x7FB8`处返回地址，使rsp回到`0x7FC0`。此后逐层：
+
+#figure(
+  align(center)[#table(
+    columns: 5,
+    align: (right,right,right,right,auto,),
+    table.header([回到哪层], [下层返回rax], [加本层rbx后rax], [pop恢复rbx], [ret之后rsp],),
+    table.hline(),
+    [x=1], [0], [1], [1（还给x=3层）], [0x7FD0],
+    [x=3], [1], [2], [0（还给x=6层）], [0x7FE0],
+    [x=6], [2], [2], [1（还给x=13层）], [0x7FF0],
+    [x=13], [2], [3], [99（还给外部调用者）], [0x8000],
+  )]
+  , kind: table
+  )
+
+#figure(image("图片/cs-v3-18-popcount.svg", alt: "递归位计数的待加低位与返回值"),
+  caption: [
+    递归位计数的待加低位与返回值
+  ]
+)
+
+表里保存的99与每层0/1的作用不同：99是外部调用者原有的值，必须最终还回去；0/1是当前层跨递归仍要用的本地数据。基础层不需要额外push，不能机械给五层都减同样16字节。每一非零层call前rsp按16对齐，返回后pop与ret也各恢复各自的8字节。
 
 == 工坊十二：为什么jl要看SF异或OF
 <工坊十二为什么jl要看sf异或of>

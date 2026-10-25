@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="560" viewBox="0 0 680 560"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<rect x="5" y="5" width="330" height="270" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="170.0" y="29" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">原树</text>
+<line x1="170.0" y1="84" x2="118.0" y2="126" stroke="#6b8095" stroke-width="2"/>
+<line x1="170.0" y1="84" x2="222.0" y2="126" stroke="#6b8095" stroke-width="2"/>
+<circle cx="118.0" cy="140" r="19" fill="#25384b" stroke="#25384b" stroke-width="2"/>
+<text x="118.0" y="145" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="white">5B</text>
+<circle cx="170.0" cy="72" r="19" fill="#25384b" stroke="#25384b" stroke-width="2"/>
+<text x="170.0" y="77" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="white">10B</text>
+<circle cx="222.0" cy="140" r="19" fill="#25384b" stroke="#25384b" stroke-width="2"/>
+<text x="222.0" y="145" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="white">15B</text>
+<text x="170.0" y="252" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">准备删除5B</text>
+<rect x="345" y="5" width="330" height="270" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="510.0" y="29" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">删除后</text>
+<line x1="510.0" y1="84" x2="458.0" y2="126" stroke="#6b8095" stroke-width="2"/>
+<line x1="510.0" y1="84" x2="562.0" y2="126" stroke="#6b8095" stroke-width="2"/>
+<circle cx="458.0" cy="140" r="19" fill="#ffefb1" stroke="#9b6a00" stroke-width="2"/>
+<text x="458.0" y="145" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">x*</text>
+<circle cx="510.0" cy="72" r="19" fill="#25384b" stroke="#25384b" stroke-width="2"/>
+<text x="510.0" y="77" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="white">10B</text>
+<circle cx="562.0" cy="140" r="19" fill="#25384b" stroke="#25384b" stroke-width="2"/>
+<text x="562.0" y="145" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="white">15B</text>
+<text x="510.0" y="252" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">兄弟15B，两侄均NIL黑</text>
+<rect x="5" y="285" width="330" height="270" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="170.0" y="309" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">15转红，缺口到根后结束</text>
+<line x1="144.0" y1="364" x2="196.0" y2="406" stroke="#6b8095" stroke-width="2"/>
+<circle cx="144.0" cy="352" r="19" fill="#25384b" stroke="#25384b" stroke-width="2"/>
+<text x="144.0" y="357" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="white">10B</text>
+<circle cx="196.0" cy="420" r="19" fill="#f9e0df" stroke="#b33c3c" stroke-width="2"/>
+<text x="196.0" y="425" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">15R</text>
+<text x="170.0" y="532" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">整树少一层黑，但各路径仍相等</text></svg>

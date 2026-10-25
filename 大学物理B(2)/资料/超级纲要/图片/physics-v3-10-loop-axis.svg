@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="740" height="405" viewBox="0 0 740 405"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<ellipse cx="310" cy="255" rx="145" ry="50" fill="none" stroke="#647f98" stroke-width="2"/>
+<line x1="310" y1="340" x2="310" y2="43" stroke="#6b8095" stroke-width="2"/>
+<polygon points="310,43 306.0,52.0 314.0,52.0" fill="#6b8095"/>
+<text x="293" y="44" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">+z</text>
+<circle cx="310" cy="88" r="5" fill="#e8f2ff" stroke="#3972a2" stroke-width="2"/>
+<text x="330" y="86" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">P(0,0,z)</text>
+<circle cx="455" cy="255" r="5" fill="#e8f2ff" stroke="#3972a2" stroke-width="2"/>
+<text x="465" y="275" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">源元</text>
+<line x1="455" y1="255" x2="310" y2="88" stroke="#668d54" stroke-width="2"/>
+<polygon points="310,88 312.88020130433654,97.4183034802717 318.920937477953,92.17335291036522" fill="#668d54"/>
+<text x="400" y="154" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">源→P的R</text>
+<line x1="455" y1="255" x2="455" y2="298" stroke="#b17345" stroke-width="2"/>
+<polygon points="455,298 459.0,289.0 451.0,289.0" fill="#b17345"/>
+<text x="475" y="303" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">dl</text>
+<line x1="310" y1="255" x2="455" y2="255" stroke="#6b8095" stroke-width="2"/>
+<text x="385" y="245" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">半径R0</text>
+<line x1="310" y1="88" x2="366" y2="48" stroke="#28789b" stroke-width="2"/>
+<polygon points="366,48 356.35144598426297,49.97620985864493 361.0013515340158,56.48607762829881" fill="#28789b"/>
+<line x1="310" y1="88" x2="254" y2="48" stroke="#28789b" stroke-width="2"/>
+<polygon points="254,48 258.9986484659842,56.48607762829881 263.64855401573703,49.97620985864493" fill="#28789b"/>
+<text x="410" y="65" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">两个对径元的横向分量相消</text>
+<text x="370" y="378" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">本图是空间斜投影；方向与分量由正文坐标叉乘确定</text></svg>

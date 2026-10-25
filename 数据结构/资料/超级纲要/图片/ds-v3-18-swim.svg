@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="620" viewBox="0 0 780 620"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<rect x="5" y="5" width="380" height="300" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="195.0" y="29" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">原堆</text>
+<line x1="117.0" y1="152" x2="65.0" y2="194" stroke="#6b8095" stroke-width="2"/>
+<line x1="117.0" y1="152" x2="169.0" y2="194" stroke="#6b8095" stroke-width="2"/>
+<line x1="221.0" y1="84" x2="117.0" y2="126" stroke="#6b8095" stroke-width="2"/>
+<line x1="221.0" y1="84" x2="325.0" y2="126" stroke="#6b8095" stroke-width="2"/>
+<line x1="325.0" y1="152" x2="273.0" y2="194" stroke="#6b8095" stroke-width="2"/>
+<circle cx="65.0" cy="208" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="65.0" y="213" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">2</text>
+<circle cx="117.0" cy="140" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="117.0" y="145" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">6</text>
+<circle cx="169.0" cy="208" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="169.0" y="213" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">4</text>
+<circle cx="221.0" cy="72" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="221.0" y="77" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">9</text>
+<circle cx="273.0" cy="208" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="273.0" y="213" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">7</text>
+<circle cx="325.0" cy="140" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="325.0" y="145" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">8</text>
+<text x="195.0" y="282" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">[9, 6, 8, 2, 4, 7]</text>
+<rect x="395" y="5" width="380" height="300" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="585.0" y="29" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">末尾追加10</text>
+<line x1="481.0" y1="152" x2="429.0" y2="194" stroke="#6b8095" stroke-width="2"/>
+<line x1="481.0" y1="152" x2="533.0" y2="194" stroke="#6b8095" stroke-width="2"/>
+<line x1="585.0" y1="84" x2="481.0" y2="126" stroke="#6b8095" stroke-width="2"/>
+<line x1="585.0" y1="84" x2="689.0" y2="126" stroke="#6b8095" stroke-width="2"/>
+<line x1="689.0" y1="152" x2="637.0" y2="194" stroke="#6b8095" stroke-width="2"/>
+<line x1="689.0" y1="152" x2="741.0" y2="194" stroke="#6b8095" stroke-width="2"/>
+<circle cx="429.0" cy="208" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="429.0" y="213" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">2</text>
+<circle cx="481.0" cy="140" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="481.0" y="145" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">6</text>
+<circle cx="533.0" cy="208" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="533.0" y="213" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">4</text>
+<circle cx="585.0" cy="72" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="585.0" y="77" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">9</text>
+<circle cx="637.0" cy="208" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="637.0" y="213" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">7</text>
+<circle cx="689.0" cy="140" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="689.0" y="145" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">8</text>
+<circle cx="741.0" cy="208" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="741.0" y="213" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">10</text>
+<text x="585.0" y="282" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">[9, 6, 8, 2, 4, 7, 10]</text>
+<rect x="5" y="315" width="380" height="300" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="195.0" y="339" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">10与父8换</text>
+<line x1="91.0" y1="462" x2="39.0" y2="504" stroke="#6b8095" stroke-width="2"/>
+<line x1="91.0" y1="462" x2="143.0" y2="504" stroke="#6b8095" stroke-width="2"/>
+<line x1="195.0" y1="394" x2="91.0" y2="436" stroke="#6b8095" stroke-width="2"/>
+<line x1="195.0" y1="394" x2="299.0" y2="436" stroke="#6b8095" stroke-width="2"/>
+<line x1="299.0" y1="462" x2="247.0" y2="504" stroke="#6b8095" stroke-width="2"/>
+<line x1="299.0" y1="462" x2="351.0" y2="504" stroke="#6b8095" stroke-width="2"/>
+<circle cx="39.0" cy="518" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="39.0" y="523" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">2</text>
+<circle cx="91.0" cy="450" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="91.0" y="455" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">6</text>
+<circle cx="143.0" cy="518" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="143.0" y="523" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">4</text>
+<circle cx="195.0" cy="382" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="195.0" y="387" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">9</text>
+<circle cx="247.0" cy="518" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="247.0" y="523" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">7</text>
+<circle cx="299.0" cy="450" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="299.0" y="455" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">10</text>
+<circle cx="351.0" cy="518" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="351.0" y="523" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">8</text>
+<text x="195.0" y="592" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">[9, 6, 10, 2, 4, 7, 8]</text>
+<rect x="395" y="315" width="380" height="300" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="585.0" y="339" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">10与父9换，完成</text>
+<line x1="481.0" y1="462" x2="429.0" y2="504" stroke="#6b8095" stroke-width="2"/>
+<line x1="481.0" y1="462" x2="533.0" y2="504" stroke="#6b8095" stroke-width="2"/>
+<line x1="585.0" y1="394" x2="481.0" y2="436" stroke="#6b8095" stroke-width="2"/>
+<line x1="585.0" y1="394" x2="689.0" y2="436" stroke="#6b8095" stroke-width="2"/>
+<line x1="689.0" y1="462" x2="637.0" y2="504" stroke="#6b8095" stroke-width="2"/>
+<line x1="689.0" y1="462" x2="741.0" y2="504" stroke="#6b8095" stroke-width="2"/>
+<circle cx="429.0" cy="518" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="429.0" y="523" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">2</text>
+<circle cx="481.0" cy="450" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="481.0" y="455" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">6</text>
+<circle cx="533.0" cy="518" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="533.0" y="523" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">4</text>
+<circle cx="585.0" cy="382" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="585.0" y="387" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">10</text>
+<circle cx="637.0" cy="518" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="637.0" y="523" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">7</text>
+<circle cx="689.0" cy="450" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="689.0" y="455" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">9</text>
+<circle cx="741.0" cy="518" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="741.0" y="523" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">8</text>
+<text x="585.0" y="592" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">[10, 6, 9, 2, 4, 7, 8]</text></svg>

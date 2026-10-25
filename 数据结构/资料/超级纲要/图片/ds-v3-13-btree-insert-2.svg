@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="490" viewBox="0 0 840 490"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<rect x="4" y="4" width="412" height="237" rx="6" fill="white" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="210.0" y="27" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="16" fill="#192c40">插4前：分满根</text>
+<rect x="187.0" y="48" width="46" height="31" rx="6" fill="#edf5ff" stroke="#708ba4" stroke-width="1.5"/>
+<text x="210.0" y="70" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">2</text>
+<line x1="210.0" y1="79" x2="110.0" y2="113" stroke="#6b8095" stroke-width="2"/>
+<rect x="87.0" y="113" width="46" height="31" rx="6" fill="#edf5ff" stroke="#708ba4" stroke-width="1.5"/>
+<text x="110.0" y="135" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">1</text>
+<line x1="210.0" y1="79" x2="310.0" y2="113" stroke="#6b8095" stroke-width="2"/>
+<rect x="287.0" y="113" width="46" height="31" rx="6" fill="#edf5ff" stroke="#708ba4" stroke-width="1.5"/>
+<text x="310.0" y="135" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">3</text>
+<rect x="424" y="4" width="412" height="237" rx="6" fill="white" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="630.0" y="27" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="16" fill="#192c40">插4后</text>
+<rect x="607.0" y="48" width="46" height="31" rx="6" fill="#edf5ff" stroke="#708ba4" stroke-width="1.5"/>
+<text x="630.0" y="70" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">2</text>
+<line x1="630.0" y1="79" x2="530.0" y2="113" stroke="#6b8095" stroke-width="2"/>
+<rect x="507.0" y="113" width="46" height="31" rx="6" fill="#edf5ff" stroke="#708ba4" stroke-width="1.5"/>
+<text x="530.0" y="135" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">1</text>
+<line x1="630.0" y1="79" x2="730.0" y2="113" stroke="#6b8095" stroke-width="2"/>
+<rect x="668.5" y="113" width="123" height="31" rx="6" fill="#edf5ff" stroke="#708ba4" stroke-width="1.5"/>
+<text x="730.0" y="135" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">3 | 4</text>
+<rect x="4" y="249" width="412" height="237" rx="6" fill="white" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="210.0" y="272" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="16" fill="#192c40">插5后</text>
+<rect x="187.0" y="293" width="46" height="31" rx="6" fill="#edf5ff" stroke="#708ba4" stroke-width="1.5"/>
+<text x="210.0" y="315" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">2</text>
+<line x1="210.0" y1="324" x2="110.0" y2="358" stroke="#6b8095" stroke-width="2"/>
+<rect x="87.0" y="358" width="46" height="31" rx="6" fill="#edf5ff" stroke="#708ba4" stroke-width="1.5"/>
+<text x="110.0" y="380" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">1</text>
+<line x1="210.0" y1="324" x2="310.0" y2="358" stroke="#6b8095" stroke-width="2"/>
+<rect x="214.0" y="358" width="192.0" height="31" rx="6" fill="#edf5ff" stroke="#708ba4" stroke-width="1.5"/>
+<text x="310.0" y="380" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">3 | 4 | 5</text></svg>

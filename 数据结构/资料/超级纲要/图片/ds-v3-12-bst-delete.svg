@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="740" height="700" viewBox="0 0 740 700"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<rect x="5" y="5" width="360" height="340" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="185.0" y="29" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">删除根8之前</text>
+<line x1="72.85714285714286" y1="150.66666666666669" x2="28.0" y2="191.33333333333334" stroke="#6b8095" stroke-width="2"/>
+<line x1="72.85714285714286" y1="150.66666666666669" x2="117.71428571428571" y2="191.33333333333334" stroke="#6b8095" stroke-width="2"/>
+<line x1="162.57142857142856" y1="84.0" x2="72.85714285714286" y2="124.66666666666669" stroke="#6b8095" stroke-width="2"/>
+<line x1="162.57142857142856" y1="84.0" x2="297.1428571428571" y2="124.66666666666669" stroke="#6b8095" stroke-width="2"/>
+<line x1="207.42857142857142" y1="217.33333333333334" x2="252.28571428571428" y2="258.0" stroke="#6b8095" stroke-width="2"/>
+<line x1="297.1428571428571" y1="150.66666666666669" x2="207.42857142857142" y2="191.33333333333334" stroke="#6b8095" stroke-width="2"/>
+<line x1="297.1428571428571" y1="150.66666666666669" x2="342.0" y2="191.33333333333334" stroke="#6b8095" stroke-width="2"/>
+<circle cx="28.0" cy="205.33333333333334" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="28.0" y="210.33333333333334" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">2</text>
+<circle cx="72.85714285714286" cy="138.66666666666669" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="72.85714285714286" y="143.66666666666669" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">4</text>
+<circle cx="117.71428571428571" cy="205.33333333333334" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="117.71428571428571" y="210.33333333333334" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">6</text>
+<circle cx="162.57142857142856" cy="72.0" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="162.57142857142856" y="77.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">8</text>
+<circle cx="207.42857142857142" cy="205.33333333333334" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="207.42857142857142" y="210.33333333333334" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">10</text>
+<circle cx="252.28571428571428" cy="272.0" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="252.28571428571428" y="277.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">11</text>
+<circle cx="297.1428571428571" cy="138.66666666666669" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="297.1428571428571" y="143.66666666666669" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">12</text>
+<circle cx="342.0" cy="205.33333333333334" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="342.0" y="210.33333333333334" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">14</text>
+<text x="185.0" y="322" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">右子树最小键为10</text>
+<rect x="375" y="5" width="360" height="340" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="555.0" y="29" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">将记录10放到根</text>
+<line x1="442.85714285714283" y1="150.66666666666669" x2="398.0" y2="191.33333333333334" stroke="#6b8095" stroke-width="2"/>
+<line x1="442.85714285714283" y1="150.66666666666669" x2="487.7142857142857" y2="191.33333333333334" stroke="#6b8095" stroke-width="2"/>
+<line x1="532.5714285714286" y1="84.0" x2="442.85714285714283" y2="124.66666666666669" stroke="#6b8095" stroke-width="2"/>
+<line x1="532.5714285714286" y1="84.0" x2="667.1428571428571" y2="124.66666666666669" stroke="#6b8095" stroke-width="2"/>
+<line x1="577.4285714285714" y1="217.33333333333334" x2="622.2857142857142" y2="258.0" stroke="#6b8095" stroke-width="2"/>
+<line x1="667.1428571428571" y1="150.66666666666669" x2="577.4285714285714" y2="191.33333333333334" stroke="#6b8095" stroke-width="2"/>
+<line x1="667.1428571428571" y1="150.66666666666669" x2="712.0" y2="191.33333333333334" stroke="#6b8095" stroke-width="2"/>
+<circle cx="398.0" cy="205.33333333333334" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="398.0" y="210.33333333333334" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">2</text>
+<circle cx="442.85714285714283" cy="138.66666666666669" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="442.85714285714283" y="143.66666666666669" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">4</text>
+<circle cx="487.7142857142857" cy="205.33333333333334" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="487.7142857142857" y="210.33333333333334" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">6</text>
+<circle cx="532.5714285714286" cy="72.0" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="532.5714285714286" y="77.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">10</text>
+<circle cx="577.4285714285714" cy="205.33333333333334" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="577.4285714285714" y="210.33333333333334" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">10*</text>
+<circle cx="622.2857142857142" cy="272.0" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="622.2857142857142" y="277.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">11</text>
+<circle cx="667.1428571428571" cy="138.66666666666669" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="667.1428571428571" y="143.66666666666669" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">12</text>
+<circle cx="712.0" cy="205.33333333333334" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="712.0" y="210.33333333333334" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">14</text>
+<text x="555.0" y="322" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">带星原节点尚未摘除</text>
+<rect x="5" y="355" width="360" height="340" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="185.0" y="379" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">摘除原10，接回11</text>
+<line x1="81.0" y1="502" x2="29.0" y2="544" stroke="#6b8095" stroke-width="2"/>
+<line x1="81.0" y1="502" x2="133.0" y2="544" stroke="#6b8095" stroke-width="2"/>
+<line x1="185.0" y1="434" x2="81.0" y2="476" stroke="#6b8095" stroke-width="2"/>
+<line x1="185.0" y1="434" x2="289.0" y2="476" stroke="#6b8095" stroke-width="2"/>
+<line x1="289.0" y1="502" x2="237.0" y2="544" stroke="#6b8095" stroke-width="2"/>
+<line x1="289.0" y1="502" x2="341.0" y2="544" stroke="#6b8095" stroke-width="2"/>
+<circle cx="29.0" cy="558" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="29.0" y="563" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">2</text>
+<circle cx="81.0" cy="490" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="81.0" y="495" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">4</text>
+<circle cx="133.0" cy="558" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="133.0" y="563" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">6</text>
+<circle cx="185.0" cy="422" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="185.0" y="427" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">10</text>
+<circle cx="237.0" cy="558" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="237.0" y="563" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">11</text>
+<circle cx="289.0" cy="490" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="289.0" y="495" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">12</text>
+<circle cx="341.0" cy="558" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="341.0" y="563" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">14</text>
+<text x="185.0" y="672" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">后继可能有右孩子，不能丢11</text></svg>

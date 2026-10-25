@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="360" viewBox="0 0 880 360"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<text x="444" y="25" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">分层球电容：同一个Q决定D，各层ε决定E</text>
+<circle cx="230" cy="184" r="133" fill="#d3dde7" stroke="#5b7891" stroke-width="2"/>
+<circle cx="230" cy="184" r="119" fill="#edf4ff" stroke="#6c8da6" stroke-width="2"/>
+<circle cx="230" cy="184" r="81" fill="#edf4e9" stroke="#86a07a" stroke-width="2"/>
+<circle cx="230" cy="184" r="40" fill="#c3d2de" stroke="#5b7891" stroke-width="2"/>
+<text x="230" y="190" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#192c40">+Q</text>
+<text x="329" y="264" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">−Q</text>
+<line x1="230" y1="184" x2="270" y2="184" stroke="#6b8095" stroke-width="2"/>
+<text x="255" y="174" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">a</text>
+<line x1="230" y1="184" x2="174" y2="128" stroke="#6b8095" stroke-width="2"/>
+<text x="189" y="160" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">c</text>
+<line x1="230" y1="184" x2="111" y2="184" stroke="#6b8095" stroke-width="2"/>
+<text x="135" y="171" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">b</text>
+<text x="230" y="120" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">εr1=2</text>
+<text x="230" y="80" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">εr2=4</text>
+<text x="652" y="89" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">先用球面：D(r)·4πr²=Q</text>
+<text x="652" y="137" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">内层E₁=D/(2ε₀)</text>
+<text x="652" y="183" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">外层E₂=D/(4ε₀)</text>
+<text x="652" y="235" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">沿a→c积分E₁</text>
+<text x="652" y="273" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">再沿c→b积分E₂</text>
+<text x="440" y="343" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">c是两介质的界面；a、b是两块金属相对的表面，不是同一个半径</text></svg>

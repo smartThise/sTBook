@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="270" viewBox="0 0 700 270"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<text x="255.5" y="24" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="12" fill="#60758a">0</text>
+<text x="350.5" y="24" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="12" fill="#60758a">1</text>
+<text x="445.5" y="24" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="12" fill="#60758a">2</text>
+<text x="540.5" y="24" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="12" fill="#60758a">3</text>
+<text x="12" y="67" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">窗口19，哈希5</text>
+<rect x="205" y="42" width="92" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="251.0" y="67" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">1</text>
+<rect x="300" y="42" width="92" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="346.0" y="67" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">9</text>
+<rect x="395" y="42" width="92" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="441.0" y="67" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="490" y="42" width="92" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="536.0" y="67" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<text x="12" y="124" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">窗口91，哈希0</text>
+<rect x="205" y="99" width="92" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="251.0" y="124" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="300" y="99" width="92" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="346.0" y="124" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">9</text>
+<rect x="395" y="99" width="92" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="441.0" y="124" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">1</text>
+<rect x="490" y="99" width="92" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="536.0" y="124" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<text x="12" y="181" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">窗口12，哈希5</text>
+<rect x="205" y="156" width="92" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="251.0" y="181" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="300" y="156" width="92" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="346.0" y="181" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="395" y="156" width="92" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="441.0" y="181" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">1</text>
+<rect x="490" y="156" width="92" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="536.0" y="181" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">2</text>
+<text x="350.0" y="258" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">文本1912，模式12也哈希5；第一窗碰撞需逐字排除，第三窗才真匹配</text></svg>

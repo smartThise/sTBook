@@ -69,3 +69,4 @@
 #counter(heading).update(32)
 #include "33-教材习题集PA交叉阅读.typ"
 #{ set heading(numbering: none); include "95-资料覆盖与图源.typ" }
+#{ set heading(numbering: none); include "96-符号与术语.typ" }

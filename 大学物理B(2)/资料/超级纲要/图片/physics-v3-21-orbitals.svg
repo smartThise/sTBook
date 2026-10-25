@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="380" viewBox="0 0 920 380"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<text x="460" y="26" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">n=3壳层：每个小框是一个空间轨道，两支箭头是两种自旋</text>
+<text x="90" y="113" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="22" fill="#192c40">3s</text>
+<text x="90" y="142" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">l=0</text>
+<rect x="190" y="83" width="100" height="56" rx="4" fill="#eef4fa" stroke="#7895ae" stroke-width="1.5"/>
+<line x1="221" y1="127" x2="221" y2="95" stroke="#2d7e9e" stroke-width="2"/>
+<polygon points="221,95 217.0,104.0 225.0,104.0" fill="#2d7e9e"/>
+<line x1="256" y1="95" x2="256" y2="127" stroke="#b47749" stroke-width="2"/>
+<polygon points="256,127 260.0,118.0 252.0,118.0" fill="#b47749"/>
+<text x="240" y="163" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">m=0</text>
+<text x="837" y="115" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">2态</text>
+<text x="90" y="206" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="22" fill="#192c40">3p</text>
+<text x="90" y="235" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">l=1</text>
+<rect x="190" y="176" width="100" height="56" rx="4" fill="#eef4fa" stroke="#7895ae" stroke-width="1.5"/>
+<line x1="221" y1="220" x2="221" y2="188" stroke="#2d7e9e" stroke-width="2"/>
+<polygon points="221,188 217.0,197.0 225.0,197.0" fill="#2d7e9e"/>
+<line x1="256" y1="188" x2="256" y2="220" stroke="#b47749" stroke-width="2"/>
+<polygon points="256,220 260.0,211.0 252.0,211.0" fill="#b47749"/>
+<text x="240" y="256" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">m=-1</text>
+<rect x="308" y="176" width="100" height="56" rx="4" fill="#eef4fa" stroke="#7895ae" stroke-width="1.5"/>
+<line x1="339" y1="220" x2="339" y2="188" stroke="#2d7e9e" stroke-width="2"/>
+<polygon points="339,188 335.0,197.0 343.0,197.0" fill="#2d7e9e"/>
+<line x1="374" y1="188" x2="374" y2="220" stroke="#b47749" stroke-width="2"/>
+<polygon points="374,220 378.0,211.0 370.0,211.0" fill="#b47749"/>
+<text x="358" y="256" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">m=0</text>
+<rect x="426" y="176" width="100" height="56" rx="4" fill="#eef4fa" stroke="#7895ae" stroke-width="1.5"/>
+<line x1="457" y1="220" x2="457" y2="188" stroke="#2d7e9e" stroke-width="2"/>
+<polygon points="457,188 453.0,197.0 461.0,197.0" fill="#2d7e9e"/>
+<line x1="492" y1="188" x2="492" y2="220" stroke="#b47749" stroke-width="2"/>
+<polygon points="492,220 496.0,211.0 488.0,211.0" fill="#b47749"/>
+<text x="476" y="256" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">m=1</text>
+<text x="837" y="208" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">6态</text>
+<text x="90" y="299" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="22" fill="#192c40">3d</text>
+<text x="90" y="328" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">l=2</text>
+<rect x="190" y="269" width="100" height="56" rx="4" fill="#eef4fa" stroke="#7895ae" stroke-width="1.5"/>
+<line x1="221" y1="313" x2="221" y2="281" stroke="#2d7e9e" stroke-width="2"/>
+<polygon points="221,281 217.0,290.0 225.0,290.0" fill="#2d7e9e"/>
+<line x1="256" y1="281" x2="256" y2="313" stroke="#b47749" stroke-width="2"/>
+<polygon points="256,313 260.0,304.0 252.0,304.0" fill="#b47749"/>
+<text x="240" y="349" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">m=-2</text>
+<rect x="308" y="269" width="100" height="56" rx="4" fill="#eef4fa" stroke="#7895ae" stroke-width="1.5"/>
+<line x1="339" y1="313" x2="339" y2="281" stroke="#2d7e9e" stroke-width="2"/>
+<polygon points="339,281 335.0,290.0 343.0,290.0" fill="#2d7e9e"/>
+<line x1="374" y1="281" x2="374" y2="313" stroke="#b47749" stroke-width="2"/>
+<polygon points="374,313 378.0,304.0 370.0,304.0" fill="#b47749"/>
+<text x="358" y="349" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">m=-1</text>
+<rect x="426" y="269" width="100" height="56" rx="4" fill="#eef4fa" stroke="#7895ae" stroke-width="1.5"/>
+<line x1="457" y1="313" x2="457" y2="281" stroke="#2d7e9e" stroke-width="2"/>
+<polygon points="457,281 453.0,290.0 461.0,290.0" fill="#2d7e9e"/>
+<line x1="492" y1="281" x2="492" y2="313" stroke="#b47749" stroke-width="2"/>
+<polygon points="492,313 496.0,304.0 488.0,304.0" fill="#b47749"/>
+<text x="476" y="349" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">m=0</text>
+<rect x="544" y="269" width="100" height="56" rx="4" fill="#eef4fa" stroke="#7895ae" stroke-width="1.5"/>
+<line x1="575" y1="313" x2="575" y2="281" stroke="#2d7e9e" stroke-width="2"/>
+<polygon points="575,281 571.0,290.0 579.0,290.0" fill="#2d7e9e"/>
+<line x1="610" y1="281" x2="610" y2="313" stroke="#b47749" stroke-width="2"/>
+<polygon points="610,313 614.0,304.0 606.0,304.0" fill="#b47749"/>
+<text x="594" y="349" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">m=1</text>
+<rect x="662" y="269" width="100" height="56" rx="4" fill="#eef4fa" stroke="#7895ae" stroke-width="1.5"/>
+<line x1="693" y1="313" x2="693" y2="281" stroke="#2d7e9e" stroke-width="2"/>
+<polygon points="693,281 689.0,290.0 697.0,290.0" fill="#2d7e9e"/>
+<line x1="728" y1="281" x2="728" y2="313" stroke="#b47749" stroke-width="2"/>
+<polygon points="728,313 732.0,304.0 724.0,304.0" fill="#b47749"/>
+<text x="712" y="349" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">m=2</text>
+<text x="837" y="301" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">10态</text>
+<text x="460" y="368" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">1+3+5=9个空间态；乘2种自旋，共18个完整单电子态</text></svg>

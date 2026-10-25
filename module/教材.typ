@@ -21,7 +21,8 @@
   show heading.where(level: 2): set text(size: 14pt, font: sans, fill: accent)
   show heading.where(level: 3): set text(size: 11.5pt, font: sans, weight: "bold")
   show raw: set text(font: (mono, sans), size: 8pt)
-  show raw.where(block: true): it => block(width: 100%, inset: 9pt, radius: 3pt, fill: rgb("f2f5f8"), breakable: true, it)
+  // Keep a short state diagram or function together; long programs may span pages.
+  show raw.where(block: true): it => block(width: 100%, inset: 9pt, radius: 3pt, fill: rgb("f2f5f8"), breakable: it.text.split("\n").len() > 18, it)
   show quote.where(block: true): it => block(inset: (left: 12pt, right: 8pt, y: 6pt), stroke: (left: 2pt + accent), fill: rgb("f3f7fa"), it.body)
   show link: set text(fill: accent)
   set table(inset: 6pt, stroke: 0.35pt + rgb("c7d2dc"))
@@ -39,8 +40,8 @@
     #text(size: 11pt, subtitle)
     #v(24mm)
     #block(width: 85%, inset: 15pt, fill: rgb("f2f5f8"))[
-      先弄懂问题，再看图，再一步一步算。\
-      定义、公式、代码、例题和错误，都放在一起解释。
+      例题保留数据的中间状态与公式的推导步骤。\
+      原始课件图标明出处，补充示意按正文模型解释。
     ]
     #v(1fr)
     2026-10-25 · sTBook\

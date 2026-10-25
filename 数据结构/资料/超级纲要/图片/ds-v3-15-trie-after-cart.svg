@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="420" viewBox="0 0 680 420"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<line x1="340.0" y1="212" x2="340.0" y2="253" stroke="#6b8095" stroke-width="2"/>
+<text x="350.0" y="232.5" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">t</text>
+<line x1="340.0" y1="62" x2="340.0" y2="103" stroke="#6b8095" stroke-width="2"/>
+<text x="350.0" y="82.5" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">c</text>
+<line x1="340.0" y1="137" x2="340.0" y2="178" stroke="#6b8095" stroke-width="2"/>
+<text x="350.0" y="157.5" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">a</text>
+<circle cx="340.0" cy="45" r="20" fill="#edf4ff" stroke="#3972a2" stroke-width="2"/>
+<text x="340.0" y="50" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">root</text>
+<circle cx="340.0" cy="120" r="20" fill="#edf4ff" stroke="#3972a2" stroke-width="2"/>
+<text x="340.0" y="125" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">c</text>
+<circle cx="340.0" cy="195" r="20" fill="#edf4ff" stroke="#3972a2" stroke-width="2"/>
+<text x="340.0" y="200" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">ca</text>
+<circle cx="340.0" cy="270" r="20" fill="#d8efdf" stroke="#3972a2" stroke-width="2"/>
+<text x="340.0" y="275" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">cat</text>
+<circle cx="340.0" cy="270" r="16" fill="none" stroke="#388451" stroke-width="2"/>
+<text x="340" y="404" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">双圈=完整单词结束；路径存在不代表这里已经保存一个词</text></svg>

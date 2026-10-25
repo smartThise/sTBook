@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<rect x="15" y="42" width="450" height="140" rx="0" fill="#eef4ff" stroke="#eef4ff" stroke-width="1.5"/>
+<rect x="15" y="182" width="450" height="150" rx="0" fill="#f1f7ef" stroke="#f1f7ef" stroke-width="1.5"/>
+<line x1="15" y1="182" x2="465" y2="182" stroke="#637d95" stroke-width="2"/>
+<text x="425" y="98" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">介质2</text>
+<text x="425" y="275" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">介质1</text>
+<rect x="495" y="42" width="450" height="140" rx="0" fill="#eef4ff" stroke="#eef4ff" stroke-width="1.5"/>
+<rect x="495" y="182" width="450" height="150" rx="0" fill="#f1f7ef" stroke="#f1f7ef" stroke-width="1.5"/>
+<line x1="495" y1="182" x2="945" y2="182" stroke="#637d95" stroke-width="2"/>
+<text x="905" y="98" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">介质2</text>
+<text x="905" y="275" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">介质1</text>
+<text x="240" y="25" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">薄柱盒：只留下两端D通量</text>
+<rect x="171" y="143" width="120" height="78" rx="0" fill="none" stroke="#b27b43" stroke-width="1.5"/>
+<line x1="231" y1="143" x2="231" y2="92" stroke="#6b8095" stroke-width="2"/>
+<polygon points="231,92 227.0,101.0 235.0,101.0" fill="#6b8095"/>
+<line x1="231" y1="221" x2="231" y2="273" stroke="#6b8095" stroke-width="2"/>
+<polygon points="231,273 235.0,264.0 227.0,264.0" fill="#6b8095"/>
+<text x="252" y="103" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">+n</text>
+<text x="252" y="265" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">−n</text>
+<text x="117" y="142" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">D2n A</text>
+<text x="113" y="237" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">−D1n A</text>
+<text x="240" y="319" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">界面自由电荷：σf A</text>
+<text x="720" y="25" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">窄矩形环路：只留下长边Et</text>
+<rect x="609" y="146" width="225" height="72" rx="0" fill="none" stroke="#b27b43" stroke-width="1.5"/>
+<line x1="634" y1="146" x2="797" y2="146" stroke="#b27b43" stroke-width="2"/>
+<polygon points="797,146 788.0,142.0 788.0,150.0" fill="#b27b43"/>
+<line x1="797" y1="218" x2="634" y2="218" stroke="#b27b43" stroke-width="2"/>
+<polygon points="634,218 643.0,222.0 643.0,214.0" fill="#b27b43"/>
+<text x="720" y="125" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">沿+t：E2t ℓ</text>
+<text x="720" y="253" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">沿−t：−E1t ℓ</text>
+<line x1="564" y1="287" x2="621" y2="287" stroke="#6b8095" stroke-width="2"/>
+<polygon points="621,287 612.0,283.0 612.0,291.0" fill="#6b8095"/>
+<text x="637" y="293" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">+t</text>
+<line x1="564" y1="287" x2="564" y2="240" stroke="#6b8095" stroke-width="2"/>
+<polygon points="564,240 560.0,249.0 568.0,249.0" fill="#6b8095"/>
+<text x="544" y="234" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">+n</text>
+<text x="720" y="319" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">高度趋0，短边贡献趋0</text></svg>

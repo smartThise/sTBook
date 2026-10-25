@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="580" viewBox="0 0 780 580"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<rect x="4" y="4" width="382" height="282" rx="6" fill="white" stroke="#d4dfe9" stroke-width="1.5"/>
+<text x="195.0" y="27" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="16" fill="#192c40">初始：A入队</text>
+<line x1="63.70944187333643" y1="100.93198862562846" x2="158.48414184566312" y2="65.12821308052727" stroke="#9aaabb" stroke-width="2"/>
+<line x1="63.70944187333643" y1="115.06801137437154" x2="158.48414184566312" y2="150.87178691947273" stroke="#9aaabb" stroke-width="2"/>
+<line x1="199.10805281965804" y1="62.90612541698521" x2="323.02573925739324" y2="101.20795577046701" stroke="#9aaabb" stroke-width="2"/>
+<line x1="199.10805281965804" y1="153.09387458301478" x2="323.02573925739324" y2="114.79204422953299" stroke="#9aaabb" stroke-width="2"/>
+<line x1="345.0" y1="128.0" x2="345.0" y2="187.0" stroke="#9aaabb" stroke-width="2"/>
+<circle cx="45" cy="108.0" r="21" fill="#d9eaff" stroke="#3972a2" stroke-width="2"/>
+<text x="45" y="113.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">A</text>
+<circle cx="180.0" cy="57" r="21" fill="white" stroke="#3972a2" stroke-width="2"/>
+<text x="180.0" y="62" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">B</text>
+<circle cx="180.0" cy="159.0" r="21" fill="white" stroke="#3972a2" stroke-width="2"/>
+<text x="180.0" y="164.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">C</text>
+<circle cx="345" cy="108.0" r="21" fill="white" stroke="#3972a2" stroke-width="2"/>
+<text x="345" y="113.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">D</text>
+<circle cx="345" cy="210.0" r="21" fill="white" stroke="#3972a2" stroke-width="2"/>
+<text x="345" y="215.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">E</text>
+<text x="195.0" y="266" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">队列[A]；dist A=0</text>
+<rect x="394" y="4" width="382" height="282" rx="6" fill="white" stroke="#d4dfe9" stroke-width="1.5"/>
+<text x="585.0" y="27" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="16" fill="#192c40">处理A后</text>
+<line x1="453.7094418733364" y1="100.93198862562846" x2="548.4841418456631" y2="65.12821308052727" stroke="#2e8a54" stroke-width="2"/>
+<line x1="453.7094418733364" y1="115.06801137437154" x2="548.4841418456631" y2="150.87178691947273" stroke="#2e8a54" stroke-width="2"/>
+<line x1="589.108052819658" y1="62.90612541698521" x2="713.0257392573933" y2="101.20795577046701" stroke="#9aaabb" stroke-width="2"/>
+<line x1="589.108052819658" y1="153.09387458301478" x2="713.0257392573933" y2="114.79204422953299" stroke="#9aaabb" stroke-width="2"/>
+<line x1="735.0" y1="128.0" x2="735.0" y2="187.0" stroke="#9aaabb" stroke-width="2"/>
+<circle cx="435" cy="108.0" r="21" fill="#d5e9db" stroke="#3972a2" stroke-width="2"/>
+<text x="435" y="113.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">A</text>
+<circle cx="570.0" cy="57" r="21" fill="#d9eaff" stroke="#3972a2" stroke-width="2"/>
+<text x="570.0" y="62" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">B</text>
+<circle cx="570.0" cy="159.0" r="21" fill="#d9eaff" stroke="#3972a2" stroke-width="2"/>
+<text x="570.0" y="164.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">C</text>
+<circle cx="735" cy="108.0" r="21" fill="white" stroke="#3972a2" stroke-width="2"/>
+<text x="735" y="113.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">D</text>
+<circle cx="735" cy="210.0" r="21" fill="white" stroke="#3972a2" stroke-width="2"/>
+<text x="735" y="215.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">E</text>
+<text x="585.0" y="266" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">队列[B,C]；B,C距1</text>
+<rect x="4" y="294" width="382" height="282" rx="6" fill="white" stroke="#d4dfe9" stroke-width="1.5"/>
+<text x="195.0" y="317" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="16" fill="#192c40">处理B后</text>
+<line x1="63.70944187333643" y1="390.93198862562843" x2="158.48414184566312" y2="355.12821308052725" stroke="#2e8a54" stroke-width="2"/>
+<line x1="63.70944187333643" y1="405.06801137437157" x2="158.48414184566312" y2="440.87178691947275" stroke="#2e8a54" stroke-width="2"/>
+<line x1="199.10805281965804" y1="352.9061254169852" x2="323.02573925739324" y2="391.207955770467" stroke="#2e8a54" stroke-width="2"/>
+<line x1="199.10805281965804" y1="443.0938745830148" x2="323.02573925739324" y2="404.792044229533" stroke="#9aaabb" stroke-width="2"/>
+<line x1="345.0" y1="418.0" x2="345.0" y2="477.0" stroke="#9aaabb" stroke-width="2"/>
+<circle cx="45" cy="398.0" r="21" fill="#d5e9db" stroke="#3972a2" stroke-width="2"/>
+<text x="45" y="403.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">A</text>
+<circle cx="180.0" cy="347" r="21" fill="#d5e9db" stroke="#3972a2" stroke-width="2"/>
+<text x="180.0" y="352" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">B</text>
+<circle cx="180.0" cy="449.0" r="21" fill="#d9eaff" stroke="#3972a2" stroke-width="2"/>
+<text x="180.0" y="454.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">C</text>
+<circle cx="345" cy="398.0" r="21" fill="#d9eaff" stroke="#3972a2" stroke-width="2"/>
+<text x="345" y="403.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">D</text>
+<circle cx="345" cy="500.0" r="21" fill="white" stroke="#3972a2" stroke-width="2"/>
+<text x="345" y="505.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">E</text>
+<text x="195.0" y="556" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">队列[C,D]；D距2</text></svg>

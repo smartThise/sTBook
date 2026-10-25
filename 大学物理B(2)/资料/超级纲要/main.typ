@@ -53,3 +53,4 @@
 #counter(heading).update(24)
 #include "25-教材勘误与读图核对.typ"
 #{ set heading(numbering: none); include "95-资料覆盖与图源.typ" }
+#{ set heading(numbering: none); include "96-符号与量纲.typ" }

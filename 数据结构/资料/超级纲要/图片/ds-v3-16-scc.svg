@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="290" viewBox="0 0 800 290"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<rect x="4" y="4" width="792" height="282" rx="6" fill="white" stroke="#d4dfe9" stroke-width="1.5"/>
+<text x="400.0" y="27" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="16" fill="#192c40">原图：三组互达</text>
+<line x1="63.03838268691675" y1="99.63809875148127" x2="166.25585991004573" y2="149.06618643579657" stroke="#9aaabb" stroke-width="2"/>
+<polygon points="166.25585991004573,149.06618643579657 159.86620745122943,141.57136546024665 156.41096795063694,148.78671853501336" fill="#9aaabb"/>
+<line x1="168.96161731308325" y1="150.36190124851873" x2="65.74414008995426" y2="100.93381356420345" stroke="#9aaabb" stroke-width="2"/>
+<polygon points="65.74414008995426,100.93381356420345 72.13379254877054,108.42863453975338 75.58903204936306,101.21328146498666" fill="#9aaabb"/>
+<line x1="206.05263289928337" y1="152.91746930914897" x2="378.08947216582413" y2="97.99491029447869" stroke="#9aaabb" stroke-width="2"/>
+<polygon points="378.08947216582413,97.99491029447869 368.29928122297645,96.92152252550498 370.7322934993168,104.54257568521832" fill="#9aaabb"/>
+<line x1="418.03838268691675" y1="99.63809875148127" x2="521.2558599100457" y2="149.06618643579657" stroke="#9aaabb" stroke-width="2"/>
+<polygon points="521.2558599100457,149.06618643579657 514.8662074512295,141.57136546024665 511.4109679506369,148.78671853501336" fill="#9aaabb"/>
+<line x1="523.9616173130833" y1="150.36190124851873" x2="420.74414008995427" y2="100.93381356420345" stroke="#9aaabb" stroke-width="2"/>
+<polygon points="420.74414008995427,100.93381356420345 427.13379254877054,108.42863453975338 430.589032049363,101.21328146498666" fill="#9aaabb"/>
+<line x1="561.0526328992834" y1="152.91746930914897" x2="733.0894721658241" y2="97.99491029447869" stroke="#9aaabb" stroke-width="2"/>
+<polygon points="733.0894721658241,97.99491029447869 723.2992812229763,96.92152252550498 725.7322934993167,104.54257568521832" fill="#9aaabb"/>
+<circle cx="45" cy="91.0" r="21" fill="#d9eaff" stroke="#3972a2" stroke-width="2"/>
+<text x="45" y="96.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">A</text>
+<circle cx="187.0" cy="159.0" r="21" fill="#d9eaff" stroke="#3972a2" stroke-width="2"/>
+<text x="187.0" y="164.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">B</text>
+<circle cx="400.0" cy="91.0" r="21" fill="#ffecaf" stroke="#3972a2" stroke-width="2"/>
+<text x="400.0" y="96.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">C</text>
+<circle cx="542.0" cy="159.0" r="21" fill="#ffecaf" stroke="#3972a2" stroke-width="2"/>
+<text x="542.0" y="164.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">D</text>
+<circle cx="755" cy="91.0" r="21" fill="#d5e9db" stroke="#3972a2" stroke-width="2"/>
+<text x="755" y="96.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">E</text>
+<text x="400.0" y="266" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">跨组只有B→C、D→E</text></svg>

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="350" viewBox="0 0 900 350"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<text x="233" y="28" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">第一暗纹：每一条上半缝，都有一条下半缝与它反相</text>
+<line x1="110" y1="70" x2="110" y2="290" stroke="#567b98" stroke-width="2"/>
+<line x1="105" y1="180" x2="115" y2="180" stroke="#6b8095" stroke-width="2"/>
+<text x="86" y="70" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">a/2</text>
+<text x="83" y="294" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">−a/2</text>
+<text x="80" y="188" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">0</text>
+<rect x="104" y="100" width="12" height="10" rx="0" fill="#2c7c9e" stroke="#2c7c9e" stroke-width="1.5"/>
+<line x1="116" y1="105" x2="367" y2="31" stroke="#2c7c9e" stroke-width="2"/>
+<polygon points="367,31 357.23620748880325,29.708351519066728 359.49850305304136,37.38181350046915" fill="#2c7c9e"/>
+<rect x="104" y="210" width="12" height="10" rx="0" fill="#ac7548" stroke="#ac7548" stroke-width="1.5"/>
+<line x1="116" y1="215" x2="367" y2="141" stroke="#ac7548" stroke-width="2"/>
+<polygon points="367,141 357.23620748880325,139.70835151906672 359.49850305304136,147.38181350046912" fill="#ac7548"/>
+<line x1="143" y1="105" x2="143" y2="215" stroke="#6b8095" stroke-width="2"/>
+<text x="176" y="164" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">相距a/2</text>
+<text x="246" y="319" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">(a/2) sinθ=λ/2 → 相位差π</text>
+<text x="682" y="28" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">四缝的相邻相位差δ</text>
+<rect x="519" y="81" width="12" height="8" rx="0" fill="#527994" stroke="#527994" stroke-width="1.5"/>
+<line x1="531" y1="85" x2="766" y2="50" stroke="#2c7c9e" stroke-width="2"/>
+<polygon points="766,50 756.5089431867085,47.369441016271765 757.6874336114187,55.2821624393263" fill="#2c7c9e"/>
+<text x="795" y="54" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">相位 0δ</text>
+<rect x="519" y="133" width="12" height="8" rx="0" fill="#527994" stroke="#527994" stroke-width="1.5"/>
+<line x1="531" y1="137" x2="766" y2="102" stroke="#2c7c9e" stroke-width="2"/>
+<polygon points="766,102 756.5089431867085,99.36944101627176 757.6874336114187,107.2821624393263" fill="#2c7c9e"/>
+<text x="795" y="106" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">相位 1δ</text>
+<rect x="519" y="185" width="12" height="8" rx="0" fill="#527994" stroke="#527994" stroke-width="1.5"/>
+<line x1="531" y1="189" x2="766" y2="154" stroke="#2c7c9e" stroke-width="2"/>
+<polygon points="766,154 756.5089431867085,151.36944101627176 757.6874336114187,159.28216243932633" fill="#2c7c9e"/>
+<text x="795" y="158" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">相位 2δ</text>
+<rect x="519" y="237" width="12" height="8" rx="0" fill="#527994" stroke="#527994" stroke-width="1.5"/>
+<line x1="531" y1="241" x2="766" y2="206" stroke="#2c7c9e" stroke-width="2"/>
+<polygon points="766,206 756.5089431867085,203.36944101627176 757.6874336114187,211.28216243932633" fill="#2c7c9e"/>
+<text x="795" y="210" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">相位 3δ</text>
+<text x="683" y="319" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">同一方向的场按相位相加，不是逐缝加强度</text></svg>

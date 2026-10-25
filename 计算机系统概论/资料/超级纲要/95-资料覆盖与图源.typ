@@ -59,6 +59,7 @@
 需要核对原始定义时，可用以下接口资料：
 
 - #link("https://csapp.cs.cmu.edu/3e/home.html")[CS:APP第三版官方配套页]：章节背景、实验和勘误入口。
+- #link("https://pages.cs.wisc.edu/~remzi/OSTEP/threads-intro.pdf")[OSTEP并发入门原章]：对照线程私有状态与共享量逐指令交错的讲解。第14章用自编原子load/store例子说明组合竞态，另行明确普通C数据竞争的语言边界。
 - #link("https://man7.org/linux/man-pages/man2/fork.2.html")[fork]、#link("https://man7.org/linux/man-pages/man2/execve.2.html")[execve]、#link("https://man7.org/linux/man-pages/man2/waitpid.2.html")[waitpid]：创建、替换与回收进程。
 - #link("https://man7.org/linux/man-pages/man2/sigprocmask.2.html")[sigprocmask]、#link("https://man7.org/linux/man-pages/man2/sigsuspend.2.html")[sigsuspend]、#link("https://man7.org/linux/man-pages/man7/signal-safety.7.html")[signal-safety]：掩码、原子等待与处理函数限制。
 - #link("https://man7.org/linux/man-pages/man2/read.2.html")[read]、#link("https://man7.org/linux/man-pages/man2/write.2.html")[write]、#link("https://man7.org/linux/man-pages/man2/dup.2.html")[dup]：实际计数、错误与描述符引用。

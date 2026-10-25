@@ -6,11 +6,22 @@
 <衍射在加同一缝内不同位置的波>
 波通过有限孔径后，不同位置对观察点有不同相位。衍射是这些贡献的叠加。所谓干涉与衍射没有一条绝对的物理分界，课堂上常把分立几束的叠加叫干涉、连续孔径内的叠加叫衍射。两者都先加电场，再求光强。
 
-远场Fraunhofer条件下，各点传播方向近似相同，用角度θ描述观察方向。设均匀照明单缝宽a，缝坐标y从−a/2到a/2，某小条贡献相位 $k y sin theta$。相干相加
+远场Fraunhofer条件下，各点到同一观察方向的光线近似平行，用θ描述方向。缝宽a，沿缝宽坐标y取$- a\/2 lt.eq y lt.eq a\/2$；λ为所在传播介质中的波长，$k = 2 pi\/lambda$。相对缝中央，位置y的传播相位差是$k y sin theta$。均匀照明意味着相同dy带宽贡献相同的振幅，而不是先给每个dy分配独立光强。
 
-$ E\(theta\)prop integral_(- a\/2)^(a\/2) e^(i k y sin theta) d y = a frac(sin beta, beta)\,#h(2em) beta = frac(pi a sin theta, lambda) . $
+在同一时刻把各条电场相加。对称的+y与−y给$cos\(omega t minus.plus k y sin theta\)$，展开后含sin项的部分互相抵消，只剩共同的$cos omega t$乘一个实振幅。令$q = k sin theta$，该振幅与下式成正比：
 
-光强为 $I = I_0\(sin beta\/beta\)^2$。β=0处用极限sinβ/β→1，不能把0/0当成没有定义的物理亮度。
+$ A\(theta\) & = integral_(- a\/2)^(a\/2) cos\(q y\)thin d y = [frac(sin\(q y\), q)]_(- a\/2)^(a\/2)\
+ & = frac(sin\(q a\/2\)- sin\(- q a\/2\), q) = frac(2 sin\(q a\/2\), q) = a frac(sin beta, beta)\,#h(2em) beta = frac(q a, 2) = frac(pi a sin theta, lambda) . $
+
+在θ=0处，所有条带同相，直接积分$integral d y = a$；公式中的0/0只是表达式要取极限，$sin beta\/beta arrow.r 1$。把该方向强度定为I₀，其他角度与它的比值为振幅比的平方，故$I\(theta\)= I_0\(sin beta\/beta\)^2$。β无单位，才能放进sin函数。
+
+#figure(image("图片/physics-v3-16-slit-phase.svg", alt: "单缝第一暗纹的配对抵消和多缝逐缝相位"),
+  caption: [
+    单缝第一暗纹的配对抵消和多缝逐缝相位
+  ]
+)
+
+左图只画一对条带作为代表。第一暗纹$a sin theta = lambda$时，把整个上半缝与下半缝按相距a/2一一配对，每对相差半波，处处相消；没有一块缝被遗忘。右图说明多缝问题要按0、δ、2δ、3δ累计相位，不能把每条缝的强度直接相加。
 
 #figure(image("图片/老师原图-衍射.png", alt: "教师课件的单缝强度公式与透镜远场图"),
   caption: [
@@ -48,7 +59,11 @@ d=3a。干涉明纹 $d sin theta = k lambda$，衍射暗纹 $a sin theta = m lam
 
 == 多缝光栅：相位按等差数列相加
 <多缝光栅相位按等差数列相加>
-N条相同狭缝，中心距d，相邻缝相位差 $delta = 2 pi d sin theta\/lambda$。场的复振幅是 $1 + e^(i delta) + dots.h.c + e^(i\(N - 1\)delta)$，等比求和后得到强度因子
+N条相同狭缝，中心距d，相邻缝相位差 $delta = 2 pi d sin theta\/lambda$。场的复振幅是 $1 + e^(i delta) + dots.h.c + e^(i\(N - 1\)delta)$，这里$i^2 = - 1$，$e^(i phi) = cos phi + i sin phi$只是把同频振动的两个相位分量记在一个数里；最后取模平方才是强度。设$q = e^(i delta)$、$S = 1 + q + dots.h.c + q^(N - 1)$。把S乘q后减去S，中间项逐项消掉，$\(q - 1\)S = q^N - 1$，所以$q eq.not 1$时$S =\(1 - e^(i N delta)\)\/\(1 - e^(i delta)\)$。用恒等式$1 - e^(i x) = - 2 i e^(i x\/2) sin\(x\/2\)$，得到
+
+$ S = e^(i\(N - 1\)delta\/2) frac(sin\(N delta\/2\), sin\(delta\/2\)) . $
+
+前面的复指数模为1，只改整体相位，不改强度。令$alpha = delta\/2$，便得到强度因子
 
 $ [frac(sin\(N alpha\), sin alpha)]^2\,#h(2em) alpha = frac(pi d sin theta, lambda) . $
 
@@ -68,7 +83,7 @@ $ Delta theta approx frac(lambda, N d cos theta_k) . $
 <算例三光栅角度级次与分辨能力>
 光栅每毫米500条，d=2.0μm，λ=500nm。一级主峰sinθ₁=0.25，θ₁约14.5°；二级sinθ₂=0.50，θ₂=30°。理论上|k|≤d/λ=4，但k=4对应90°的掠射极限，实际观察与孔径会限制，不把它当普通可方便收集的峰。
 
-若照明宽度10mm，共N=5000条缝，二级角半宽约 $lambda\/\(N d cos\(30^compose\)\)approx 5.77 times 10^(- 5)$rad。理想光栅分辨本领 $cal(R) = lambda\/Delta lambda = k N$，二级为10000，对500nm附近可分开约0.050nm的两条谱线，采用Rayleigh判据、足够相干均匀照明且仪器不额外展宽。
+若照明宽度10mm，共N=5000条缝，二级角半宽约 $lambda\/\(N d cos\(30^compose\)\)approx 5.77 times 10^(- 5)$rad。理想光栅分辨本领 $cal(R) = lambda\/Delta lambda =\|k\|N$，二级为10000，对500nm附近可分开约0.050nm的两条谱线，采用Rayleigh判据、足够相干均匀照明且仪器不额外展宽。
 
 增大N让峰更窄，增大级次k提高角色散。实际高阶可能重叠，也可能被单缝包络抑制；"高阶总更好"没有考虑可用光强与级次重合。
 
@@ -86,7 +101,7 @@ $ Delta theta approx frac(lambda, N d cos theta_k) . $
 
 == 分辨本领kN怎样从两条谱线推出来
 <分辨本领kn怎样从两条谱线推出来>
-主峰条件d sinθ=kλ，对波长求微分得 $d cos theta thin d theta = k thin d lambda$，所以两近波长的角分离 $Delta theta_(upright("谱")) approx k Delta lambda\/\(d cos theta\)$。单峰第一暗纹半宽约λ/(Nd cosθ)。按Rayleigh判据把两者相等，约掉共同的d cosθ，得到λ/Δλ=kN。
+主峰条件d sinθ=kλ，对波长求微分得 $d cos theta thin d theta = k thin d lambda$，所以两近波长的角分离 $Delta theta_(upright("谱")) approx\|k\|Delta lambda\/\(d cos theta\)$。单峰第一暗纹半宽约λ/(Nd cosθ)。按Rayleigh判据把两者相等，约掉共同的d cosθ，得到λ/Δλ=|k|N；前面所用角分离取正的大小，故负级次也要取|k|。
 
 这个约掉说明：角色散增大和单峰角宽同时受d、cosθ影响，最终理想分辨本领由级次与照亮缝数控制。只把光栅搬远让屏上线距离增大，不会自动提高这一理论分辨本领，峰的线宽也一起放大。
 

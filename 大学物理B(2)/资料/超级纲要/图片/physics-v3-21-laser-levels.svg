@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="380" viewBox="0 0 900 380"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<text x="450" y="26" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">四能级：上激光能级留得住，下激光能级清得快</text>
+<line x1="155" y1="310" x2="630" y2="310" stroke="#6b8095" stroke-width="2"/>
+<text x="651" y="316" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">E₀ 基态</text>
+<line x1="155" y1="245" x2="630" y2="245" stroke="#6b8095" stroke-width="2"/>
+<text x="651" y="251" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">E₁ 下激光能级</text>
+<line x1="155" y1="135" x2="630" y2="135" stroke="#6b8095" stroke-width="2"/>
+<text x="651" y="141" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">E₂ 亚稳态</text>
+<line x1="155" y1="70" x2="630" y2="70" stroke="#6b8095" stroke-width="2"/>
+<text x="651" y="76" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">E₃ 泵浦能级</text>
+<line x1="210" y1="310" x2="210" y2="70" stroke="#2d7d9d" stroke-width="2"/>
+<polygon points="210,70 206.0,79.0 214.0,79.0" fill="#2d7d9d"/>
+<text x="85" y="180" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">泵浦</text>
+<line x1="340" y1="70" x2="340" y2="135" stroke="#ac7448" stroke-width="2"/>
+<polygon points="340,135 344.0,126.0 336.0,126.0" fill="#ac7448"/>
+<text x="405" y="108" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">快速弛豫</text>
+<line x1="492" y1="135" x2="492" y2="245" stroke="#4b875a" stroke-width="2"/>
+<polygon points="492,245 496.0,236.0 488.0,236.0" fill="#4b875a"/>
+<text x="550" y="190" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">激光</text>
+<line x1="340" y1="245" x2="340" y2="310" stroke="#ac7448" stroke-width="2"/>
+<polygon points="340,310 344.0,301.0 336.0,301.0" fill="#ac7448"/>
+<text x="412" y="285" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">快速清空</text>
+<text x="450" y="358" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">激光光子能量E₂−E₁；外源提供泵浦能量，快弛豫向环境放能</text></svg>

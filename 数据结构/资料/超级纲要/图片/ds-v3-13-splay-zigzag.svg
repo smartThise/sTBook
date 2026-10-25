@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="710" viewBox="0 0 760 710"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<rect x="5" y="5" width="370" height="345" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="190.0" y="29" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">访问20：左右</text>
+<line x1="86.0" y1="152" x2="34.0" y2="194" stroke="#6b8095" stroke-width="2"/>
+<line x1="86.0" y1="152" x2="190.0" y2="194" stroke="#6b8095" stroke-width="2"/>
+<line x1="190.0" y1="220" x2="138.0" y2="262" stroke="#6b8095" stroke-width="2"/>
+<line x1="190.0" y1="220" x2="242.0" y2="262" stroke="#6b8095" stroke-width="2"/>
+<line x1="294.0" y1="84" x2="86.0" y2="126" stroke="#6b8095" stroke-width="2"/>
+<line x1="294.0" y1="84" x2="346.0" y2="126" stroke="#6b8095" stroke-width="2"/>
+<rect x="14.0" y="192" width="40" height="32" rx="6" fill="#e9f3ff" stroke="#3c78a8" stroke-width="1.5"/>
+<text x="34.0" y="213" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">T0</text>
+<circle cx="86.0" cy="140" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="86.0" y="145" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">10</text>
+<rect x="118.0" y="260" width="40" height="32" rx="6" fill="#e9f3ff" stroke="#3c78a8" stroke-width="1.5"/>
+<text x="138.0" y="281" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">T1</text>
+<circle cx="190.0" cy="208" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="190.0" y="213" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">20</text>
+<rect x="222.0" y="260" width="40" height="32" rx="6" fill="#e9f3ff" stroke="#3c78a8" stroke-width="1.5"/>
+<text x="242.0" y="281" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">T2</text>
+<circle cx="294.0" cy="72" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="294.0" y="77" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">30</text>
+<rect x="326.0" y="124" width="40" height="32" rx="6" fill="#e9f3ff" stroke="#3c78a8" stroke-width="1.5"/>
+<text x="346.0" y="145" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">T3</text>
+<text x="190.0" y="327" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">T0&lt;10&lt;T1&lt;20&lt;T2&lt;30&lt;T3</text>
+<rect x="385" y="5" width="370" height="345" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="570.0" y="29" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">第一旋：在10左旋</text>
+<line x1="466.0" y1="220" x2="414.0" y2="262" stroke="#6b8095" stroke-width="2"/>
+<line x1="466.0" y1="220" x2="518.0" y2="262" stroke="#6b8095" stroke-width="2"/>
+<line x1="570.0" y1="152" x2="466.0" y2="194" stroke="#6b8095" stroke-width="2"/>
+<line x1="570.0" y1="152" x2="622.0" y2="194" stroke="#6b8095" stroke-width="2"/>
+<line x1="674.0" y1="84" x2="570.0" y2="126" stroke="#6b8095" stroke-width="2"/>
+<line x1="674.0" y1="84" x2="726.0" y2="126" stroke="#6b8095" stroke-width="2"/>
+<rect x="394.0" y="260" width="40" height="32" rx="6" fill="#e9f3ff" stroke="#3c78a8" stroke-width="1.5"/>
+<text x="414.0" y="281" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">T0</text>
+<circle cx="466.0" cy="208" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="466.0" y="213" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">10</text>
+<rect x="498.0" y="260" width="40" height="32" rx="6" fill="#e9f3ff" stroke="#3c78a8" stroke-width="1.5"/>
+<text x="518.0" y="281" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">T1</text>
+<circle cx="570.0" cy="140" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="570.0" y="145" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">20</text>
+<rect x="602.0" y="192" width="40" height="32" rx="6" fill="#e9f3ff" stroke="#3c78a8" stroke-width="1.5"/>
+<text x="622.0" y="213" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">T2</text>
+<circle cx="674.0" cy="72" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="674.0" y="77" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">30</text>
+<rect x="706.0" y="124" width="40" height="32" rx="6" fill="#e9f3ff" stroke="#3c78a8" stroke-width="1.5"/>
+<text x="726.0" y="145" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">T3</text>
+<text x="570.0" y="327" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">T1从20左转成10右</text>
+<rect x="5" y="360" width="370" height="345" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="190.0" y="384" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">第二旋：在30右旋</text>
+<line x1="86.0" y1="507" x2="34.0" y2="549" stroke="#6b8095" stroke-width="2"/>
+<line x1="86.0" y1="507" x2="138.0" y2="549" stroke="#6b8095" stroke-width="2"/>
+<line x1="190.0" y1="439" x2="86.0" y2="481" stroke="#6b8095" stroke-width="2"/>
+<line x1="190.0" y1="439" x2="294.0" y2="481" stroke="#6b8095" stroke-width="2"/>
+<line x1="294.0" y1="507" x2="242.0" y2="549" stroke="#6b8095" stroke-width="2"/>
+<line x1="294.0" y1="507" x2="346.0" y2="549" stroke="#6b8095" stroke-width="2"/>
+<rect x="14.0" y="547" width="40" height="32" rx="6" fill="#e9f3ff" stroke="#3c78a8" stroke-width="1.5"/>
+<text x="34.0" y="568" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">T0</text>
+<circle cx="86.0" cy="495" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="86.0" y="500" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">10</text>
+<rect x="118.0" y="547" width="40" height="32" rx="6" fill="#e9f3ff" stroke="#3c78a8" stroke-width="1.5"/>
+<text x="138.0" y="568" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">T1</text>
+<circle cx="190.0" cy="427" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="190.0" y="432" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">20</text>
+<rect x="222.0" y="547" width="40" height="32" rx="6" fill="#e9f3ff" stroke="#3c78a8" stroke-width="1.5"/>
+<text x="242.0" y="568" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">T2</text>
+<circle cx="294.0" cy="495" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="294.0" y="500" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">30</text>
+<rect x="326.0" y="547" width="40" height="32" rx="6" fill="#e9f3ff" stroke="#3c78a8" stroke-width="1.5"/>
+<text x="346.0" y="568" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">T3</text>
+<text x="190.0" y="682" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">T2从20右转成30左</text></svg>

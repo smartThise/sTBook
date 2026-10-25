@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="950" height="340" viewBox="0 0 950 340"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<line x1="70" y1="85" x2="430" y2="85" stroke="#56728d" stroke-width="2"/>
+<line x1="70" y1="260" x2="430" y2="260" stroke="#56728d" stroke-width="2"/>
+<rect x="70" y="100" width="200" height="145" rx="0" fill="#f0f6e9" stroke="#87a477" stroke-width="1.5"/>
+<text x="170" y="180" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">介质 εr</text>
+<text x="350" y="180" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">真空</text>
+<line x1="70" y1="286" x2="270" y2="286" stroke="#6b8095" stroke-width="2"/>
+<polygon points="270,286 261.0,282.0 261.0,290.0" fill="#6b8095"/>
+<text x="170" y="312" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">插入长度x</text>
+<line x1="450" y1="90" x2="450" y2="253" stroke="#6b8095" stroke-width="2"/>
+<text x="474" y="178" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">d</text>
+<text x="245" y="32" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">两块平行板；上板+Q，下板−Q</text>
+<text x="735" y="41" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">电源断开：Q固定</text>
+<text x="735" y="80" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">C↑ → U=Q/C↓</text>
+<text x="735" y="119" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">场能Q²/(2C)↓</text>
+<text x="735" y="176" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">电源接通：U固定</text>
+<text x="735" y="215" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">C↑ → 电源送入更多Q</text>
+<text x="735" y="254" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">电源做功 &gt; 场能增加</text>
+<text x="735" y="308" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">两种情况下都可向+x吸入</text></svg>

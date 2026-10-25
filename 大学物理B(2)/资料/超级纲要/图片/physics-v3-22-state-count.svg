@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="950" height="365" viewBox="0 0 950 365"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<text x="240" y="26" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">k空间：球内每一个格点是一个动量态</text>
+<circle cx="235" cy="194" r="108" fill="#edf4ff" stroke="#7895ae" stroke-width="2"/>
+<line x1="74" y1="194" x2="414" y2="194" stroke="#6b8095" stroke-width="2"/>
+<polygon points="414,194 405.0,190.0 405.0,198.0" fill="#6b8095"/>
+<line x1="235" y1="331" x2="235" y2="52" stroke="#6b8095" stroke-width="2"/>
+<polygon points="235,52 231.0,61.0 239.0,61.0" fill="#6b8095"/>
+<text x="415" y="219" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">kx</text>
+<text x="215" y="54" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">ky</text>
+<circle cx="148" cy="165" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="148" cy="194" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="148" cy="223" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="177" cy="136" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="177" cy="165" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="177" cy="194" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="177" cy="223" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="177" cy="252" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="206" cy="107" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="206" cy="136" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="206" cy="165" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="206" cy="194" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="206" cy="223" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="206" cy="252" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="206" cy="281" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="235" cy="107" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="235" cy="136" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="235" cy="165" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="235" cy="194" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="235" cy="223" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="235" cy="252" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="235" cy="281" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="264" cy="107" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="264" cy="136" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="264" cy="165" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="264" cy="194" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="264" cy="223" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="264" cy="252" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="264" cy="281" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="293" cy="136" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="293" cy="165" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="293" cy="194" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="293" cy="223" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="293" cy="252" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="322" cy="165" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="322" cy="194" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<circle cx="322" cy="223" r="3" fill="#597e9b" stroke="#597e9b" stroke-width="2"/>
+<line x1="235" y1="194" x2="311" y2="118" stroke="#6b8095" stroke-width="2"/>
+<text x="288" y="156" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">kF</text>
+<text x="238" y="351" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">图只画一个二维截面；计数用三维球体积</text>
+<text x="716" y="26" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">满带：每个反向速度都有已占据的伙伴</text>
+<rect x="555" y="126" width="75" height="65" rx="4" fill="#eef4fa" stroke="#7895ae" stroke-width="1.5"/>
+<text x="592" y="153" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="22" fill="#192c40">↑↓</text>
+<line x1="592" y1="222" x2="552.8" y2="222" stroke="#2d7d9d" stroke-width="2"/>
+<polygon points="552.8,222 561.8,226.0 561.8,218.0" fill="#2d7d9d"/>
+<text x="592" y="262" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">−v₂</text>
+<rect x="660" y="126" width="75" height="65" rx="4" fill="#eef4fa" stroke="#7895ae" stroke-width="1.5"/>
+<text x="697" y="153" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="22" fill="#192c40">↑↓</text>
+<line x1="697" y1="222" x2="674.6" y2="222" stroke="#2d7d9d" stroke-width="2"/>
+<polygon points="674.6,222 683.6,226.0 683.6,218.0" fill="#2d7d9d"/>
+<text x="697" y="262" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">−v₁</text>
+<rect x="765" y="126" width="75" height="65" rx="4" fill="#eef4fa" stroke="#7895ae" stroke-width="1.5"/>
+<text x="802" y="153" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="22" fill="#192c40">↑↓</text>
+<line x1="802" y1="222" x2="824.4" y2="222" stroke="#2d7d9d" stroke-width="2"/>
+<polygon points="824.4,222 815.4,218.0 815.4,226.0" fill="#2d7d9d"/>
+<text x="802" y="262" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">+v₁</text>
+<rect x="870" y="126" width="75" height="65" rx="4" fill="#eef4fa" stroke="#7895ae" stroke-width="1.5"/>
+<text x="907" y="153" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="22" fill="#192c40">↑↓</text>
+<line x1="907" y1="222" x2="946.2" y2="222" stroke="#2d7d9d" stroke-width="2"/>
+<polygon points="946.2,222 937.2,218.0 937.2,226.0" fill="#2d7d9d"/>
+<text x="907" y="262" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">+v₂</text>
+<text x="716" y="318" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">各态有运动，总电流仍可相抵为0</text>
+<text x="716" y="345" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">有空态，才可重新分配占据</text></svg>

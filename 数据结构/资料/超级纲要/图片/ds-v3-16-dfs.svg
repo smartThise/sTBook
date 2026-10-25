@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="600" viewBox="0 0 780 600"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<rect x="4" y="4" width="382" height="292" rx="6" fill="white" stroke="#d4dfe9" stroke-width="1.5"/>
+<text x="195.0" y="27" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="16" fill="#192c40">递归进入A,B,D</text>
+<line x1="63.56953381770519" y1="103.57218647291792" x2="158.64503610963902" y2="65.54198555614438" stroke="#2e8a54" stroke-width="2"/>
+<polygon points="158.64503610963902,65.54198555614438 148.80318318625527,65.17059487979029 151.7743085970881,72.59840840687235" fill="#2e8a54"/>
+<line x1="61.64100588675687" y1="122.09400392450459" x2="160.8628432302296" y2="188.24189548681971" stroke="#9aaabb" stroke-width="2"/>
+<polygon points="160.8628432302296,188.24189548681971 155.5931913660899,179.92139254344127 151.1555897962881,186.57779489814405" fill="#9aaabb"/>
+<line x1="199.00794258089377" y1="63.22078120829251" x2="323.14086603197217" y2="103.84610161046362" stroke="#2e8a54" stroke-width="2"/>
+<polygon points="323.14086603197217,103.84610161046362 315.8314481122285,97.24516155055323 313.34313562891145,104.84833858291074" fill="#2e8a54"/>
+<line x1="325.99205741910623" y1="104.77921879170749" x2="201.85913396802783" y2="64.15389838953638" stroke="#2e8a54" stroke-width="2"/>
+<polygon points="201.85913396802783,64.15389838953638 209.1685518877715,70.75483844944677 211.65686437108855,63.15166141708926" fill="#2e8a54"/>
+<line x1="197.5579114582877" y1="191.42295738638853" x2="324.80840182296913" y2="122.01359900565319" stroke="#9aaabb" stroke-width="2"/>
+<polygon points="324.80840182296913,122.01359900565319 314.99193314401737,122.81168589012081 318.822750189462,129.8348504734359" fill="#9aaabb"/>
+<circle cx="45" cy="111.0" r="21" fill="#ffecaf" stroke="#3972a2" stroke-width="2"/>
+<text x="45" y="116.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">A</text>
+<circle cx="180.0" cy="57" r="21" fill="#ffecaf" stroke="#3972a2" stroke-width="2"/>
+<text x="180.0" y="62" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">B</text>
+<circle cx="180.0" cy="201.0" r="21" fill="white" stroke="#3972a2" stroke-width="2"/>
+<text x="180.0" y="206.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">C</text>
+<circle cx="345" cy="111.0" r="21" fill="#ffecaf" stroke="#3972a2" stroke-width="2"/>
+<text x="345" y="116.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">D</text>
+<text x="195.0" y="276" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">灰路径A→B→D；D→B是回边</text>
+<rect x="394" y="4" width="382" height="292" rx="6" fill="white" stroke="#d4dfe9" stroke-width="1.5"/>
+<text x="585.0" y="27" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="16" fill="#192c40">D与B完成，进入C</text>
+<line x1="453.5695338177052" y1="103.57218647291792" x2="548.645036109639" y2="65.54198555614438" stroke="#9aaabb" stroke-width="2"/>
+<polygon points="548.645036109639,65.54198555614438 538.8031831862553,65.17059487979029 541.7743085970882,72.59840840687235" fill="#9aaabb"/>
+<line x1="451.6410058867569" y1="122.09400392450459" x2="550.8628432302296" y2="188.24189548681971" stroke="#2e8a54" stroke-width="2"/>
+<polygon points="550.8628432302296,188.24189548681971 545.59319136609,179.92139254344127 541.155589796288,186.57779489814405" fill="#2e8a54"/>
+<line x1="589.0079425808938" y1="63.22078120829251" x2="713.1408660319721" y2="103.84610161046362" stroke="#9aaabb" stroke-width="2"/>
+<polygon points="713.1408660319721,103.84610161046362 705.8314481122284,97.24516155055323 703.3431356289113,104.84833858291074" fill="#9aaabb"/>
+<line x1="715.9920574191062" y1="104.77921879170749" x2="591.8591339680279" y2="64.15389838953638" stroke="#9aaabb" stroke-width="2"/>
+<polygon points="591.8591339680279,64.15389838953638 599.1685518877716,70.75483844944677 601.6568643710887,63.15166141708926" fill="#9aaabb"/>
+<line x1="587.5579114582877" y1="191.42295738638853" x2="714.8084018229691" y2="122.01359900565319" stroke="#9aaabb" stroke-width="2"/>
+<polygon points="714.8084018229691,122.01359900565319 704.9919331440174,122.81168589012081 708.8227501894619,129.8348504734359" fill="#9aaabb"/>
+<circle cx="435" cy="111.0" r="21" fill="#ffecaf" stroke="#3972a2" stroke-width="2"/>
+<text x="435" y="116.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">A</text>
+<circle cx="570.0" cy="57" r="21" fill="#d5e9db" stroke="#3972a2" stroke-width="2"/>
+<text x="570.0" y="62" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">B</text>
+<circle cx="570.0" cy="201.0" r="21" fill="#ffecaf" stroke="#3972a2" stroke-width="2"/>
+<text x="570.0" y="206.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">C</text>
+<circle cx="735" cy="111.0" r="21" fill="#d5e9db" stroke="#3972a2" stroke-width="2"/>
+<text x="735" y="116.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">D</text>
+<text x="585.0" y="276" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">C→D到已完成部分</text>
+<rect x="4" y="304" width="382" height="292" rx="6" fill="white" stroke="#d4dfe9" stroke-width="1.5"/>
+<text x="195.0" y="327" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="16" fill="#192c40">所有递归返回</text>
+<line x1="63.56953381770519" y1="403.5721864729179" x2="158.64503610963902" y2="365.54198555614437" stroke="#9aaabb" stroke-width="2"/>
+<polygon points="158.64503610963902,365.54198555614437 148.80318318625527,365.17059487979026 151.7743085970881,372.59840840687235" fill="#9aaabb"/>
+<line x1="61.64100588675687" y1="422.0940039245046" x2="160.8628432302296" y2="488.2418954868197" stroke="#9aaabb" stroke-width="2"/>
+<polygon points="160.8628432302296,488.2418954868197 155.5931913660899,479.92139254344124 151.1555897962881,486.577794898144" fill="#9aaabb"/>
+<line x1="199.00794258089377" y1="363.2207812082925" x2="323.14086603197217" y2="403.8461016104636" stroke="#9aaabb" stroke-width="2"/>
+<polygon points="323.14086603197217,403.8461016104636 315.8314481122285,397.24516155055323 313.34313562891145,404.84833858291074" fill="#9aaabb"/>
+<line x1="325.99205741910623" y1="404.7792187917075" x2="201.85913396802783" y2="364.1538983895364" stroke="#9aaabb" stroke-width="2"/>
+<polygon points="201.85913396802783,364.1538983895364 209.16855188777154,370.75483844944677 211.65686437108852,363.15166141708926" fill="#9aaabb"/>
+<line x1="197.5579114582877" y1="491.42295738638853" x2="324.80840182296913" y2="422.0135990056532" stroke="#9aaabb" stroke-width="2"/>
+<polygon points="324.80840182296913,422.0135990056532 314.99193314401737,422.8116858901208 318.822750189462,429.8348504734359" fill="#9aaabb"/>
+<circle cx="45" cy="411.0" r="21" fill="#d5e9db" stroke="#3972a2" stroke-width="2"/>
+<text x="45" y="416.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">A</text>
+<circle cx="180.0" cy="357" r="21" fill="#d5e9db" stroke="#3972a2" stroke-width="2"/>
+<text x="180.0" y="362" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">B</text>
+<circle cx="180.0" cy="501.0" r="21" fill="#d5e9db" stroke="#3972a2" stroke-width="2"/>
+<text x="180.0" y="506.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">C</text>
+<circle cx="345" cy="411.0" r="21" fill="#d5e9db" stroke="#3972a2" stroke-width="2"/>
+<text x="345" y="416.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">D</text>
+<text x="195.0" y="576" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">完成序D,B,C,A</text></svg>

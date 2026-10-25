@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="580" viewBox="0 0 720 580"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<rect x="5" y="5" width="350" height="280" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="180.0" y="29" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">插入8之后</text>
+<circle cx="180.0" cy="72" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="180.0" y="77" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">8</text>
+<text x="180.0" y="262" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">只有搜索结束的空链接被改动</text>
+<rect x="365" y="5" width="350" height="280" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="540.0" y="29" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">插入4之后</text>
+<line x1="566.0" y1="84" x2="514.0" y2="126" stroke="#6b8095" stroke-width="2"/>
+<circle cx="514.0" cy="140" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="514.0" y="145" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">4</text>
+<circle cx="566.0" cy="72" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="566.0" y="77" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">8</text>
+<text x="540.0" y="262" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">只有搜索结束的空链接被改动</text>
+<rect x="5" y="295" width="350" height="280" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="180.0" y="319" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">插入12之后</text>
+<line x1="180.0" y1="374" x2="128.0" y2="416" stroke="#6b8095" stroke-width="2"/>
+<line x1="180.0" y1="374" x2="232.0" y2="416" stroke="#6b8095" stroke-width="2"/>
+<circle cx="128.0" cy="430" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="128.0" y="435" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">4</text>
+<circle cx="180.0" cy="362" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="180.0" y="367" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">8</text>
+<circle cx="232.0" cy="430" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="232.0" y="435" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">12</text>
+<text x="180.0" y="552" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">只有搜索结束的空链接被改动</text></svg>

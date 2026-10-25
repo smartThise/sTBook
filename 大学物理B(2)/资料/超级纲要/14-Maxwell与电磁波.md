@@ -1,6 +1,6 @@
 # Maxwell方程：电容间隙没有导线，磁场为什么还接得上
 
-给平行板电容充电时，导线中有传导电流，极板间的绝缘空隙却没有相同电荷流过去。如果只用旧的稳恒安培定律，同一个环路换两张曲面，可能算出两个不同磁场。解决这个问题需要把变化电场也纳入环路账，而不是坚持“没有导线就没有任何磁效应”。
+给平行板电容充电时，导线中有传导电流，极板间的绝缘空隙却没有相同电荷流过去。如果只用旧的稳恒安培定律，同一个环路换两张曲面，可能算出两个不同磁场。解决这个问题需要在安培环路定律中加入变化电位移的通量项。
 
 ## 位移电流怎样修补连续性
 
@@ -30,7 +30,16 @@ $$\oint_C\mathbf H\cdot d\mathbf l=I_f+\frac d{dt}\int_S\mathbf D\cdot d\mathbf 
 
 ## 算例一：充电圆极板间的磁场
 
-圆形极板半径R，电荷均匀增加，充电电流I，忽略边缘。取板间半径r<R的同心圆环。极板间均匀D变化，所包位移电流为 $I_D=Ir^2/R^2$。真空中B沿环向且大小恒定，故
+![同一安培环路的两种跨面与板间局部位移电流](图片/physics-v3-14-displacement.svg)
+
+左图蓝色C是一条固定闭线。S₁像平盖，穿过导线；S₂像鼓起的袋子，边缘仍是C，但绕开导线伸入极板间。面可换，边缘闭线没有换。若只算穿面传导电流，前者为I、后者为0，便让同一个环流有两值。加上$d\Phi_D/dt$后两面才相容。右图改为从极板法线看：D向观察者增加，圆形H按右手规则逆时针。
+
+圆形极板半径R，电荷均匀增加，充电电流I，忽略边缘。取板间半径r<R的同心圆环。先把极板总面积写成$A=\pi R^2$。板间$D=Q/(\pi R^2)$，因R不变，$\dot D=\dot Q/(\pi R^2)=I/(\pi R^2)$。半径r的面只占面积$\pi r^2$，所以
+
+$$I_D(r)=\int_{S_r}\frac{\partial\mathbf D}{\partial t}\cdot d\mathbf S
+=\frac{I}{\pi R^2}\,\pi r^2=I\frac{r^2}{R^2}.$$
+
+这不是把电流随意分掉，而是均匀通量密度乘实际包围的面积。圆对称使H沿环向，且同一半径上大小相等，故$\oint H\,dl=H(r)2\pi r=I_D(r)$。先除以$2\pi r$得到H，再用真空$B=\mu_0H$，故
 
 $$B(r)=\frac{\mu_0Ir}{2\pi R^2},\qquad r<R.$$
 
@@ -40,13 +49,29 @@ r>R时包围全部位移电流I，得 $B=\mu_0I/(2\pi r)$。R=0.10m、I=0.20A，
 
 ## 变化电场和变化磁场怎样组成波
 
-在均匀、线性、无自由电荷无电流的区域，取波沿x传播，E沿y、B沿z。Maxwell方程让E的空间变化与B的时间变化相联系，也让B的空间变化与E的时间变化相联系。再求一次导数并消去另一个场，可得
+先说模型：介质均匀、线性、各向同性、无耗，ε和μ为常数，这一小块区域没有自由电荷和传导电流。只研究沿x方向变化、沿y偏振的平面波，设$\mathbf E=(0,E_y(x,t),0)$、$\mathbf B=(0,0,B_z(x,t))$。下标是坐标分量，不是另一种场。
 
-$$\frac{\partial^2E_y}{\partial x^2}=\mu\epsilon\frac{\partial^2E_y}{\partial t^2}.$$
+Faraday的微分形式是$\nabla\times\mathbf E=-\partial\mathbf B/\partial t$。旋度z分量按定义为$\partial E_y/\partial x-\partial E_x/\partial y$，后项为0，所以
 
-这是波动方程，波速 $v=1/\sqrt{\mu\epsilon}$。真空中v=c≈ $3.00\times10^8$m/s。像 $E_y=E_0\cos(kx-\omega t+\phi)$ 这样的函数满足方程，要求ω/k=v。k=2π/λ是波数，ω=2πf是角频率；别把电学库仑常数k也带进来。
+$$\frac{\partial E_y}{\partial x}=-\frac{\partial B_z}{\partial t}.$$
 
-单个理想行进平面波中，E、B与传播方向两两垂直，E和B同相，$E_0=vB_0$。传播方向由E×B给出。这些结论属于这种平面行波，驻波、近场或多波叠加处不一定还能说E和B处处同相、幅值比处处固定。
+安培—Maxwell式为$\nabla\times\mathbf H=\partial\mathbf D/\partial t$。旋度y分量是$\partial H_x/\partial z-\partial H_z/\partial x$，前项为0；再代入$H_z=B_z/\mu$、$D_y=\epsilon E_y$，常数移出微分，得到
+
+$$-\frac1\mu\frac{\partial B_z}{\partial x}=\epsilon\frac{\partial E_y}{\partial t},\qquad
+\frac{\partial B_z}{\partial x}=-\mu\epsilon\frac{\partial E_y}{\partial t}.$$
+
+这两个负号各有几何来源，不能只记最终波速。对上面的Faraday分量式再对x求导，右边先换求导顺序（假定场足够光滑），再用安培—Maxwell分量式：
+
+$$\frac{\partial^2E_y}{\partial x^2}
+=-\frac{\partial}{\partial t}\left(\frac{\partial B_z}{\partial x}\right)
+=-\frac{\partial}{\partial t}\left(-\mu\epsilon\frac{\partial E_y}{\partial t}\right)
+=\mu\epsilon\frac{\partial^2E_y}{\partial t^2}.$$
+
+为了读出传播速度，试一个形状$E_y=E_0\cos(kx-\omega t)$。x求两次导数给$-k^2E_y$，t求两次给$-\omega^2E_y$；代入并约去非零幅度，得$k^2=\mu\epsilon\omega^2$，取正的速度大小$v=\omega/k=1/\sqrt{\mu\epsilon}$。真空取ε₀、μ₀，得$c\approx3.00\times10^8\,\mathrm{m/s}$。k是波数$2\pi/\lambda$，单位rad/m；ω是角频率$2\pi f$，单位rad/s。此处k不再表示库仑常数。
+
+再由Faraday分量式确定B：左边$-kE_0\sin(kx-\omega t)$；若$B_z=B_0\cos(kx-\omega t)$，右边$-\omega B_0\sin(kx-\omega t)$，故$B_0=kE_0/\omega=E_0/v$，符号为正。E和B同相，且$\mathbf E\times\mathbf B$朝+x。固定相位$kx-\omega t=\text{常数}$得到$x=(\omega/k)t+\text{常数}$，也朝+x。用两种方法核对传播方向。
+
+这些结论属于单个行进平面波。驻波、天线近场、多波叠加处不能自动沿用“同相、固定幅值比”。
 
 ## 算例二：补齐电磁波的三个箭头
 
@@ -77,14 +102,6 @@ $$\mathbf S=\mathbf E\times\mathbf H=\frac1{\mu_0}\mathbf E\times\mathbf B,$$
 无线电、微波、红外、可见光、紫外、X射线都是电磁波，不同名称主要按频率或产生机制区分。介质里波速v=c/n，单色波穿过静止界面时频率连续、波长改变为λ₀/n；光子能量hf随频率，不因进入介质就简单变成原来的n倍。
 
 材料可能色散、吸收、各向异性，n会依赖频率与偏振。课程里先用透明、无耗、均匀线性介质建立基本模型，碰到真实材料数据再逐项修正。
-
-## 把波动方程的两次求导写出来
-
-设E沿y、B沿z、只依赖x和t。在真空无源区，Faraday方程给 $\partial E_y/\partial x=-\partial B_z/\partial t$；安培—Maxwell方程给 $-\partial B_z/\partial x=\mu_0\epsilon_0\partial E_y/\partial t$。第二式的负号来自旋度y分量，而非手动补来配结果。
-
-对第一式再求x导数，得 $\partial_x^2E_y=-\partial_t\partial_xB_z$。把第二式的 $\partial_xB_z=-\mu_0\epsilon_0\partial_tE_y$ 代入，两个负号抵消，得到 $\partial_x^2E_y=\mu_0\epsilon_0\partial_t^2E_y$。这一步说明电场和磁场的互相变化能支持传播形式。
-
-再取 $E_y=E_0\cos(kx-\omega t)$，由第一式匹配可得 $B_z=(k/\omega)E_0\cos(kx-\omega t)=E_y/c$。若B选了相反号，能流方向也反了，应同时检查相位传播方向与E×B，不让两者各说各话。
 
 ## 波动、源与传播延迟
 

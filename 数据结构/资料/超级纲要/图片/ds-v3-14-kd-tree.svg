@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="850" height="370" viewBox="0 0 850 370"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<rect x="5" y="5" width="840" height="360" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="425.0" y="29" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">先按x，再按y，最后按x切分</text>
+<line x1="269.0" y1="152" x2="217.0" y2="194" stroke="#6b8095" stroke-width="2"/>
+<line x1="269.0" y1="152" x2="321.0" y2="194" stroke="#6b8095" stroke-width="2"/>
+<line x1="373.0" y1="84" x2="269.0" y2="126" stroke="#6b8095" stroke-width="2"/>
+<line x1="373.0" y1="84" x2="477.0" y2="126" stroke="#6b8095" stroke-width="2"/>
+<line x1="477.0" y1="152" x2="425.0" y2="194" stroke="#6b8095" stroke-width="2"/>
+<line x1="477.0" y1="152" x2="581.0" y2="194" stroke="#6b8095" stroke-width="2"/>
+<line x1="581.0" y1="220" x2="529.0" y2="262" stroke="#6b8095" stroke-width="2"/>
+<line x1="581.0" y1="220" x2="633.0" y2="262" stroke="#6b8095" stroke-width="2"/>
+<circle cx="217.0" cy="208" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="217.0" y="213" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">2,1</text>
+<rect x="214.0" y="124" width="110" height="32" rx="6" fill="#e9f3ff" stroke="#3c78a8" stroke-width="1.5"/>
+<text x="269.0" y="145" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">[y&lt;2.5]</text>
+<circle cx="321.0" cy="208" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="321.0" y="213" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">1,4</text>
+<rect x="332.0" y="56" width="82" height="32" rx="6" fill="#e9f3ff" stroke="#3c78a8" stroke-width="1.5"/>
+<text x="373.0" y="77" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">[x&lt;3]</text>
+<circle cx="425.0" cy="208" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="425.0" y="213" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">5,2</text>
+<rect x="436.0" y="124" width="82" height="32" rx="6" fill="#e9f3ff" stroke="#3c78a8" stroke-width="1.5"/>
+<text x="477.0" y="145" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">[y&lt;3]</text>
+<circle cx="529.0" cy="276" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="529.0" y="281" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">3,3</text>
+<rect x="526.0" y="192" width="110" height="32" rx="6" fill="#e9f3ff" stroke="#3c78a8" stroke-width="1.5"/>
+<text x="581.0" y="213" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">[x&lt;3.5]</text>
+<circle cx="633.0" cy="276" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="633.0" y="281" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">4,5</text>
+<text x="425.0" y="342" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">内部矩形节点只存切分；五个点各存于一片叶；左侧满足标签中的小于</text></svg>

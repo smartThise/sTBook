@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="530" viewBox="0 0 700 530"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<rect x="5" y="5" width="340" height="255" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="175.0" y="29" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">内侧：10,1,5</text>
+<line x1="123.0" y1="141.5" x2="175.0" y2="173.0" stroke="#6b8095" stroke-width="2"/>
+<line x1="227.0" y1="84.0" x2="123.0" y2="115.5" stroke="#6b8095" stroke-width="2"/>
+<circle cx="123.0" cy="129.5" r="19" fill="#f9e0df" stroke="#b33c3c" stroke-width="2"/>
+<text x="123.0" y="134.5" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">1R</text>
+<circle cx="175.0" cy="187.0" r="19" fill="#f9e0df" stroke="#b33c3c" stroke-width="2"/>
+<text x="175.0" y="192.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">5R</text>
+<circle cx="227.0" cy="72.0" r="19" fill="#25384b" stroke="#25384b" stroke-width="2"/>
+<text x="227.0" y="77.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="white">10B</text>
+<text x="175.0" y="237" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">先在1左旋</text>
+<rect x="355" y="5" width="340" height="255" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="525.0" y="29" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">第一旋：转成外侧</text>
+<line x1="525.0" y1="141.5" x2="473.0" y2="173.0" stroke="#6b8095" stroke-width="2"/>
+<line x1="577.0" y1="84.0" x2="525.0" y2="115.5" stroke="#6b8095" stroke-width="2"/>
+<circle cx="473.0" cy="187.0" r="19" fill="#f9e0df" stroke="#b33c3c" stroke-width="2"/>
+<text x="473.0" y="192.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">1R</text>
+<circle cx="525.0" cy="129.5" r="19" fill="#f9e0df" stroke="#b33c3c" stroke-width="2"/>
+<text x="525.0" y="134.5" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">5R</text>
+<circle cx="577.0" cy="72.0" r="19" fill="#25384b" stroke="#25384b" stroke-width="2"/>
+<text x="577.0" y="77.0" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="white">10B</text>
+<text x="525.0" y="237" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">红红仍在，不可结束</text>
+<rect x="5" y="270" width="340" height="255" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="175.0" y="294" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">第二旋：右旋10并换色</text>
+<line x1="175.0" y1="349" x2="123.0" y2="391" stroke="#6b8095" stroke-width="2"/>
+<line x1="175.0" y1="349" x2="227.0" y2="391" stroke="#6b8095" stroke-width="2"/>
+<circle cx="123.0" cy="405" r="19" fill="#f9e0df" stroke="#b33c3c" stroke-width="2"/>
+<text x="123.0" y="410" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">1R</text>
+<circle cx="175.0" cy="337" r="19" fill="#25384b" stroke="#25384b" stroke-width="2"/>
+<text x="175.0" y="342" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="white">5B</text>
+<circle cx="227.0" cy="405" r="19" fill="#f9e0df" stroke="#b33c3c" stroke-width="2"/>
+<text x="227.0" y="410" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">10R</text>
+<text x="175.0" y="502" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">完成</text></svg>

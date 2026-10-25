@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="850" height="360" viewBox="0 0 850 360"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<rect x="5" y="5" width="840" height="350" rx="6" fill="#ffffff" stroke="#d3dfe9" stroke-width="1.5"/>
+<text x="425.0" y="29" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="17" fill="#192c40">第一比较 a&lt;b?</text>
+<line x1="217.0" y1="152" x2="165.0" y2="194" stroke="#6b8095" stroke-width="2"/>
+<line x1="217.0" y1="152" x2="321.0" y2="194" stroke="#6b8095" stroke-width="2"/>
+<line x1="321.0" y1="220" x2="269.0" y2="262" stroke="#6b8095" stroke-width="2"/>
+<line x1="321.0" y1="220" x2="373.0" y2="262" stroke="#6b8095" stroke-width="2"/>
+<line x1="425.0" y1="84" x2="217.0" y2="126" stroke="#6b8095" stroke-width="2"/>
+<line x1="425.0" y1="84" x2="529.0" y2="126" stroke="#6b8095" stroke-width="2"/>
+<line x1="529.0" y1="152" x2="477.0" y2="194" stroke="#6b8095" stroke-width="2"/>
+<line x1="529.0" y1="152" x2="633.0" y2="194" stroke="#6b8095" stroke-width="2"/>
+<line x1="633.0" y1="220" x2="581.0" y2="262" stroke="#6b8095" stroke-width="2"/>
+<line x1="633.0" y1="220" x2="685.0" y2="262" stroke="#6b8095" stroke-width="2"/>
+<circle cx="165.0" cy="208" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="165.0" y="213" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">abc</text>
+<circle cx="217.0" cy="140" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="217.0" y="145" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">b&lt;c?</text>
+<circle cx="269.0" cy="276" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="269.0" y="281" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">acb</text>
+<circle cx="321.0" cy="208" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="321.0" y="213" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">a&lt;c?</text>
+<circle cx="373.0" cy="276" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="373.0" y="281" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">cab</text>
+<circle cx="425.0" cy="72" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="425.0" y="77" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">a&lt;b?</text>
+<circle cx="477.0" cy="208" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="477.0" y="213" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">bac</text>
+<circle cx="529.0" cy="140" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="529.0" y="145" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">a&lt;c?</text>
+<circle cx="581.0" cy="276" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="581.0" y="281" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">bca</text>
+<circle cx="633.0" cy="208" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="633.0" y="213" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">b&lt;c?</text>
+<circle cx="685.0" cy="276" r="19" fill="#e9f3ff" stroke="#3c78a8" stroke-width="2"/>
+<text x="685.0" y="281" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">cba</text>
+<text x="425.0" y="332" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="13" fill="#192c40">每个二叉分支左=是，右=否；最深三次</text></svg>

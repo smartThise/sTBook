@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="375" viewBox="0 0 960 375"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<text x="475" y="26" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">平衡p—n结：固定离子留下的场抵住扩散</text>
+<rect x="45" y="87" width="440" height="185" rx="0" fill="#f4eeef" stroke="#f4eeef" stroke-width="1.5"/>
+<rect x="485" y="87" width="430" height="185" rx="0" fill="#edf4fa" stroke="#edf4fa" stroke-width="1.5"/>
+<rect x="350" y="87" width="260" height="185" rx="0" fill="#f5f0df" stroke="#cfbd86" stroke-width="1.5"/>
+<text x="170" y="68" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">p侧（空穴多）</text>
+<text x="772" y="68" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">n侧（电子多）</text>
+<text x="480" y="300" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">耗尽层</text>
+<text x="378" y="182" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="28" fill="#96718b">−</text>
+<text x="422" y="182" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="28" fill="#96718b">−</text>
+<text x="464" y="182" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="28" fill="#96718b">−</text>
+<text x="508" y="182" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="28" fill="#ae764c">+</text>
+<text x="550" y="182" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="28" fill="#ae764c">+</text>
+<text x="592" y="182" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="28" fill="#ae764c">+</text>
+<line x1="584" y1="220" x2="385" y2="220" stroke="#b17248" stroke-width="2"/>
+<polygon points="385,220 394.0,224.0 394.0,216.0" fill="#b17248"/>
+<text x="484" y="249" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">内建E：从正离子指向负离子</text>
+<line x1="815" y1="107" x2="665" y2="107" stroke="#317d9d" stroke-width="2"/>
+<polygon points="665,107 674.0,111.0 674.0,103.0" fill="#317d9d"/>
+<text x="742" y="96" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">电子扩散</text>
+<line x1="665" y1="250" x2="815" y2="250" stroke="#43875b" stroke-width="2"/>
+<polygon points="815,250 806.0,246.0 806.0,254.0" fill="#43875b"/>
+<text x="741" y="277" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">电子漂移</text>
+<line x1="125" y1="107" x2="275" y2="107" stroke="#317d9d" stroke-width="2"/>
+<polygon points="275,107 266.0,103.0 266.0,111.0" fill="#317d9d"/>
+<text x="201" y="96" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">空穴扩散</text>
+<line x1="275" y1="250" x2="125" y2="250" stroke="#43875b" stroke-width="2"/>
+<polygon points="125,250 134.0,254.0 134.0,246.0" fill="#43875b"/>
+<text x="201" y="277" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">空穴漂移</text>
+<text x="480" y="349" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">两类粒子的漂移与扩散分别平衡；净电流=0不等于每一种过程都停止</text></svg>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="930" height="480" viewBox="0 0 930 480"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<text x="465" y="25" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">薄膜斜入射：比较同一出射波面，必须减去AD</text>
+<rect x="50" y="180" width="830" height="180" rx="0" fill="#edf4ff" stroke="#edf4ff" stroke-width="1.5"/>
+<line x1="50" y1="180" x2="880" y2="180" stroke="#6b8095" stroke-width="2"/>
+<line x1="50" y1="360" x2="880" y2="360" stroke="#6b8095" stroke-width="2"/>
+<line x1="90" y1="67" x2="250" y2="180" stroke="#b17148" stroke-width="2"/>
+<polygon points="250,180 244.9560972513757,171.54074205013112 240.34102833967899,178.07535289855124" fill="#b17148"/>
+<line x1="250" y1="180" x2="410" y2="67" stroke="#2d7a9d" stroke-width="2"/>
+<polygon points="410,67 400.3410283396789,68.92464710144874 404.9560972513757,75.4592579498689" fill="#2d7a9d"/>
+<line x1="250" y1="180" x2="370" y2="360" stroke="#4c885c" stroke-width="2"/>
+<polygon points="370,360 368.3358994113243,350.2927465660585 361.6794970566215,354.7303481358603" fill="#4c885c"/>
+<line x1="370" y1="360" x2="490" y2="180" stroke="#4c885c" stroke-width="2"/>
+<polygon points="490,180 481.6794970566215,185.2696518641397 488.3358994113243,189.7072534339415" fill="#4c885c"/>
+<line x1="490" y1="180" x2="650" y2="67" stroke="#2d7a9d" stroke-width="2"/>
+<polygon points="650,67 640.341028339679,68.92464710144874 644.9560972513757,75.4592579498689" fill="#2d7a9d"/>
+<line x1="490" y1="180" x2="410" y2="67" stroke="#96607d" stroke-width="2" stroke-dasharray="5 4"/>
+<line x1="250" y1="180" x2="250" y2="304" stroke="#6b8095" stroke-width="2" stroke-dasharray="5 4"/>
+<text x="233" y="171" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">A</text>
+<text x="372" y="390" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">B</text>
+<text x="509" y="197" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">C</text>
+<text x="401" y="98" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">D</text>
+<text x="275" y="242" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">r</text>
+<text x="282" y="126" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="19" fill="#192c40">i</text>
+<text x="337" y="275" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">膜n</text>
+<text x="746" y="147" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">外介质n₀</text>
+<line x1="737" y1="180" x2="737" y2="360" stroke="#6b8095" stroke-width="2"/>
+<text x="764" y="275" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">t</text>
+<text x="648" y="102" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">CD垂直两束出射方向</text>
+<text x="465" y="445" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">传播差 = n(AB+BC) − n₀AD；先扣除第一束多走的AD</text></svg>

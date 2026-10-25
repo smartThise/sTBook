@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="385" viewBox="0 0 980 385"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<text x="235" y="25" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">有限直线：R从电流元指向P</text>
+<line x1="35" y1="279" x2="452" y2="279" stroke="#4e6f88" stroke-width="2"/>
+<polygon points="452,279 443.0,275.0 443.0,283.0" fill="#4e6f88"/>
+<text x="454" y="303" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">+x</text>
+<line x1="235" y1="315" x2="235" y2="57" stroke="#6b8095" stroke-width="2"/>
+<polygon points="235,57 231.0,66.0 239.0,66.0" fill="#6b8095"/>
+<text x="212" y="57" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">+y</text>
+<circle cx="235" cy="116" r="5" fill="#e8f2ff" stroke="#3972a2" stroke-width="2"/>
+<text x="250" y="112" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">P(0,a)</text>
+<line x1="88" y1="279" x2="383" y2="279" stroke="#b07446" stroke-width="2"/>
+<text x="80" y="308" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">−L</text>
+<text x="387" y="308" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">L</text>
+<line x1="325" y1="279" x2="362" y2="279" stroke="#2a7a9b" stroke-width="2"/>
+<polygon points="362,279 353.0,275.0 353.0,283.0" fill="#2a7a9b"/>
+<text x="350" y="263" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">I dl</text>
+<line x1="325" y1="279" x2="235" y2="116" stroke="#598856" stroke-width="2"/>
+<polygon points="235,116 235.84856756865483,125.81223384767338 242.8519353504644,121.94534366139817" fill="#598856"/>
+<text x="302" y="175" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">R</text>
+<text x="210" y="212" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">a</text>
+<text x="235" y="349" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">x为源位置，a为观察点到线的垂距</text>
+<text x="735" y="25" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">粗导线：圆形安培环路</text>
+<circle cx="735" cy="200" r="95" fill="#edf4ff" stroke="#637e94" stroke-width="2"/>
+<circle cx="735" cy="200" r="45" fill="#f7e9ca" stroke="#b08a4e" stroke-width="2"/>
+<circle cx="735" cy="200" r="8" fill="#456a85" stroke="#456a85" stroke-width="2"/>
+<text x="747" y="206" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">I 出纸</text>
+<line x1="817.2724133595217" y1="152.5" x2="804.2724133595217" y2="129.9833395016046" stroke="#47825c" stroke-width="2"/>
+<polygon points="804.2724133595217,129.9833395016046 805.3083117443839,139.77756813566455 812.2365149746595,135.77756813566455" fill="#47825c"/>
+<line x1="687.5" y1="117.72758664047832" x2="664.9833395016046" y2="130.7275866404783" stroke="#47825c" stroke-width="2"/>
+<polygon points="664.9833395016046,130.7275866404783 674.7775681356645,129.69168825561607 670.7775681356645,122.76348502534056" fill="#47825c"/>
+<line x1="652.7275866404783" y1="247.5" x2="665.7275866404783" y2="270.0166604983954" stroke="#47825c" stroke-width="2"/>
+<polygon points="665.7275866404783,270.0166604983954 664.6916882556161,260.2224318643355 657.7634850253405,264.2224318643355" fill="#47825c"/>
+<line x1="782.5" y1="282.2724133595217" x2="805.0166604983954" y2="269.2724133595217" stroke="#47825c" stroke-width="2"/>
+<polygon points="805.0166604983954,269.2724133595217 795.2224318643355,270.30831174438396 799.2224318643355,277.2365149746594" fill="#47825c"/>
+<text x="735" y="329" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">B沿环切向；同一r大小相同</text>
+<text x="735" y="354" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">内圈包围I r²/R²，外圈包围全部I</text></svg>

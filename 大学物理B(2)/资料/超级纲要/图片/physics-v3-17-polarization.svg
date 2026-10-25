@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="940" height="365" viewBox="0 0 940 365"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<text x="240" y="26" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">同一位置，电场端点随时间绕椭圆</text>
+<line x1="50" y1="192" x2="435" y2="192" stroke="#6b8095" stroke-width="2"/>
+<polygon points="435,192 426.0,188.0 426.0,196.0" fill="#6b8095"/>
+<line x1="235" y1="330" x2="235" y2="60" stroke="#6b8095" stroke-width="2"/>
+<polygon points="235,60 231.0,69.0 239.0,69.0" fill="#6b8095"/>
+<text x="432" y="217" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">x</text>
+<text x="215" y="62" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">y</text>
+<ellipse cx="235" cy="192" rx="150" ry="87" fill="none" stroke="#7293ad" stroke-width="2"/>
+<line x1="235" y1="192" x2="385" y2="192" stroke="#2e7d9f" stroke-width="2"/>
+<polygon points="385,192 376.0,188.0 376.0,196.0" fill="#2e7d9f"/>
+<text x="413" y="180" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">t=0</text>
+<line x1="235" y1="192" x2="235" y2="105" stroke="#2e7d9f" stroke-width="2"/>
+<polygon points="235,105 231.0,114.0 239.0,114.0" fill="#2e7d9f"/>
+<text x="263" y="93" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">T/4</text>
+<line x1="235" y1="192" x2="85" y2="192" stroke="#2e7d9f" stroke-width="2"/>
+<polygon points="85,192 94.0,196.0 94.0,188.0" fill="#2e7d9f"/>
+<text x="68" y="180" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">T/2</text>
+<line x1="235" y1="192" x2="235" y2="279" stroke="#2e7d9f" stroke-width="2"/>
+<polygon points="235,279 239.0,270.0 231.0,270.0" fill="#2e7d9f"/>
+<text x="263" y="267" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">3T/4</text>
+<text x="246" y="347" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">Ex=(√3/2)E₀ cosωt；Ey=(1/2)E₀ sinωt</text>
+<text x="716" y="26" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="20" fill="#192c40">每过一片，都更新“当前的光”</text>
+<rect x="510" y="64" width="410" height="54" rx="4" fill="#f0f5fa" stroke="#c0cfdb" stroke-width="1.5"/>
+<text x="715" y="85" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">自然光 I₀</text>
+<text x="715" y="108" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">没有固定单一偏振轴</text>
+<rect x="510" y="136" width="410" height="54" rx="4" fill="#f0f5fa" stroke="#c0cfdb" stroke-width="1.5"/>
+<text x="715" y="157" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">0°偏振片后 I₀/2</text>
+<text x="715" y="180" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">线偏振，沿0°</text>
+<rect x="510" y="208" width="410" height="54" rx="4" fill="#f0f5fa" stroke="#c0cfdb" stroke-width="1.5"/>
+<text x="715" y="229" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">45°四分之一波片后 I₀/2</text>
+<text x="715" y="252" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">等幅正交，差π/2 → 圆</text>
+<rect x="510" y="280" width="410" height="54" rx="4" fill="#f0f5fa" stroke="#c0cfdb" stroke-width="1.5"/>
+<text x="715" y="301" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">任意角检偏器后 I₀/4</text>
+<text x="715" y="324" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">圆在任一轴上平均取一半</text></svg>

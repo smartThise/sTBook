@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="850" height="260" viewBox="0 0 850 260"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<rect x="90" y="48" width="20" height="170" rx="0" fill="#647e96" stroke="#647e96" stroke-width="1.5"/>
+<rect x="740" y="48" width="20" height="170" rx="0" fill="#647e96" stroke="#647e96" stroke-width="1.5"/>
+<rect x="167" y="68" width="510" height="130" rx="0" fill="#f1f7ec" stroke="#8caa86" stroke-width="1.5"/>
+<text x="99" y="31" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">自由+</text>
+<text x="749" y="31" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">自由−</text>
+<text x="169" y="100" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="25" fill="#192c40">−</text>
+<text x="673" y="100" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="25" fill="#192c40">+</text>
+<text x="242" y="135" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="25" fill="#192c40">−</text>
+<text x="278" y="135" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="25" fill="#192c40">+</text>
+<line x1="250" y1="155" x2="286" y2="155" stroke="#598b5b" stroke-width="2"/>
+<polygon points="286,155 277.0,151.0 277.0,159.0" fill="#598b5b"/>
+<text x="347" y="135" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="25" fill="#192c40">−</text>
+<text x="383" y="135" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="25" fill="#192c40">+</text>
+<line x1="355" y1="155" x2="391" y2="155" stroke="#598b5b" stroke-width="2"/>
+<polygon points="391,155 382.0,151.0 382.0,159.0" fill="#598b5b"/>
+<text x="452" y="135" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="25" fill="#192c40">−</text>
+<text x="488" y="135" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="25" fill="#192c40">+</text>
+<line x1="460" y1="155" x2="496" y2="155" stroke="#598b5b" stroke-width="2"/>
+<polygon points="496,155 487.0,151.0 487.0,159.0" fill="#598b5b"/>
+<text x="557" y="135" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="25" fill="#192c40">−</text>
+<text x="593" y="135" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="25" fill="#192c40">+</text>
+<line x1="565" y1="155" x2="601" y2="155" stroke="#598b5b" stroke-width="2"/>
+<polygon points="601,155 592.0,151.0 592.0,159.0" fill="#598b5b"/>
+<line x1="315" y1="41" x2="520" y2="41" stroke="#2c779d" stroke-width="2"/>
+<polygon points="520,41 511.0,37.0 511.0,45.0" fill="#2c779d"/>
+<text x="567" y="46" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">总E，P</text>
+<line x1="515" y1="229" x2="316" y2="229" stroke="#ad7150" stroke-width="2"/>
+<polygon points="316,229 325.0,233.0 325.0,225.0" fill="#ad7150"/>
+<text x="580" y="237" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">极化附加场</text>
+<text x="425" y="182" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">偶极矩从负端指向正端</text></svg>

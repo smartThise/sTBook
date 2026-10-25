@@ -41,3 +41,4 @@
 #counter(heading).update(18)
 #include "19-系统综合题与故障定位.typ"
 #{ set heading(numbering: none); include "95-资料覆盖与图源.typ" }
+#{ set heading(numbering: none); include "96-术语与记号.typ" }

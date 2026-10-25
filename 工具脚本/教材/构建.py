@@ -38,7 +38,7 @@ def main():
         for chapter in chapters:
             number = int(chapter.name[:2])
             include = f'include "{chapter.with_suffix(".typ").name}"'
-            if number in (0, 95):
+            if number in (0, 95, 96):
                 main_typ += '#{ set heading(numbering: none); ' + include + ' }\n'
             else:
                 # Keep printed chapter numbers equal to the canonical filenames

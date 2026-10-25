@@ -14,9 +14,23 @@ $upright(bold(R))$ 从电流元指向观察点，$d upright(bold(l))$ 沿电流�
 
 == 算例一：有限直导线
 <算例一有限直导线>
+#figure(image("图片/physics-v3-10-wire-ampere.svg", alt: "有限直线的源坐标、源到观察点向量与同轴安培环路"),
+  caption: [
+    有限直线的源坐标、源到观察点向量与同轴安培环路
+  ]
+)
+
+左图x属于每一个源电流元，观察点P固定在(0,a)，所以R向量的x分量是0−x=−x，y分量是a−0=a；它不是简单朝+x。右图绿色箭头同时表示所取逆时针环路的切向与正出纸电流产生的B方向，这个平行关系来自完整圆柱对称性。
+
 导线沿x轴从−L到L，电流向x正向，观察点P在y=a\>0。电流元 $d upright(bold(l)) = d x hat(upright(bold(x)))$，$upright(bold(R)) = - x hat(upright(bold(x))) + a hat(upright(bold(y)))$，叉乘指向z正向，大小为a dx。因此
 
 $ B_z = frac(mu_0 I, 4 pi) integral_(- L)^L frac(a thin d x, \(x^2 + a^2\)^(3\/2)) = frac(mu_0 I, 2 pi a) L / sqrt(L^2 + a^2) . $
+
+叉乘中的第一项$d x hat(upright(bold(x))) times\(- x hat(upright(bold(x)))\)= 0$，第二项为$a thin d x hat(upright(bold(z)))$，因此每个微元都贡献同号Bz，没有在积分中另藏角度因子。积分可用以下原函数核对：
+
+$ frac(d, d x) frac(x, a sqrt(x^2 + a^2)) = 1 / a [1 / sqrt(x^2 + a^2) - frac(x^2, \(x^2 + a^2\)^(3\/2))] = frac(a, \(x^2 + a^2\)^(3\/2)) . $
+
+把上限L和下限−L代进去，得到$L\/\[a sqrt(L^2 + a^2)\]-\(- L\)\/\[a sqrt(L^2 + a^2)\]= 2 L\/\[a sqrt(L^2 + a^2)\]$；再乘μ₀I/(4π)，才是上面的结果。
 
 L趋于无穷，恢复无限长直线 $mu_0 I\/\(2 pi a\)$。有限L时最后的比例小于1，符合删去远处电流贡献后场变弱。L=a、I=10A、a=0.10m时，B约14.1μT，指向纸外。
 
@@ -34,9 +48,23 @@ $ B = frac(mu_0 I, 4 pi R) alpha . $
 
 == 圆电流轴线：横向抵消后再积分
 <圆电流轴线横向抵消后再积分>
-半径R的整圆线圈，轴上距中心z处，所有元到观察点距离 $sqrt(R^2 + z^2)$。按对径电流元配对，横向分量相消，轴向分量相加，结果
+#figure(image("图片/physics-v3-10-loop-axis.svg", alt: "圆环轴线的观察点、源元与两个对径元场分量"),
+  caption: [
+    圆环轴线的观察点、源元与两个对径元场分量
+  ]
+)
 
-$ B_z = frac(mu_0 I R^2, 2\(R^2 + z^2\)^(3\/2)) . $
+为避免源到观察点向量R和圆环半径重名，这一推导把圆环半径暂记R₀。圆环在xy平面，中心原点，P=(0,0,z)，电流从+z看逆时针。源位置$\(R_0 cos phi.alt\,R_0 sin phi.alt\,0\)$随φ从0到2π走一圈。
+
+源元沿曲线切线：$d upright(bold(l)) =\(- R_0 sin phi.alt\,R_0 cos phi.alt\,0\)d phi.alt$；源到P的向量$upright(bold(R)) =\(- R_0 cos phi.alt\,- R_0 sin phi.alt\,z\)$。按叉乘的三个分量计算：
+
+$ d upright(bold(l)) times upright(bold(R)) =\(R_0 z cos phi.alt\,med R_0 z sin phi.alt\,med R_0^2\)d phi.alt . $
+
+例如第三项是$\(- R_0 sin phi.alt\)\(- R_0 sin phi.alt\)-\(R_0 cos phi.alt\)\(- R_0 cos phi.alt\)= R_0^2$，而非R₀z。每个源的距离都为$sqrt(R_0^2 + z^2)$，所以分母不依φ，可以提出积分。
+
+$ B_z = frac(mu_0 I, 4 pi\(R_0^2 + z^2\)^(3\/2)) integral_0^(2 pi) R_0^2 d phi.alt = frac(mu_0 I R_0^2, 2\(R_0^2 + z^2\)^(3\/2)) . $
+
+横向项分别含$integral_0^(2 pi) cos phi.alt thin d phi.alt = 0$与sin积分0，这就是"对径相消"的分量版本。以下把半径记号恢复为R，得到原来常用的轴线式。
 
 z=0回到圆心结果；远处按1/z³衰减，表现为磁偶极场。电场圆环轴线公式分子含z，磁场圆环公式分子含R²，不能因为形状相似就互换。两种场来自不同矢量积分。
 
@@ -74,7 +102,11 @@ $ integral.cont_C upright(bold(B)) dot.op d upright(bold(l)) = mu_0 I_(upright("
 
 $ B\(z\)= frac(mu_0 n I, 2) integral_(- ell\/2)^(ell\/2) frac(R^2 thin d z', \[R^2 +\(z - z'\)^2\]^(3\/2)) . $
 
-在管中心z=0，积分得
+在管中心z=0，源坐标z′的被积函数是偶函数，可把区间改为0至ℓ/2再乘2。原函数可检查为$z'\/sqrt(R^2 + z' ""^2)$，因为它求导的分子恰好留下R²。因此
+
+$ B\(0\)= mu_0 n I [z' / sqrt(R^2 + z' ""^2)]_0^(ell\/2)\, $
+
+代入两端得到
 
 $ B\(0\)= mu_0 n I frac(ell\/2, sqrt(R^2 +\(ell\/2\)^2)) . $
 
@@ -88,8 +120,8 @@ $ B\(0\)= mu_0 n I frac(ell\/2, sqrt(R^2 +\(ell\/2\)^2)) . $
 
 这与带电圆环的电场轴线式分子含z不同。电荷圆环对两侧反射时电场作为极向量会翻相应分量；磁场属于轴向量，不能把两个看似相同的装置按同一反射直觉随手改符号。入门计算最稳妥的检查仍是给每个电流元做一次dl×R，配对后看z分量。
 
-== 安培曲面可以换，电流账必须一致
-<安培曲面可以换电流账必须一致>
+== 安培曲面可以换，穿面电流必须一致
+<安培曲面可以换穿面电流必须一致>
 同一条闭合环路可以绷出许多张曲面。稳恒电流不在空间任意终止，因此穿过不同曲面的代数电流相同。若某条电流先穿入曲面又穿出，两个交点符号相反，相互抵消；只数"看见几次导线"而不数方向会出错。
 
 给电容充电时，传导电流能在极板上累积净电荷，稳恒条件破坏，旧式子便需要位移电流修补。这个例子不是允许我们在稳恒题里任意选一张"包到更多电流"的面来获得想要的B，曲面选择自由始终受源的连续性约束。

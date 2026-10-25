@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="441" viewBox="0 0 700 441"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<text x="258.0" y="24" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="12" fill="#60758a">0</text>
+<text x="358.0" y="24" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="12" fill="#60758a">1</text>
+<text x="458.0" y="24" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="12" fill="#60758a">2</text>
+<text x="558.0" y="24" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="12" fill="#60758a">3</text>
+<text x="12" y="67" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">计数C[v]</text>
+<rect x="205" y="42" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="253.5" y="67" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">1</text>
+<rect x="305" y="42" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="353.5" y="67" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">1</text>
+<rect x="405" y="42" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="453.5" y="67" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">2</text>
+<text x="12" y="124" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">累计末尾位置</text>
+<rect x="205" y="99" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="253.5" y="124" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">1</text>
+<rect x="305" y="99" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="353.5" y="124" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">2</text>
+<rect x="405" y="99" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="453.5" y="124" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">4</text>
+<text x="12" y="181" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">放2C到3后</text>
+<rect x="205" y="156" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="253.5" y="181" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="305" y="156" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="353.5" y="181" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="405" y="156" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="453.5" y="181" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="505" y="156" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="553.5" y="181" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">2C</text>
+<text x="12" y="238" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">放0D到0后</text>
+<rect x="205" y="213" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="253.5" y="238" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">0D</text>
+<rect x="305" y="213" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="353.5" y="238" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="405" y="213" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="453.5" y="238" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="505" y="213" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="553.5" y="238" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">2C</text>
+<text x="12" y="295" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">放1B到1后</text>
+<rect x="205" y="270" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="253.5" y="295" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">0D</text>
+<rect x="305" y="270" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="353.5" y="295" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">1B</text>
+<rect x="405" y="270" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="453.5" y="295" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">·</text>
+<rect x="505" y="270" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="553.5" y="295" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">2C</text>
+<text x="12" y="352" text-anchor="start" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">放2A到2后</text>
+<rect x="205" y="327" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="253.5" y="352" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">0D</text>
+<rect x="305" y="327" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="353.5" y="352" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">1B</text>
+<rect x="405" y="327" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="453.5" y="352" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">2A</text>
+<rect x="505" y="327" width="97" height="39" rx="6" fill="#edf4fa" stroke="#708ba4" stroke-width="1.5"/>
+<text x="553.5" y="352" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="15" fill="#192c40">2C</text>
+<text x="350.0" y="429" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="14" fill="#192c40">前两行下标是键0/1/2；其后各行下标是输出位置0/1/2/3</text></svg>

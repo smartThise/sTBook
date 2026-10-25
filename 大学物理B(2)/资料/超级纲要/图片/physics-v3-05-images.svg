@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="390" viewBox="0 0 900 390"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<rect x="15" y="208" width="405" height="150" rx="0" fill="#edf0f3" stroke="#d5dde5" stroke-width="1.5"/>
+<line x1="25" y1="208" x2="415" y2="208" stroke="#506779" stroke-width="2"/>
+<line x1="95" y1="344" x2="95" y2="42" stroke="#6b8095" stroke-width="2"/>
+<polygon points="95,42 91.0,51.0 99.0,51.0" fill="#6b8095"/>
+<text x="78" y="43" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">z</text>
+<line x1="45" y1="208" x2="405" y2="208" stroke="#6b8095" stroke-width="2"/>
+<polygon points="405,208 396.0,204.0 396.0,212.0" fill="#6b8095"/>
+<text x="409" y="231" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">s</text>
+<circle cx="95" cy="108" r="9" fill="#da695d" stroke="#ad453e" stroke-width="2"/>
+<text x="135" y="104" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">真实q，z=a</text>
+<circle cx="95" cy="308" r="9" fill="#f8d8ba" stroke="#ad7d48" stroke-width="2"/>
+<text x="194" y="318" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">像−q，z=−a</text>
+<text x="215" y="350" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">灰区为导体，像是数学构造</text>
+<circle cx="315" cy="208" r="4" fill="#e8f2ff" stroke="#3972a2" stroke-width="2"/>
+<text x="326" y="193" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">P(s,0)</text>
+<line x1="95" y1="108" x2="315" y2="208" stroke="#2c799d" stroke-width="2"/>
+<line x1="95" y1="308" x2="315" y2="208" stroke="#ad7d48" stroke-width="2"/>
+<text x="255" y="145" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">两段距离相等</text>
+<text x="225" y="26" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">接地平面：整个边界V=0</text>
+<circle cx="645" cy="208" r="94" fill="#edf0f3" stroke="#73899e" stroke-width="2"/>
+<line x1="535" y1="208" x2="842" y2="208" stroke="#6b8095" stroke-width="2"/>
+<circle cx="645" cy="208" r="3" fill="#e8f2ff" stroke="#3972a2" stroke-width="2"/>
+<text x="631" y="232" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">O</text>
+<circle cx="693.5494505494505" cy="208" r="7" fill="#f8d8ba" stroke="#ad7d48" stroke-width="2"/>
+<text x="693.5494505494505" y="234" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">q&#x27;, b&#x27;</text>
+<circle cx="827" cy="208" r="8" fill="#da695d" stroke="#ad453e" stroke-width="2"/>
+<text x="827" y="232" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">q</text>
+<circle cx="696.1960692914125" cy="129.16496661313013" r="4" fill="#e8f2ff" stroke="#3972a2" stroke-width="2"/>
+<text x="704.1960692914125" y="120.16496661313013" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">P</text>
+<line x1="645" y1="208" x2="696.1960692914125" y2="129.16496661313013" stroke="#718799" stroke-width="2"/>
+<text x="657" y="165" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">R</text>
+<line x1="693.5494505494505" y1="208" x2="696.1960692914125" y2="129.16496661313013" stroke="#ad7d48" stroke-width="2"/>
+<line x1="827" y1="208" x2="696.1960692914125" y2="129.16496661313013" stroke="#2c799d" stroke-width="2"/>
+<text x="775" y="145" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">d</text>
+<text x="702" y="173" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">d&#x27;</text>
+<text x="680" y="26" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">接地球：先证明d′/d固定</text>
+<text x="680" y="350" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">b′=R²/b；q′=−qR/b</text></svg>

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="940" height="390" viewBox="0 0 940 390"><rect width="100%" height="100%" fill="white"/><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#506276"/></marker></defs>
+<text x="225" y="28" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">电子：v向右，B向纸内</text>
+<circle cx="165" cy="205" r="108" fill="none" stroke="#b5c5d0" stroke-width="2"/>
+<path d="M165 97 A108 108 0 0 1 165 313" fill="none" stroke="#2d7c9d" stroke-width="3"/>
+<line x1="273" y1="195" x2="273" y2="230" stroke="#2d7c9d" stroke-width="2"/>
+<polygon points="273,230 277.0,221.0 269.0,221.0" fill="#2d7c9d"/>
+<line x1="165" y1="97" x2="285" y2="97" stroke="#2d7c9d" stroke-width="2"/>
+<polygon points="285,97 276.0,93.0 276.0,101.0" fill="#2d7c9d"/>
+<text x="297" y="101" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">v</text>
+<line x1="165" y1="97" x2="165" y2="163" stroke="#b06b46" stroke-width="2"/>
+<polygon points="165,163 169.0,154.0 161.0,154.0" fill="#b06b46"/>
+<text x="140" y="148" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">F</text>
+<line x1="165" y1="97" x2="165" y2="313" stroke="#6b8095" stroke-width="2" stroke-dasharray="5 4"/>
+<text x="144" y="210" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">2r</text>
+<text x="220" y="346" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">入口到半圆出口距离=直径</text>
+<circle cx="75" cy="65" r="12" fill="white" stroke="#3972a2" stroke-width="2"/>
+<line x1="69" y1="59" x2="81" y2="71" stroke="#6b8095" stroke-width="2"/>
+<line x1="69" y1="71" x2="81" y2="59" stroke="#6b8095" stroke-width="2"/>
+<circle cx="350" cy="155" r="12" fill="white" stroke="#3972a2" stroke-width="2"/>
+<line x1="344" y1="149" x2="356" y2="161" stroke="#6b8095" stroke-width="2"/>
+<line x1="344" y1="161" x2="356" y2="149" stroke="#6b8095" stroke-width="2"/>
+<circle cx="350" cy="255" r="12" fill="white" stroke="#3972a2" stroke-width="2"/>
+<line x1="344" y1="249" x2="356" y2="261" stroke="#6b8095" stroke-width="2"/>
+<line x1="344" y1="261" x2="356" y2="249" stroke="#6b8095" stroke-width="2"/>
+<text x="715" y="28" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">霍尔条：I沿+x，B沿+z</text>
+<rect x="510" y="110" width="360" height="170" rx="0" fill="#eef5fa" stroke="#758fa6" stroke-width="1.5"/>
+<text x="540" y="104" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#ad6250">+</text>
+<text x="540" y="302" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#497a9c">−</text>
+<text x="590" y="104" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#ad6250">+</text>
+<text x="590" y="302" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#497a9c">−</text>
+<text x="640" y="104" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#ad6250">+</text>
+<text x="640" y="302" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#497a9c">−</text>
+<text x="690" y="104" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#ad6250">+</text>
+<text x="690" y="302" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#497a9c">−</text>
+<text x="740" y="104" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#ad6250">+</text>
+<text x="740" y="302" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#497a9c">−</text>
+<text x="790" y="104" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#ad6250">+</text>
+<text x="790" y="302" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#497a9c">−</text>
+<text x="840" y="104" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#ad6250">+</text>
+<text x="840" y="302" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="21" fill="#497a9c">−</text>
+<line x1="550" y1="161" x2="740" y2="161" stroke="#28759c" stroke-width="2"/>
+<polygon points="740,161 731.0,157.0 731.0,165.0" fill="#28759c"/>
+<text x="655" y="145" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">I  +x</text>
+<line x1="725" y1="233" x2="565" y2="233" stroke="#28759c" stroke-width="2"/>
+<polygon points="565,233 574.0,237.0 574.0,229.0" fill="#28759c"/>
+<text x="650" y="257" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">电子vd  −x</text>
+<line x1="820" y1="131" x2="820" y2="248" stroke="#b06b46" stroke-width="2"/>
+<polygon points="820,248 824.0,239.0 816.0,239.0" fill="#b06b46"/>
+<text x="850" y="194" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">EH</text>
+<line x1="775" y1="177" x2="775" y2="248" stroke="#80568d" stroke-width="2"/>
+<polygon points="775,248 779.0,239.0 771.0,239.0" fill="#80568d"/>
+<text x="758" y="317" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">电子磁力向−y</text>
+<circle cx="910" cy="191" r="15" fill="white" stroke="#3972a2" stroke-width="2"/>
+<circle cx="910" cy="191" r="4" fill="#4a718f" stroke="#4a718f" stroke-width="2"/>
+<text x="910" y="226" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">+z</text>
+<text x="700" y="355" text-anchor="middle" font-family="Noto Sans CJK SC, PingFang SC, Arial, sans-serif" font-size="18" fill="#192c40">上边电势高、下边电势低（电子单载流子）</text></svg>
