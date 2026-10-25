@@ -1827,5 +1827,119 @@ DEMOS.update({
     "cs11-pagetable": demo_cs_pagetable,
 })
 
+
+
+# ---------- 物理演示 ----------
+
+PH_IMG = ROOT / "大学物理B(2)" / "资料" / "超级纲要" / "图片"
+
+def demo_ph_gauss():
+    """点电荷在球心：球面通量Φ=E·4πr²与半径无关。"""
+    import math
+    frames = []
+    W, H = 720, 260
+    CX, CY = 250, 150
+
+    def scene(r_px, note, ratio):
+        sc = Scene(W, H)
+        sc.label(40, 30, f"高斯面：球面半径r={ratio}倍，电场E∝1/r²，通量Φ=E·4πr²", size=15, fill=SUB)
+        sc.add("circle", cx=CX, cy=CY, r=r_px, fill="none", stroke=WRITE_STROKE, stroke_width=2)
+        sc.add("circle", cx=CX, cy=CY, r=4, fill=HOT_STROKE)
+        sc.label(CX + 10, CY - 8, "+q", size=14, mono=True, fill=SUB)
+        # field arrows on the sphere
+        for ang in range(0, 360, 45):
+            rad = ang * 3.14159 / 180
+            x1 = CX + r_px * 0.75 * math.cos(rad); y1 = CY + r_px * 0.75 * math.sin(rad)
+            x2 = CX + (r_px + 22) * math.cos(rad); y2 = CY + (r_px + 22) * math.sin(rad)
+            sc.add("line", x1=x1, y1=y1, x2=x2, y2=y2, stroke=WRITE_STROKE, stroke_width=1.4)
+            sc.add("circle", cx=x2, cy=y2, r=2.5, fill=WRITE_STROKE)
+        sc.label(470, 120, f"E = kq/r²（r={ratio}倍基准）", size=15, mono=True)
+        sc.label(470, 148, "面积 = 4πr²（∝r²）", size=15, mono=True)
+        sc.label(470, 176, "Φ = E·4πr² = kq·4π（与r无关）", size=15, mono=True, fill=INK)
+        sc.label(40, 238, note, size=15)
+        return sc
+
+    frames.append(frame("小球面 r", "以点电荷为球心作小球面，电场处处垂直球面、大小相等。", "通量=E×面积：E按1/r²变弱，面积按r²变大，两者相乘不变。",
+                        "换大球面，通量变吗？", scene(60, "小球面：Φ₁。", "1")))
+    frames.append(frame("大球面 2r", "半径加倍：E减为1/4，面积增为4倍。", "Φ₂=E/4 × 4A = E·A = Φ₁：通量与半径无关。",
+                        "", scene(110, "大球面：Φ₂=Φ₁。", "2")))
+    frames.append(frame("高斯定理", "Φ = q/ε₀：通量只由面内电荷决定，与面的大小形状无关。", "库仑定律与高斯定理等价；对称分布时先定方向再算大小。",
+                        "", scene(110, "任意闭合曲面同理：只看面内电荷。", "2")))
+    return write_demo("ph03-gauss", "高斯面：半径加倍，通量不变", frames, outdir=PH_IMG)
+
+
+def demo_ph_flux_change():
+    """磁铁插入线圈：磁通增大→感应电流阻碍增大。"""
+    frames = []
+    W, H = 760, 250
+    CX, CY = 200, 140
+
+    def scene(magnet_y, arrow, current, note):
+        sc = Scene(W, H)
+        sc.label(40, 30, "电磁感应：磁铁N极插入线圈，磁通增大，感应电流方向阻碍增大", size=15, fill=SUB)
+        # coil: several vertical lines
+        for k in range(5):
+            sc.add("line", x1=CX - 60 + k * 24, y1=CY - 45, x2=CX - 60 + k * 24, y2=CY + 45, stroke=CELL_STROKE, stroke_width=3)
+        # magnet
+        sc.add("rect", x=CX - 22, y=magnet_y - 60, width=44, height=40, rx=4, fill="#fbe4e4", stroke=BAD_STROKE, stroke_width=1.5)
+        sc.label(CX, magnet_y - 34, "N", size=17, mono=True, anchor="middle", fill=BAD_STROKE)
+        sc.add("rect", x=CX - 22, y=magnet_y - 20, width=44, height=40, rx=4, fill=WRITE, stroke=WRITE_STROKE, stroke_width=1.5)
+        sc.label(CX, magnet_y + 6, "S", size=17, mono=True, anchor="middle", fill=WRITE_STROKE)
+        if arrow:
+            sc.add("line", x1=CX + 40, y1=magnet_y - 50, x2=CX + 40, y2=magnet_y - 10, stroke=HOT_STROKE, stroke_width=2)
+            sc.add("circle", cx=CX + 40, cy=magnet_y - 10, r=3, fill=HOT_STROKE)
+        if current:
+            sc.label(CX + 90, CY, "感应电流（逆时针，迎面看）", size=14, fill=SUB)
+        sc.label(40, 226, note, size=15)
+        return sc
+
+    frames.append(frame("磁铁远处", "N极在线圈上方远处：穿过线圈的磁通接近零。", "感应电流的大小与方向都取决于磁通的变化率，静置时无电流。", "",
+                        scene(20, False, False, "磁通≈0。")))
+    frames.append(frame("插入中：磁通增大", "N极逼近，向下穿过线圈的磁通增大。", "楞次定律：感应电流的磁场要阻碍磁通的增大——感应磁场方向向上。",
+                        "", scene(110, True, False, "磁通增大中。")))
+    frames.append(frame("感应电流出现", "由右手定则，从上往下看线圈中电流为逆时针：其磁场向上顶住N极。", "阻碍≠阻止：磁铁仍可插入，只是需要克服斥力做功，机械能转化为电能。",
+                        "", scene(150, True, True, "插入过程中持续有感应电流。")))
+    return write_demo("ph11-induction", "磁铁插入线圈：磁通与阻碍", frames, outdir=PH_IMG)
+
+
+def demo_ph_interference():
+    """双缝干涉：光程差 δ=d·sinθ，明纹 δ=mλ。"""
+    frames = []
+    W, H = 780, 270
+    SX, SY = 70, 135
+
+    def scene(offset, note, k):
+        sc = Scene(W, H)
+        sc.label(40, 30, f"双缝干涉：光程差δ=d·sinθ；明纹条件δ=mλ（图中m={k}）", size=15, fill=SUB)
+        sc.add("circle", cx=SX - 40, cy=SY, r=6, fill=HOT_STROKE)
+        sc.label(SX - 52, SY - 14, "光源", size=13, fill=SUB)
+        for slit in (SY - 30, SY + 30):
+            sc.add("rect", x=SX + 60, y=slit - 22, width=10, height=18, rx=2, fill=INK)
+            sc.add("rect", x=SX + 60, y=slit + 4, width=10, height=18, rx=2, fill=INK)
+            sc.add("line", x1=SX - 30, y1=SY, x2=SX + 58, y2=slit, stroke=WRITE_STROKE, stroke_width=1.6)
+            sc.add("line", x1=SX + 72, y1=slit, x2=560, y2=SY + offset, stroke=WRITE_STROKE, stroke_width=1.6)
+        sc.add("line", x1=560, y1=50, x2=560, y2=220, stroke=CELL_STROKE, stroke_width=3)
+        sc.label(566, 60, "屏", size=13, fill=SUB)
+        if k is not None:
+            sc.add("circle", cx=572, cy=SY + offset, r=6, fill=HOT_STROKE)
+            sc.label(588, SY + offset + 4, f"m={k}明纹", size=13, mono=True, fill=INK)
+        sc.label(40, 244, note, size=15)
+        return sc
+
+    frames.append(frame("中央明纹 m=0", "两缝到屏中央等距：光程差δ=0，两波同相叠加，中央最亮。", "所有波长的m=0都重合在正中。",
+                        "", scene(0, "δ=0：中央亮纹。", 0)))
+    frames.append(frame("一级明纹 m=1", "向上偏转使δ=d·sinθ恰好等于一个波长λ：同相叠加，一级明纹。", "sinθ=λ/d决定一级明纹的偏角。",
+                        "", scene(-64, "δ=λ：一级明纹。", 1)))
+    frames.append(frame("暗纹处", "δ=λ/2（半整数）：两波反相相消，屏幕上出现暗纹。", "明暗相间的条纹间距Δy=λL/d，红光比紫光条纹更宽。",
+                        "", scene(-32, "δ=λ/2：暗纹（相消）。", None)))
+    return write_demo("ph15-interference", "双缝干涉：光程差决定明暗", frames, outdir=PH_IMG)
+
+
+DEMOS.update({
+    "ph03-gauss": demo_ph_gauss,
+    "ph11-induction": demo_ph_flux_change,
+    "ph15-interference": demo_ph_interference,
+})
+
 if __name__ == "__main__":
     main(sys.argv[1:])
