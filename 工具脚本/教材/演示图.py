@@ -1941,5 +1941,104 @@ DEMOS.update({
     "ph15-interference": demo_ph_interference,
 })
 
+
+
+# ---------- CS演示批2 ----------
+
+def demo_cs_addressing():
+    """mov %rax, 0x8(%rbx): 基址+偏移寻址。"""
+    frames = []
+    W, H = 740, 230
+    X, Y = 50, 100
+
+    def scene(base_val, offset, target, note):
+        sc = Scene(W, H)
+        sc.label(X, 30, "mov %rax, 0x8(%rbx)：目标地址 = (%rbx) + 0x8", size=15, fill=SUB)
+        sc.add("rect", x=X, y=Y, width=250, height=46, rx=8, fill=WRITE, stroke=WRITE_STROKE, stroke_width=1.5)
+        sc.label(X + 125, Y + 29, f"%rbx = 0x{base_val}", size=17, mono=True, anchor="middle")
+        sc.add("rect", x=X + 280, y=Y, width=140, height=46, rx=8, fill=CELL, stroke=CELL_STROKE, stroke_width=1.5)
+        sc.label(X + 350, Y + 29, f"+ 0x{offset}", size=17, mono=True, anchor="middle")
+        sc.add("rect", x=X + 450, y=Y, width=220, height=46, rx=8, fill=HOT, stroke=HOT_STROKE, stroke_width=1.5)
+        sc.label(X + 560, Y + 29, f"目标 0x{target}", size=17, mono=True, anchor="middle")
+        sc.label(X, 200, note, size=15)
+        return sc
+
+    frames.append(frame("读寄存器基址", "%rbx保存数组首地址0x1000。", "编译器把数组名翻译成基址寄存器。",
+                        "偏移0x8对应第几个int？", scene("1000", "8", "1100", "待计算。")))
+    frames.append(frame("基址+偏移求和", "0x1000 + 0x8 = 0x1008：第2个int元素（下标2，因int占4字节，偏移=2×4=8）。", "结构体字段、数组下标最终都编译成这种基址+偏移形式。",
+                        "", scene("1000", "8", "1008", "%rax写入0x1008。")))
+    return write_demo("cs04-addressing", "基址加偏移：0x8(%rbx)指到哪里", frames, outdir=CS_IMG)
+
+
+def demo_cs_outofbounds():
+    """int a[5]; a[10]=7 越界写覆盖相邻变量。"""
+    frames = []
+    W, H = 780, 240
+    X, Y, CW = 40, 100, 90
+
+    def scene(cells, note, hot=None):
+        sc = Scene(W, H)
+        sc.label(X, 30, "int a[5] 与相邻变量 b 在栈上的布局：a[10]=7 会写到哪里？", size=15, fill=SUB)
+        labels = ["a[0]", "a[1]", "a[2]", "a[3]", "a[4]", "b"]
+        for i, lb in enumerate(labels):
+            hotk = (hot == i)
+            sc.add("rect", x=X + i * (CW + 4), y=Y, width=CW, height=52, rx=8,
+                   fill=(BAD if hotk else (WRITE if i == 5 else CELL)),
+                   stroke=(BAD_STROKE if hotk else (WRITE_STROKE if i == 5 else CELL_STROKE)), stroke_width=1.5)
+            sc.label(X + i * (CW + 4) + CW / 2, Y + 27, lb, size=15, mono=True, anchor="middle")
+            sc.label(X + i * (CW + 4) + CW / 2, Y + 46, f"+{4*i}", size=11, fill=FAINT, mono=True, anchor="middle")
+        sc.label(X, 196, note, size=15)
+        return sc
+
+    frames.append(frame("合法范围", "a有5个元素：合法下标0至4，占20字节。", "编译器不做下标检查：a[i]就是取a首地址+4i。",
+                        "a[10]的地址是多少？", scene([], None)))
+    frames.append(frame("a[10]的地址", "a+4×10=a+40：越出a的20字节，落在b（+20字节处）再往后的位置。", "具体落在哪个变量由布局决定——这正是危险所在：可能改掉b，也可能改掉别的。",
+                        "", scene([], "a[10]指向b之后的格子。", hot=5)))
+    frames.append(frame("越界写与未定义行为", "C标准把越界访问定义为未定义行为：不检查、不报错、后果随布局。", "防范靠规范与工具：循环边界自查、开启-fsanitize=address等。",
+                        "", scene([], "后果不可预知，唯有不越界。")))
+    return write_demo("cs07-bounds", "数组越界：a[10]=7写到谁头上", frames, outdir=CS_IMG)
+
+
+def demo_cs_fork():
+    """fork：一次调用两次返回，进程树1→2→3。"""
+    frames = []
+    W, H = 760, 240
+
+    def scene(nodes, note, hot=None):
+        sc = Scene(W, H)
+        sc.label(40, 30, "fork：把当前进程复制一份，父子从同一行代码之后各自继续", size=15, fill=SUB)
+        pos = {}
+        for (pid, x, y) in nodes:
+            pos[pid] = (x, y)
+            hotk = (pid == hot)
+            sc.add("rect", x=x - 46, y=y - 24, width=92, height=48, rx=10,
+                   fill=(HOT if hotk else (WRITE if pid > 1 else CELL)),
+                   stroke=(HOT_STROKE if hotk else CELL_STROKE), stroke_width=1.5)
+            sc.label(x, y + 6, f"pid {pid}", size=15, mono=True, anchor="middle")
+        edges = [(1, 2), (1, 3), (2, 3)]
+        # only parent-child edges based on nodes present
+        present = set(p for p, _, _ in nodes)
+        for (a, b) in edges:
+            if a in present and b in present and b > a:
+                x1, y1 = pos[a]; x2, y2 = pos[b]
+                sc.add("line", x1=x1, y1=y1 + 24, x2=x2, y2=y2 - 24, stroke=LINE, stroke_width=1.8)
+        sc.label(40, 214, note, size=15)
+        return sc
+
+    frames.append(frame("初始：只有pid 1", "父进程pid=1运行中。", "fork之前的代码只执行一次。", "",
+                        scene([(1, 380, 70)], "进程树只有根。")))
+    frames.append(frame("pid 1调用fork", "复制出一个pid=2：两者从fork返回处继续，fork的返回值不同——父得到孩子的pid，孩子得到0。", "用返回值区分父子，走不同的分支。",
+                        "", scene([(1, 260, 70), (2, 500, 70)], "树分出一支。", hot=2)))
+    frames.append(frame("pid 2再fork出pid 3", "孩子也可以再fork：树继续生长。", "几次fork就有2^k个进程——面试与OJ常见的计数题。",
+                        "", scene([(1, 260, 70), (2, 500, 70), (3, 620, 150)], "三代进程树。", hot=3)))
+    return write_demo("cs09-fork", "fork：一次调用，两份进程", frames, outdir=CS_IMG)
+
+
+DEMOS.update({
+    "cs04-addressing": demo_cs_addressing,
+    "cs07-bounds": demo_cs_outofbounds,
+    "cs09-fork": demo_cs_fork,
+})
+
 if __name__ == "__main__":
     main(sys.argv[1:])
