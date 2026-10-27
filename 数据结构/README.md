@@ -11,7 +11,7 @@
 ## 资料分类
 
 - [slides](slides/README.md)
-- [HW](HW/README.md)
+- HW、PA、Lab：遵循课程要求，仅保留在本地，不公开发布。
 - [公告](%E5%85%AC%E5%91%8A/README.md)
 - [资料](%E8%B5%84%E6%96%99/README.md)
 

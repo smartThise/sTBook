@@ -140,30 +140,6 @@
       "url": "https://github.com/smartThise/sTBook/releases/download/course-materials-2026-10-25/c6539631423a214cffc467543b57830cbb28c595b28edc0b5e0ec1ec9fc6ab94.pptx"
     },
     {
-      "path": "数据结构/HW/Lab1/3.in",
-      "size": 23186048,
-      "sha256": "b8ada189122b4e906f2bc8e297ed727724259be89bf8f23951f81d97ea5ef2e6",
-      "url": "https://github.com/smartThise/sTBook/releases/download/course-materials-2026-10-25/b8ada189122b4e906f2bc8e297ed727724259be89bf8f23951f81d97ea5ef2e6.in"
-    },
-    {
-      "path": "数据结构/HW/Lab1/code/debug/big/max2000.in",
-      "size": 28000026,
-      "sha256": "49cf3a2ee870d53e12e861cf789d3d9bcb6377dd392321fba858768cf2b6de75",
-      "url": "https://github.com/smartThise/sTBook/releases/download/course-materials-2026-10-25/49cf3a2ee870d53e12e861cf789d3d9bcb6377dd392321fba858768cf2b6de75.in"
-    },
-    {
-      "path": "数据结构/HW/Lab1/code/debug/big/ovf1999.in",
-      "size": 27972033,
-      "sha256": "ba62665d9b872f9c0be2c2d144e4a30a14791573b97834f0bb279ffbe7246270",
-      "url": "https://github.com/smartThise/sTBook/releases/download/course-materials-2026-10-25/ba62665d9b872f9c0be2c2d144e4a30a14791573b97834f0bb279ffbe7246270.in"
-    },
-    {
-      "path": "数据结构/HW/PA1/讲解资料/第1次编程作业 思路讲解（2）.pptx",
-      "size": 20937088,
-      "sha256": "b021f53e905b796a5770a002d2fea61e328a548d4999227e23b8bc2589893792",
-      "url": "https://github.com/smartThise/sTBook/releases/download/course-materials-2026-10-25/b021f53e905b796a5770a002d2fea61e328a548d4999227e23b8bc2589893792.pptx"
-    },
-    {
       "path": "数据结构/slides/分章课件/04 栈与列表.pdf",
       "size": 10940037,
       "sha256": "86ef694be3d25803b4d25484f069d5a0828fd4f2cd7c165fb892d23b55402580",

@@ -7,7 +7,7 @@ subtitle: 课程笔记 / 代码 / 资料库
 
 courses:
   # ---- 在修课程 ----
-  - { slug: 数据结构,         name: 数据结构,         group: 课程, desc: 教材式笔记、184题导航、PA与课件 }
+  - { slug: 数据结构,         name: 数据结构,         group: 课程, desc: 教材式笔记、184题导航与课件 }
   - { slug: 面向对象程序设计基础, name: 面向对象程序设计基础, group: 课程, desc: HW、final 项目、雷霆笔记与课件 }
   - { slug: 高等线性代数选讲, name: 高等线性代数选讲, group: 课程, desc: 作业与复习 }
   - { slug: 离散数学(2),      name: 离散数学(2),      group: 课程, desc: 笔记、OJ、slides 与复习 }
