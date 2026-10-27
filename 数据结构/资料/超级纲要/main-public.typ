@@ -42,8 +42,6 @@
 #include "19-字符串KMP与匹配.typ"
 #counter(heading).update(19)
 #include "20-快排选取与希尔排序.typ"
-#counter(heading).update(20)
-#include "21-PA方法与题面核对.typ"
 #counter(heading).update(21)
 #include "22-PS01逐题导航.typ"
 #counter(heading).update(22)
@@ -54,8 +52,6 @@
 #include "25-PS04逐题导航.typ"
 #counter(heading).update(25)
 #include "26-PS05逐题导航.typ"
-#counter(heading).update(26)
-#include "27-实验与工程检查.typ"
 #counter(heading).update(27)
 #include "28-概率与证明补充.typ"
 #counter(heading).update(28)
